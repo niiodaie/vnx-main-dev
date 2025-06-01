@@ -99,13 +99,26 @@ export default function Footer() {
           <div>
             <h3 className="text-white font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2">
-              {quickLinks.map((link) => (
-                <li key={link.label}>
-                  <a href={link.href} className="text-slate-400 hover:text-white transition-colors">
-                    {link.label}
-                  </a>
-                </li>
-              ))}
+              <li>
+                <a href="#tools" className="text-slate-400 hover:text-white transition-colors">
+                  Tools
+                </a>
+              </li>
+              <li>
+                <a href="#" className="text-slate-400 hover:text-white transition-colors">
+                  Blog
+                </a>
+              </li>
+              <li>
+                <a href="#" className="text-slate-400 hover:text-white transition-colors">
+                  Contact
+                </a>
+              </li>
+              <li>
+                <a href="#" className="text-slate-400 hover:text-white transition-colors">
+                  About
+                </a>
+              </li>
             </ul>
           </div>
 
@@ -165,7 +178,7 @@ export default function Footer() {
 
         <div className="border-t border-slate-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
           <div className="text-slate-400 text-sm mb-4 md:mb-0">
-            © 2024 VNX - Visnec Nexus. All rights reserved. • Powered by Visnec
+            © 2024 VNX - Visnec Nexus. All rights reserved. • Built with 💡 by Visnec
           </div>
           <div className="flex space-x-6 text-sm">
             <a href="#" className="text-slate-400 hover:text-white transition-colors">

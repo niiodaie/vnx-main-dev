@@ -42,8 +42,7 @@ export default function HeroSection() {
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
-          Your digital gateway to AI tools, platforms, and resources that power the future of
-          innovation.
+          Your all-in-one global hub for AI tools, digital platforms, and community-powered innovation.
         </p>
 
         <div
@@ -53,15 +52,15 @@ export default function HeroSection() {
         >
           <button
             onClick={() => scrollToSection("pillars")}
-            className="px-8 py-4 bg-blue-600 text-white rounded-xl font-semibold text-lg hover:bg-blue-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+            className="px-8 py-4 bg-blue-600 text-white rounded-xl font-semibold text-lg hover:bg-blue-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center gap-2"
           >
-            Browse Tools
+            🌐 Discover Tools
           </button>
           <button
             onClick={() => scrollToSection("community")}
-            className="px-8 py-4 bg-white/10 backdrop-blur-sm text-white border border-white/20 rounded-xl font-semibold text-lg hover:bg-white/20 transform hover:scale-105 transition-all duration-300"
+            className="px-8 py-4 bg-white/10 backdrop-blur-sm text-white border border-white/20 rounded-xl font-semibold text-lg hover:bg-white/20 transform hover:scale-105 transition-all duration-300 flex items-center gap-2"
           >
-            Join the Community
+            🫱🏽‍🫲🏾 Join the Community
           </button>
         </div>
 
