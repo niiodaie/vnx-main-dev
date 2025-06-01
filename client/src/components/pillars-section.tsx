@@ -48,12 +48,6 @@ export default function PillarsSection() {
       title: "Experience",
       description: "Immersive digital journeys and exploration",
     },
-    {
-      id: "trends",
-      icon: "🔥",
-      title: "Trends",
-      description: "Latest movements and emerging patterns",
-    },
   ];
 
   const handleExplore = (pillarId: string) => {
@@ -69,7 +63,7 @@ export default function PillarsSection() {
             🧱 Explore Our Pillars
           </h2>
           <p className="text-lg text-slate-600 max-w-3xl mx-auto">
-            Nine comprehensive categories designed to accelerate your digital journey and unlock new
+            Eight comprehensive categories designed to accelerate your digital journey and unlock new
             possibilities.
           </p>
         </div>

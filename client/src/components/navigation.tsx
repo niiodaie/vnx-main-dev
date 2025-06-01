@@ -34,30 +34,30 @@ export default function Navigation() {
             <span className="text-xl font-bold text-slate-800">VNX</span>
           </div>
 
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-6">
             <button
-              onClick={() => scrollToSection("tools")}
+              onClick={() => scrollToSection("pillars")}
               className="text-slate-600 hover:text-blue-600 transition-colors"
             >
               Tools
             </button>
             <button
-              onClick={() => scrollToSection("community")}
+              onClick={() => scrollToSection("pillars")}
+              className="text-slate-600 hover:text-blue-600 transition-colors"
+            >
+              Platforms
+            </button>
+            <button
+              onClick={() => scrollToSection("pillars")}
               className="text-slate-600 hover:text-blue-600 transition-colors"
             >
               Community
             </button>
             <button
-              onClick={() => scrollToSection("insights")}
+              onClick={() => scrollToSection("pillars")}
               className="text-slate-600 hover:text-blue-600 transition-colors"
             >
-              Insights
-            </button>
-            <button
-              onClick={() => scrollToSection("marketplace")}
-              className="text-slate-600 hover:text-blue-600 transition-colors"
-            >
-              Marketplace
+              Experience
             </button>
           </div>
 

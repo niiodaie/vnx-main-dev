@@ -122,17 +122,50 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Platform */}
+          {/* All 8 Pillars */}
           <div>
-            <h3 className="text-white font-semibold mb-4">Platform</h3>
+            <h3 className="text-white font-semibold mb-4">Pillars</h3>
             <ul className="space-y-2">
-              {platformLinks.map((link) => (
-                <li key={link.label}>
-                  <a href={link.href} className="text-slate-400 hover:text-white transition-colors">
-                    {link.label}
-                  </a>
-                </li>
-              ))}
+              <li>
+                <a href="#tools" className="text-slate-400 hover:text-white transition-colors">
+                  Tools
+                </a>
+              </li>
+              <li>
+                <a href="#platforms" className="text-slate-400 hover:text-white transition-colors">
+                  Platforms
+                </a>
+              </li>
+              <li>
+                <a href="#directories" className="text-slate-400 hover:text-white transition-colors">
+                  Directories
+                </a>
+              </li>
+              <li>
+                <a href="#resources" className="text-slate-400 hover:text-white transition-colors">
+                  Resources
+                </a>
+              </li>
+              <li>
+                <a href="#community" className="text-slate-400 hover:text-white transition-colors">
+                  Community
+                </a>
+              </li>
+              <li>
+                <a href="#marketplace" className="text-slate-400 hover:text-white transition-colors">
+                  Marketplace
+                </a>
+              </li>
+              <li>
+                <a href="#insights" className="text-slate-400 hover:text-white transition-colors">
+                  Insights
+                </a>
+              </li>
+              <li>
+                <a href="#experience" className="text-slate-400 hover:text-white transition-colors">
+                  Experience
+                </a>
+              </li>
             </ul>
           </div>
 
@@ -178,7 +211,7 @@ export default function Footer() {
 
         <div className="border-t border-slate-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
           <div className="text-slate-400 text-sm mb-4 md:mb-0">
-            © 2024 VNX - Visnec Nexus. All rights reserved. • Built with 💡 by Visnec
+            © 2024 VNX - Visnec Nexus. All rights reserved. • Made with ❤️ by Visnec Nexus
           </div>
           <div className="flex space-x-6 text-sm">
             <a href="#" className="text-slate-400 hover:text-white transition-colors">
