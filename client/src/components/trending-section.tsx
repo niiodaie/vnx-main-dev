@@ -2,30 +2,30 @@ export default function TrendingSection() {
   const trendingItems = [
     {
       id: 1,
-      title: "ScamShield AI",
-      description: "Advanced AI protection against digital scams is exploding in popularity",
-      icon: "🛡️",
-      tag: "🔥 Trending",
-      tagColor: "red",
-      link: "Explore Tool →",
+      title: "VNX-NetScan",
+      description: "Run IP, WHOIS, Port scans and Traceroutes.",
+      icon: "🔍",
+      tag: "New",
+      tagColor: "yellow",
+      link: "Try Now →",
     },
     {
       id: 2,
-      title: "PlayChaCha Tournament",
-      description: "Global gaming tournament with AI-powered matchmaking ongoing",
-      icon: "🎮",
-      tag: "⬆️ Rising",
-      tagColor: "green",
-      link: "Join Platform →",
+      title: "VNX-Surprise",
+      description: "Get surprise ideas with tags and affiliate links.",
+      icon: "🎲",
+      tag: "Hot",
+      tagColor: "red",
+      link: "Try Now →",
     },
     {
       id: 3,
-      title: "AI Ethics Guide",
-      description: "Comprehensive guide to responsible AI development and deployment",
-      icon: "🤖",
-      tag: "📈 Popular",
+      title: "VNX-Explorer",
+      description: "Discover global wonders, events and food culture.",
+      icon: "🌍",
+      tag: "Popular",
       tagColor: "blue",
-      link: "Read Resource →",
+      link: "Explore →",
     },
   ];
 
@@ -33,8 +33,8 @@ export default function TrendingSection() {
     switch (color) {
       case "red":
         return "bg-gradient-to-br from-red-50 to-orange-50 border-red-100";
-      case "green":
-        return "bg-gradient-to-br from-green-50 to-emerald-50 border-green-100";
+      case "yellow":
+        return "bg-gradient-to-br from-yellow-50 to-amber-50 border-yellow-100";
       case "blue":
         return "bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-100";
       default:
@@ -45,9 +45,9 @@ export default function TrendingSection() {
   const getTagClasses = (color: string) => {
     switch (color) {
       case "red":
-        return "bg-red-100 text-red-700";
-      case "green":
-        return "bg-green-100 text-green-700";
+        return "bg-red-300 text-red-800";
+      case "yellow":
+        return "bg-yellow-300 text-yellow-800";
       case "blue":
         return "bg-blue-100 text-blue-700";
       default:
@@ -59,8 +59,8 @@ export default function TrendingSection() {
     switch (color) {
       case "red":
         return "text-red-600 hover:text-red-700";
-      case "green":
-        return "text-green-600 hover:text-green-700";
+      case "yellow":
+        return "text-yellow-600 hover:text-yellow-700";
       case "blue":
         return "text-blue-600 hover:text-blue-700";
       default:
