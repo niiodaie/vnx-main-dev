@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "tsx server/index.ts",
     "build": "tsc",
-    "start": "node dist/server/index.js"
+    "start": "tsx index.ts"
   },
   "dependencies": {
     "@neondatabase/serverless": "^0.6.0",
