@@ -30,13 +30,19 @@ app.use('*', async (req, res, next) => {
   const url = req.originalUrl;
 
   try {
-    // Read index.html
-    let template = await vite.transformIndexHtml(url, `
+    // Serve the index.html directly from frontend folder
+    const indexPath = path.resolve(__dirname, 'frontend/index.html');
+    let template;
+    
+    try {
+      template = await import('fs').then(fs => fs.promises.readFile(indexPath, 'utf-8'));
+    } catch {
+      // Fallback HTML if file doesn't exist
+      template = `
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>VNX Nexus - Digital Innovation Hub</title>
   </head>
@@ -44,10 +50,11 @@ app.use('*', async (req, res, next) => {
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
-</html>
-    `);
+</html>`;
+    }
 
-    res.status(200).set({ 'Content-Type': 'text/html' }).end(template);
+    const html = await vite.transformIndexHtml(url, template);
+    res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
   } catch (e) {
     vite.ssrFixStacktrace(e);
     next(e);
@@ -55,6 +62,18 @@ app.use('*', async (req, res, next) => {
 });
 
 const PORT = 5000;
-app.listen(PORT, '0.0.0.0', () => {
+const server = app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 VNX Nexus development server running at http://localhost:${PORT}`);
+});
+
+server.on('error', (err) => {
+  console.error('Server error:', err);
+});
+
+// Handle graceful shutdown
+process.on('SIGTERM', () => {
+  console.log('SIGTERM received, shutting down gracefully');
+  server.close(() => {
+    console.log('Process terminated');
+  });
 });
