@@ -28,66 +28,71 @@
   <body class="bg-white">
     <div id="root">
       <!-- Navigation -->
-      <nav class="bg-white shadow-sm border-b">
+      <nav class="bg-white shadow-sm border-b absolute top-0 left-0 right-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div class="flex justify-between items-center h-16">
             <div class="flex items-center">
-              <h1 class="text-2xl font-bold text-primary-900">VNX Nexus</h1>
-            </div>
-            <div class="hidden md:block">
-              <div class="ml-10 flex items-baseline space-x-4">
-                <a href="#tools" class="text-gray-700 hover:text-primary-600 px-3 py-2 text-sm font-medium">Tools</a>
-                <a href="#platforms" class="text-gray-700 hover:text-primary-600 px-3 py-2 text-sm font-medium">Platforms</a>
-                <a href="#community" class="text-gray-700 hover:text-primary-600 px-3 py-2 text-sm font-medium">Community</a>
-                <a href="#insights" class="text-gray-700 hover:text-primary-600 px-3 py-2 text-sm font-medium">Insights</a>
+              <div class="flex items-center">
+                <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center mr-2">
+                  <span class="text-white font-bold text-sm">VN</span>
+                </div>
+                <span class="text-lg font-semibold text-gray-900">VNX</span>
               </div>
+            </div>
+            <div class="hidden md:flex items-center space-x-8">
+              <a href="#tools" class="text-gray-700 hover:text-blue-600 text-sm font-medium">Tools</a>
+              <a href="#platforms" class="text-gray-700 hover:text-blue-600 text-sm font-medium">Platforms</a>
+              <a href="#community" class="text-gray-700 hover:text-blue-600 text-sm font-medium">Community</a>
+              <a href="#experience" class="text-gray-700 hover:text-blue-600 text-sm font-medium">Experience</a>
+              <button class="text-gray-700 hover:text-blue-600 text-sm font-medium">Sign In</button>
+              <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium">Get Started</button>
             </div>
           </div>
         </div>
       </nav>
 
       <!-- Hero Section with Earth Background -->
-      <section class="relative min-h-screen overflow-hidden flex items-center" style="background: linear-gradient(135deg, #0c1445 0%, #1a2456 50%, #2d3561 100%), url('data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1920 1080\"><defs><radialGradient id=\"earth\" cx=\"50%\" cy=\"40%\" r=\"60%\"><stop offset=\"0%\" style=\"stop-color:%23ffffff;stop-opacity:0.1\" /><stop offset=\"70%\" style=\"stop-color:%23ffffff;stop-opacity:0.05\" /><stop offset=\"100%\" style=\"stop-color:%23000000;stop-opacity:0.3\" /></radialGradient></defs><circle cx=\"960\" cy=\"600\" r=\"400\" fill=\"url(%23earth)\" /><g opacity=\"0.6\"><circle cx=\"200\" cy=\"800\" r=\"2\" fill=\"%23ffd700\" /><circle cx=\"1700\" cy=\"300\" r=\"1\" fill=\"%23ffd700\" /><circle cx=\"300\" cy=\"200\" r=\"1\" fill=\"%23ffd700\" /><circle cx=\"1600\" cy=\"700\" r=\"2\" fill=\"%23ffd700\" /><circle cx=\"800\" cy=\"100\" r=\"1\" fill=\"%23ffd700\" /><circle cx=\"1200\" cy=\"900\" r=\"1\" fill=\"%23ffd700\" /></g></svg>') center/cover">
+      <section class="relative min-h-screen overflow-hidden flex items-center" style="background: radial-gradient(ellipse at center, #1a1a2e 0%, #16213e 25%, #0f1419 50%, #0a0e1a 100%), url('data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1920 1080\"><defs><radialGradient id=\"earthGrad\" cx=\"45%\" cy=\"55%\" r=\"35%\"><stop offset=\"0%\" style=\"stop-color:%234a90e2;stop-opacity:0.8\" /><stop offset=\"20%\" style=\"stop-color:%2330628a;stop-opacity:0.9\" /><stop offset=\"50%\" style=\"stop-color:%231e3a5f;stop-opacity:0.95\" /><stop offset=\"80%\" style=\"stop-color:%23152841;stop-opacity:0.98\" /><stop offset=\"100%\" style=\"stop-color:%23000000;stop-opacity:1\" /></radialGradient><radialGradient id=\"cityLights\" cx=\"50%\" cy=\"50%\" r=\"40%\"><stop offset=\"0%\" style=\"stop-color:%23ffaa00;stop-opacity:0.8\" /><stop offset=\"50%\" style=\"stop-color:%23ff6600;stop-opacity:0.6\" /><stop offset=\"100%\" style=\"stop-color:%23ff3300;stop-opacity:0.3\" /></radialGradient></defs><ellipse cx=\"650\" cy=\"650\" rx=\"380\" ry=\"320\" fill=\"url(%23earthGrad)\" transform=\"rotate(-15 650 650)\" /><g opacity=\"0.7\"><circle cx=\"580\" cy=\"580\" r=\"3\" fill=\"%23ffaa00\" /><circle cx=\"620\" cy=\"610\" r=\"2\" fill=\"%23ff8800\" /><circle cx=\"550\" cy=\"640\" r=\"2\" fill=\"%23ffcc00\" /><circle cx=\"680\" cy=\"590\" r=\"1\" fill=\"%23ffaa00\" /><circle cx=\"590\" cy=\"660\" r=\"2\" fill=\"%23ff9900\" /><circle cx=\"640\" cy=\"550\" r=\"1\" fill=\"%23ffbb00\" /><circle cx=\"520\" cy=\"600\" r=\"1\" fill=\"%23ffaa00\" /><circle cx=\"660\" cy=\"630\" r=\"2\" fill=\"%23ff7700\" /><circle cx=\"600\" cy=\"520\" r=\"1\" fill=\"%23ffcc00\" /><circle cx=\"700\" cy=\"620\" r=\"1\" fill=\"%23ff8800\" /></g><g opacity=\"0.3\"><circle cx=\"200\" cy=\"300\" r=\"1\" fill=\"%23ffffff\" /><circle cx=\"1600\" cy=\"200\" r=\"1\" fill=\"%23ffffff\" /><circle cx=\"300\" cy=\"800\" r=\"1\" fill=\"%23ffffff\" /><circle cx=\"1500\" cy=\"700\" r=\"1\" fill=\"%23ffffff\" /><circle cx=\"800\" cy=\"150\" r=\"1\" fill=\"%23ffffff\" /><circle cx=\"1200\" cy=\"900\" r=\"1\" fill=\"%23ffffff\" /><circle cx=\"100\" cy=\"600\" r=\"1\" fill=\"%23ffffff\" /><circle cx=\"1700\" cy=\"500\" r=\"1\" fill=\"%23ffffff\" /></g></svg>') center/cover">
         
-        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10">
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10 pt-20">
           <!-- Main heading -->
           <div class="mb-8">
-            <h1 class="text-7xl md:text-8xl lg:text-9xl font-bold mb-4">
-              <span class="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
+            <h1 class="text-6xl md:text-7xl lg:text-8xl font-bold mb-4">
+              <span class="bg-gradient-to-r from-blue-400 via-blue-300 to-cyan-200 bg-clip-text text-transparent">
                 Visnec
               </span>
             </h1>
-            <h2 class="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-8">
+            <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-8">
               Nexus
             </h2>
           </div>
           
           <!-- Subtitle -->
-          <p class="text-xl md:text-2xl text-gray-200 font-medium mb-12 max-w-4xl mx-auto leading-relaxed">
+          <p class="text-lg md:text-xl text-gray-300 font-normal mb-12 max-w-3xl mx-auto leading-relaxed">
             Explore the future of AI, tools, platforms, and global experiences.
           </p>
           
           <!-- CTA Buttons -->
           <div class="flex flex-col sm:flex-row justify-center gap-4 mb-16">
-            <button class="group relative bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg transition-all duration-300 font-medium shadow-lg">
-              <span class="flex items-center justify-center">
-                <span class="mr-2">🚀</span>
-                Explore Tools
-              </span>
+            <button class="group relative bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition-all duration-300 font-medium shadow-lg flex items-center justify-center">
+              <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+              </svg>
+              Explore Tools
             </button>
             
-            <button class="group relative bg-gray-700 hover:bg-gray-600 text-white px-8 py-3 rounded-lg transition-all duration-300 font-medium shadow-lg">
-              <span class="flex items-center justify-center">
-                <span class="mr-2">🔧</span>
-                Visit Platforms
-              </span>
+            <button class="group relative bg-gray-800 hover:bg-gray-700 text-white px-6 py-3 rounded-lg transition-all duration-300 font-medium shadow-lg flex items-center justify-center">
+              <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"></path>
+              </svg>
+              Visit Platforms
             </button>
             
-            <button class="group relative bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-lg transition-all duration-300 font-medium shadow-lg">
-              <span class="flex items-center justify-center">
-                <span class="mr-2">🌟</span>
-                Discover Experiences
-              </span>
+            <button class="group relative bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg transition-all duration-300 font-medium shadow-lg flex items-center justify-center">
+              <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+              </svg>
+              Discover Experiences
             </button>
           </div>
         </div>
