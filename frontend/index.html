@@ -46,80 +46,49 @@
         </div>
       </nav>
 
-      <!-- Hero Section -->
-      <section class="relative min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 overflow-hidden flex items-center">
-        <!-- Background gradient blobs -->
-        <div class="absolute inset-0">
-          <div class="absolute top-20 left-20 w-96 h-96 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-pulse"></div>
-          <div class="absolute top-40 right-20 w-96 h-96 bg-gradient-to-r from-purple-500 to-pink-400 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-pulse" style="animation-delay: 1s"></div>
-          <div class="absolute bottom-40 left-1/2 transform -translate-x-1/2 w-96 h-96 bg-gradient-to-r from-green-400 to-blue-400 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-pulse" style="animation-delay: 2s"></div>
-        </div>
+      <!-- Hero Section with Earth Background -->
+      <section class="relative min-h-screen overflow-hidden flex items-center" style="background: linear-gradient(135deg, #0c1445 0%, #1a2456 50%, #2d3561 100%), url('data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1920 1080\"><defs><radialGradient id=\"earth\" cx=\"50%\" cy=\"40%\" r=\"60%\"><stop offset=\"0%\" style=\"stop-color:%23ffffff;stop-opacity:0.1\" /><stop offset=\"70%\" style=\"stop-color:%23ffffff;stop-opacity:0.05\" /><stop offset=\"100%\" style=\"stop-color:%23000000;stop-opacity:0.3\" /></radialGradient></defs><circle cx=\"960\" cy=\"600\" r=\"400\" fill=\"url(%23earth)\" /><g opacity=\"0.6\"><circle cx=\"200\" cy=\"800\" r=\"2\" fill=\"%23ffd700\" /><circle cx=\"1700\" cy=\"300\" r=\"1\" fill=\"%23ffd700\" /><circle cx=\"300\" cy=\"200\" r=\"1\" fill=\"%23ffd700\" /><circle cx=\"1600\" cy=\"700\" r=\"2\" fill=\"%23ffd700\" /><circle cx=\"800\" cy=\"100\" r=\"1\" fill=\"%23ffd700\" /><circle cx=\"1200\" cy=\"900\" r=\"1\" fill=\"%23ffd700\" /></g></svg>') center/cover">
         
-        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <!-- Main heading with gradient text -->
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10">
+          <!-- Main heading -->
           <div class="mb-8">
-            <h1 class="text-6xl md:text-8xl lg:text-9xl font-black mb-4">
-              <span class="bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
+            <h1 class="text-7xl md:text-8xl lg:text-9xl font-bold mb-4">
+              <span class="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
                 Visnec
               </span>
             </h1>
-            <h2 class="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6">
+            <h2 class="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-8">
               Nexus
             </h2>
           </div>
           
           <!-- Subtitle -->
-          <p class="text-xl md:text-2xl text-gray-300 font-medium mb-4">
-            Digital Innovation Hub
-          </p>
-          
-          <!-- Tagline -->
-          <p class="text-lg md:text-xl text-gray-400 mb-12 max-w-3xl mx-auto leading-relaxed">
-            Where innovation meets execution. Explore cutting-edge tools, create breakthrough solutions, and succeed in the digital frontier.
+          <p class="text-xl md:text-2xl text-gray-200 font-medium mb-12 max-w-4xl mx-auto leading-relaxed">
+            Explore the future of AI, tools, platforms, and global experiences.
           </p>
           
           <!-- CTA Buttons -->
-          <div class="flex flex-col sm:flex-row justify-center gap-6 mb-16">
-            <button class="group relative bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-10 py-4 rounded-2xl hover:from-blue-600 hover:to-cyan-600 transition-all duration-300 font-semibold text-lg shadow-2xl hover:shadow-blue-500/25 transform hover:-translate-y-1">
+          <div class="flex flex-col sm:flex-row justify-center gap-4 mb-16">
+            <button class="group relative bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg transition-all duration-300 font-medium shadow-lg">
               <span class="flex items-center justify-center">
-                <span class="text-2xl mr-3 group-hover:scale-110 transition-transform">🧪</span>
+                <span class="mr-2">🚀</span>
                 Explore Tools
               </span>
             </button>
             
-            <button class="group relative bg-gradient-to-r from-purple-500 to-pink-500 text-white px-10 py-4 rounded-2xl hover:from-purple-600 hover:to-pink-600 transition-all duration-300 font-semibold text-lg shadow-2xl hover:shadow-purple-500/25 transform hover:-translate-y-1">
+            <button class="group relative bg-gray-700 hover:bg-gray-600 text-white px-8 py-3 rounded-lg transition-all duration-300 font-medium shadow-lg">
               <span class="flex items-center justify-center">
-                <span class="text-2xl mr-3 group-hover:scale-110 transition-transform">🚀</span>
+                <span class="mr-2">🔧</span>
                 Visit Platforms
               </span>
             </button>
             
-            <button class="group relative bg-gradient-to-r from-green-500 to-emerald-500 text-white px-10 py-4 rounded-2xl hover:from-green-600 hover:to-emerald-600 transition-all duration-300 font-semibold text-lg shadow-2xl hover:shadow-green-500/25 transform hover:-translate-y-1">
+            <button class="group relative bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-lg transition-all duration-300 font-medium shadow-lg">
               <span class="flex items-center justify-center">
-                <span class="text-2xl mr-3 group-hover:scale-110 transition-transform">🧭</span>
+                <span class="mr-2">🌟</span>
                 Discover Experiences
               </span>
             </button>
-          </div>
-          
-          <!-- Stats with glassmorphism -->
-          <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
-            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
-              <div class="text-3xl font-bold text-white mb-1">500+</div>
-              <div class="text-sm text-gray-300 font-medium">Digital Tools</div>
-            </div>
-            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
-              <div class="text-3xl font-bold text-white mb-1">50K+</div>
-              <div class="text-sm text-gray-300 font-medium">Active Users</div>
-            </div>
-            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
-              <div class="text-3xl font-bold text-white mb-1">25+</div>
-              <div class="text-sm text-gray-300 font-medium">Countries</div>
-            </div>
-            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
-              <div class="text-3xl font-bold text-white mb-1">98%</div>
-              <div class="text-sm text-gray-300 font-medium">Satisfaction</div>
-            </div>
           </div>
         </div>
         
@@ -132,124 +101,115 @@
       </section>
 
       <!-- Trending Section -->
-      <section class="py-16 bg-white" id="trending">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section class="py-16 bg-gray-50" id="trending">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div class="text-center mb-12">
-            <h2 class="text-3xl font-bold text-gray-900 mb-4">Trending VNX Tools</h2>
-            <p class="text-gray-600 max-w-2xl mx-auto">
-              Discover the most popular tools and resources from our innovation community
+            <h2 class="text-3xl font-bold text-gray-900 mb-4 flex items-center justify-center">
+              <span class="text-orange-500 mr-2">🔥</span>
+              Trending Now
+            </h2>
+            <p class="text-gray-600 max-w-3xl mx-auto">
+              Discover the hottest tools, platforms, and discussions shaping the digital landscape.
             </p>
           </div>
           
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div class="bg-gray-50 rounded-lg p-6 hover:shadow-lg transition-shadow">
-              <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
-                <span class="text-2xl">🤖</span>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- VNX-NetScan -->
+            <div class="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow border border-gray-100">
+              <div class="flex items-center justify-between mb-4">
+                <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+                  <span class="text-2xl">🔍</span>
+                </div>
+                <span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full font-medium">New</span>
               </div>
-              <h3 class="text-xl font-semibold mb-2">AI Content Generator</h3>
-              <p class="text-gray-600 mb-4">Create compelling content with advanced AI assistance</p>
-              <span class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">Featured</span>
+              <h3 class="text-lg font-semibold mb-2 text-gray-900">VNX-NetScan</h3>
+              <p class="text-gray-600 text-sm mb-4">Run IP, WHoiS, Port scans and Traceroutes.</p>
+              <button class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                Try Now
+              </button>
             </div>
-            
-            <div class="bg-gray-50 rounded-lg p-6 hover:shadow-lg transition-shadow">
-              <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
-                <span class="text-2xl">📊</span>
+
+            <!-- VNX-Surprise -->
+            <div class="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow border border-gray-100">
+              <div class="flex items-center justify-between mb-4">
+                <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                  <span class="text-2xl">🎁</span>
+                </div>
+                <span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full font-medium">Hot</span>
               </div>
-              <h3 class="text-xl font-semibold mb-2">Analytics Dashboard</h3>
-              <p class="text-gray-600 mb-4">Comprehensive insights and data visualization</p>
-              <span class="inline-block bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">Popular</span>
+              <h3 class="text-lg font-semibold mb-2 text-gray-900">VNX-Surprise</h3>
+              <p class="text-gray-600 text-sm mb-4">Get surprise ideas with tags and affiliate links.</p>
+              <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                Try Now
+              </button>
             </div>
-            
-            <div class="bg-gray-50 rounded-lg p-6 hover:shadow-lg transition-shadow">
-              <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
-                <span class="text-2xl">🎨</span>
+
+            <!-- VNX-Explorer -->
+            <div class="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow border border-gray-100">
+              <div class="flex items-center justify-between mb-4">
+                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                  <span class="text-2xl">🌍</span>
+                </div>
+                <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full font-medium">Popular</span>
               </div>
-              <h3 class="text-xl font-semibold mb-2">Design Studio</h3>
-              <p class="text-gray-600 mb-4">Professional design tools and templates</p>
-              <span class="inline-block bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded-full">New</span>
+              <h3 class="text-lg font-semibold mb-2 text-gray-900">VNX-Explorer</h3>
+              <p class="text-gray-600 text-sm mb-4">Discover global wonders, events and food culture.</p>
+              <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                Try Now
+              </button>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- Platform Pillars -->
-      <section class="py-20 bg-gradient-to-br from-slate-900 via-gray-900 to-blue-900 relative overflow-hidden" id="pillars">
-        <!-- Background Pattern -->
-        <div class="absolute inset-0 opacity-10">
-          <div class="absolute top-0 left-0 w-full h-full bg-[url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.1"%3E%3Ccircle cx="7" cy="7" r="1"/%3E%3Ccircle cx="37" cy="7" r="1"/%3E%3Ccircle cx="22" cy="22" r="1"/%3E%3Ccircle cx="52" cy="22" r="1"/%3E%3Ccircle cx="7" cy="37" r="1"/%3E%3Ccircle cx="37" cy="37" r="1"/%3E%3Ccircle cx="22" cy="52" r="1"/%3E%3Ccircle cx="52" cy="52" r="1"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')]"></div>
-        </div>
-        
-        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div class="text-center mb-16">
-            <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">8 Core Platform Pillars</h2>
-            <p class="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-              Comprehensive ecosystem designed to support every aspect of digital innovation
+      <!-- Explore Our Pillars -->
+      <section class="py-16 bg-white" id="pillars">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-gray-900 mb-4 flex items-center justify-center">
+              <span class="text-orange-500 mr-2">🧩</span>
+              Explore Our Pillars
+            </h2>
+            <p class="text-gray-600 max-w-3xl mx-auto">
+              Eight comprehensive categories designed to accelerate your digital journey and unlock new possibilities.
             </p>
           </div>
           
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div class="group bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/20 hover:border-blue-400/50 transition-all duration-300 hover:transform hover:-translate-y-2">
-              <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                <span class="text-3xl">🛠️</span>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Tools -->
+            <div class="bg-gray-50 rounded-xl p-6 hover:shadow-md transition-shadow border border-gray-100 text-center">
+              <div class="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <span class="text-3xl">🔧</span>
               </div>
-              <h3 class="text-xl font-bold text-white mb-3">Tools</h3>
-              <p class="text-gray-300 text-sm leading-relaxed">Handy utilities that solve real-world problems with precision and efficiency</p>
+              <h3 class="text-lg font-semibold mb-3 text-gray-900">Tools</h3>
+              <p class="text-gray-600 text-sm">Handy utilities that solve real-world problems.</p>
             </div>
-            
-            <div class="group bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/20 hover:border-green-400/50 transition-all duration-300 hover:transform hover:-translate-y-2">
-              <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                <span class="text-3xl">🚀</span>
+
+            <!-- Platforms -->
+            <div class="bg-gray-50 rounded-xl p-6 hover:shadow-md transition-shadow border border-gray-100 text-center">
+              <div class="w-16 h-16 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <span class="text-3xl">🌿</span>
               </div>
-              <h3 class="text-xl font-bold text-white mb-3">Platforms</h3>
-              <p class="text-gray-300 text-sm leading-relaxed">Interactive launchpads and service layers for seamless digital experiences</p>
+              <h3 class="text-lg font-semibold mb-3 text-gray-900">Platforms</h3>
+              <p class="text-gray-600 text-sm">Interactive launchpads and service layers.</p>
             </div>
-            
-            <div class="group bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/20 hover:border-yellow-400/50 transition-all duration-300 hover:transform hover:-translate-y-2">
-              <div class="w-16 h-16 bg-gradient-to-br from-yellow-500 to-orange-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                <span class="text-3xl">📁</span>
-              </div>
-              <h3 class="text-xl font-bold text-white mb-3">Directories</h3>
-              <p class="text-gray-300 text-sm leading-relaxed">Discover niche resources organized by category for easy navigation</p>
-            </div>
-            
-            <div class="group bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/20 hover:border-purple-400/50 transition-all duration-300 hover:transform hover:-translate-y-2">
-              <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-violet-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+
+            <!-- Directories -->
+            <div class="bg-gray-50 rounded-xl p-6 hover:shadow-md transition-shadow border border-gray-100 text-center">
+              <div class="w-16 h-16 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-4">
                 <span class="text-3xl">📚</span>
               </div>
-              <h3 class="text-xl font-bold text-white mb-3">Resources</h3>
-              <p class="text-gray-300 text-sm leading-relaxed">Templates, guides, and downloadable kits to accelerate your projects</p>
+              <h3 class="text-lg font-semibold mb-3 text-gray-900">Directories</h3>
+              <p class="text-gray-600 text-sm">Discover niche resources by category.</p>
             </div>
-            
-            <div class="group bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/20 hover:border-red-400/50 transition-all duration-300 hover:transform hover:-translate-y-2">
-              <div class="w-16 h-16 bg-gradient-to-br from-red-500 to-pink-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                <span class="text-3xl">👥</span>
+
+            <!-- Resources -->
+            <div class="bg-gray-50 rounded-xl p-6 hover:shadow-md transition-shadow border border-gray-100 text-center">
+              <div class="w-16 h-16 bg-yellow-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <span class="text-3xl">📁</span>
               </div>
-              <h3 class="text-xl font-bold text-white mb-3">Community</h3>
-              <p class="text-gray-300 text-sm leading-relaxed">Peer collaboration and feedback forums for shared innovation</p>
-            </div>
-            
-            <div class="group bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/20 hover:border-indigo-400/50 transition-all duration-300 hover:transform hover:-translate-y-2">
-              <div class="w-16 h-16 bg-gradient-to-br from-indigo-500 to-blue-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                <span class="text-3xl">🏪</span>
-              </div>
-              <h3 class="text-xl font-bold text-white mb-3">Marketplace</h3>
-              <p class="text-gray-300 text-sm leading-relaxed">Digital products, services, and SaaS tools in one centralized hub</p>
-            </div>
-            
-            <div class="group bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/20 hover:border-orange-400/50 transition-all duration-300 hover:transform hover:-translate-y-2">
-              <div class="w-16 h-16 bg-gradient-to-br from-orange-500 to-amber-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                <span class="text-3xl">📈</span>
-              </div>
-              <h3 class="text-xl font-bold text-white mb-3">Insights</h3>
-              <p class="text-gray-300 text-sm leading-relaxed">Trends, forecasts, and business analytics for informed decisions</p>
-            </div>
-            
-            <div class="group bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/20 hover:border-pink-400/50 transition-all duration-300 hover:transform hover:-translate-y-2">
-              <div class="w-16 h-16 bg-gradient-to-br from-pink-500 to-rose-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                <span class="text-3xl">✨</span>
-              </div>
-              <h3 class="text-xl font-bold text-white mb-3">Experience</h3>
-              <p class="text-gray-300 text-sm leading-relaxed">Immersive digital journeys and exploration for enhanced engagement</p>
+              <h3 class="text-lg font-semibold mb-3 text-gray-900">Resources</h3>
+              <p class="text-gray-600 text-sm">Templates, guides, and downloadable kits.</p>
             </div>
           </div>
         </div>
