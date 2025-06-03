@@ -47,33 +47,95 @@
       </nav>
 
       <!-- Hero Section -->
-      <section class="bg-gradient-to-br from-blue-50 to-indigo-100 py-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section class="relative overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 py-24 lg:py-32">
+        <!-- Background Pattern -->
+        <div class="absolute inset-0 opacity-20">
+          <div class="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-blue-400 to-indigo-600 rounded-full filter blur-3xl transform -translate-x-1/2 -translate-y-1/2"></div>
+          <div class="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-br from-purple-400 to-pink-600 rounded-full filter blur-3xl transform translate-x-1/2 translate-y-1/2"></div>
+        </div>
+        
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div class="text-center">
-            <h1 class="text-5xl md:text-7xl font-bold text-gray-900 mb-6">
-              VNX Nexus
-            </h1>
-            <p class="text-xl md:text-2xl text-gray-600 mb-4">
+            <!-- Brand Badge -->
+            <div class="inline-flex items-center px-4 py-2 rounded-full bg-white/50 backdrop-blur-sm border border-white/20 text-sm font-medium text-slate-700 mb-8">
+              <span class="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></span>
+              Next-Gen Digital Platform
+            </div>
+            
+            <!-- Main Heading -->
+            <div class="mb-8">
+              <h1 class="text-6xl md:text-8xl lg:text-9xl font-black text-transparent bg-clip-text bg-gradient-to-r from-slate-900 via-blue-900 to-indigo-900 mb-4 tracking-tight">
+                VNX
+              </h1>
+              <div class="text-2xl md:text-4xl font-bold text-slate-700 mb-2 tracking-wide">
+                NEXUS
+              </div>
+            </div>
+            
+            <!-- Subtitle -->
+            <p class="text-xl md:text-2xl text-slate-600 font-medium mb-4 tracking-wide">
               Digital Innovation Hub
             </p>
-            <p class="text-lg text-gray-500 mb-12 max-w-2xl mx-auto">
-              Explore. Create. Succeed.
+            
+            <!-- Tagline -->
+            <p class="text-lg md:text-xl text-slate-500 mb-12 max-w-3xl mx-auto leading-relaxed">
+              Where innovation meets execution. Explore cutting-edge tools, create breakthrough solutions, and succeed in the digital frontier.
             </p>
             
-            <!-- CTA Buttons -->
+            <!-- Enhanced CTA Buttons -->
             <div class="flex flex-col sm:flex-row justify-center gap-4 mb-16">
-              <button class="bg-blue-600 text-white px-8 py-4 rounded-lg hover:bg-blue-700 transition-colors font-medium text-lg">
-                🧪 Explore Tools
+              <button class="group relative bg-gradient-to-r from-blue-600 to-blue-700 text-white px-10 py-5 rounded-2xl hover:from-blue-700 hover:to-blue-800 transition-all duration-300 font-semibold text-lg shadow-xl hover:shadow-2xl transform hover:-translate-y-1">
+                <span class="flex items-center justify-center">
+                  <span class="text-2xl mr-3 group-hover:scale-110 transition-transform">🧪</span>
+                  Explore Tools
+                </span>
+                <div class="absolute inset-0 rounded-2xl bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
               </button>
-              <button class="bg-green-600 text-white px-8 py-4 rounded-lg hover:bg-green-700 transition-colors font-medium text-lg">
-                🚀 Visit Platforms
+              
+              <button class="group relative bg-gradient-to-r from-green-600 to-emerald-700 text-white px-10 py-5 rounded-2xl hover:from-green-700 hover:to-emerald-800 transition-all duration-300 font-semibold text-lg shadow-xl hover:shadow-2xl transform hover:-translate-y-1">
+                <span class="flex items-center justify-center">
+                  <span class="text-2xl mr-3 group-hover:scale-110 transition-transform">🚀</span>
+                  Visit Platforms
+                </span>
+                <div class="absolute inset-0 rounded-2xl bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
               </button>
-              <button class="bg-purple-600 text-white px-8 py-4 rounded-lg hover:bg-purple-700 transition-colors font-medium text-lg">
-                🧭 Discover Experiences
+              
+              <button class="group relative bg-gradient-to-r from-purple-600 to-violet-700 text-white px-10 py-5 rounded-2xl hover:from-purple-700 hover:to-violet-800 transition-all duration-300 font-semibold text-lg shadow-xl hover:shadow-2xl transform hover:-translate-y-1">
+                <span class="flex items-center justify-center">
+                  <span class="text-2xl mr-3 group-hover:scale-110 transition-transform">🧭</span>
+                  Discover Experiences
+                </span>
+                <div class="absolute inset-0 rounded-2xl bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
               </button>
+            </div>
+            
+            <!-- Stats Preview -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+              <div class="bg-white/30 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
+                <div class="text-3xl font-bold text-slate-800 mb-1">500+</div>
+                <div class="text-sm text-slate-600 font-medium">Digital Tools</div>
+              </div>
+              <div class="bg-white/30 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
+                <div class="text-3xl font-bold text-slate-800 mb-1">50K+</div>
+                <div class="text-sm text-slate-600 font-medium">Active Users</div>
+              </div>
+              <div class="bg-white/30 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
+                <div class="text-3xl font-bold text-slate-800 mb-1">25+</div>
+                <div class="text-sm text-slate-600 font-medium">Countries</div>
+              </div>
+              <div class="bg-white/30 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
+                <div class="text-3xl font-bold text-slate-800 mb-1">98%</div>
+                <div class="text-sm text-slate-600 font-medium">Satisfaction</div>
+              </div>
             </div>
           </div>
         </div>
+        
+        <!-- Floating Elements -->
+        <div class="absolute top-20 left-10 w-4 h-4 bg-blue-400 rounded-full animate-bounce opacity-60"></div>
+        <div class="absolute top-40 right-20 w-6 h-6 bg-purple-400 rounded-full animate-bounce opacity-60" style="animation-delay: 0.5s"></div>
+        <div class="absolute bottom-32 left-20 w-3 h-3 bg-green-400 rounded-full animate-bounce opacity-60" style="animation-delay: 1s"></div>
+        <div class="absolute bottom-20 right-32 w-5 h-5 bg-pink-400 rounded-full animate-bounce opacity-60" style="animation-delay: 1.5s"></div>
       </section>
 
       <!-- Trending Section -->
@@ -195,26 +257,21 @@
         </div>
       </section>
 
-      <!-- Stats Section -->
-      <section class="py-16 bg-primary-900 text-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div class="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
-            <div>
-              <div class="text-4xl font-bold mb-2">500+</div>
-              <div class="text-blue-200">Digital Tools</div>
-            </div>
-            <div>
-              <div class="text-4xl font-bold mb-2">50K+</div>
-              <div class="text-blue-200">Active Users</div>
-            </div>
-            <div>
-              <div class="text-4xl font-bold mb-2">25+</div>
-              <div class="text-blue-200">Countries</div>
-            </div>
-            <div>
-              <div class="text-4xl font-bold mb-2">98%</div>
-              <div class="text-blue-200">Satisfaction</div>
-            </div>
+      <!-- Call to Action Section -->
+      <section class="py-20 bg-gradient-to-r from-primary-900 to-indigo-900 text-white relative overflow-hidden">
+        <div class="absolute inset-0 bg-black/20"></div>
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 class="text-4xl md:text-5xl font-bold mb-6">Ready to Transform Your Digital Journey?</h2>
+          <p class="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">
+            Join thousands of innovators who are already building the future with VNX Nexus
+          </p>
+          <div class="flex flex-col sm:flex-row justify-center gap-4">
+            <button class="bg-white text-primary-900 px-8 py-4 rounded-xl hover:bg-gray-100 transition-colors font-semibold text-lg shadow-lg">
+              Start Your Journey
+            </button>
+            <button class="border-2 border-white text-white px-8 py-4 rounded-xl hover:bg-white hover:text-primary-900 transition-colors font-semibold text-lg">
+              Learn More
+            </button>
           </div>
         </div>
       </section>
