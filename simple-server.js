@@ -1,6 +1,7 @@
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import fs from 'fs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -8,39 +9,48 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// Serve static files from frontend directory
-app.use(express.static(path.join(__dirname, 'frontend')));
+// Determine static files directory (dist for production, frontend for development)
+const isProduction = process.env.NODE_ENV === 'production';
+const staticDir = isProduction ? path.join(__dirname, 'dist') : path.join(__dirname, 'frontend');
 
-// Serve the main index.html for the root route
-app.get('/', (req, res) => {
-  const indexPath = path.join(__dirname, 'frontend', 'index.html');
-  res.sendFile(indexPath);
-});
+console.log(`Environment: ${isProduction ? 'production' : 'development'}`);
+console.log(`Serving static files from: ${staticDir}`);
+
+// Serve static files
+app.use(express.static(staticDir));
 
 // Health check
 app.get('/health', (req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+  res.json({ 
+    status: 'ok', 
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development',
+    staticDir: staticDir
+  });
 });
 
-// API routes placeholder
+// API routes
 app.get('/api/test', (req, res) => {
-  res.json({ message: 'VNX Nexus API working' });
+  res.json({ message: 'VNX Nexus API working', version: '1.0.0' });
 });
 
-// Catch-all handler: send back the main index.html file
+// Serve the main index.html for the root route and SPA routing
 app.get('*', (req, res) => {
-  const indexPath = path.join(__dirname, 'index.html');
-  res.sendFile(indexPath, (err) => {
-    if (err) {
-      res.status(500).send(`
+  const indexPath = path.join(staticDir, 'index.html');
+  
+  // Check if index.html exists in the static directory
+  if (fs.existsSync(indexPath)) {
+    res.sendFile(indexPath);
+  } else {
+    // Fallback to embedded HTML if no index.html found
+    console.log('No index.html found, using embedded fallback');
+    res.send(`
         <!DOCTYPE html>
         <html lang="en">
           <head>
             <meta charset="UTF-8" />
             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
             <title>VNX Nexus - Digital Innovation Hub</title>
-            <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-            <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
             <script src="https://cdn.tailwindcss.com"></script>
           </head>
           <body>
@@ -52,13 +62,13 @@ app.get('*', (req, res) => {
                     <p class="text-xl text-gray-600 mb-8">Digital Innovation Hub</p>
                     <div class="flex justify-center space-x-4 mb-12">
                       <button class="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700">
-                        🧪 Explore Tools
+                        Explore Tools
                       </button>
                       <button class="bg-green-600 text-white px-8 py-3 rounded-lg hover:bg-green-700">
-                        🚀 Visit Platforms
+                        Visit Platforms
                       </button>
                       <button class="bg-purple-600 text-white px-8 py-3 rounded-lg hover:bg-purple-700">
-                        🧭 Discover Experiences
+                        Discover Experiences
                       </button>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -103,10 +113,9 @@ app.get('*', (req, res) => {
         </html>
       `);
     }
-  });
 });
 
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`VNX Nexus server running on port ${PORT}`);
 });
