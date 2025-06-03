@@ -11,6 +11,12 @@ app.use(express.urlencoded({ extended: false }));
 // Serve static files from frontend directory
 app.use(express.static(path.join(__dirname, 'frontend')));
 
+// Serve the main index.html for the root route
+app.get('/', (req, res) => {
+  const indexPath = path.join(__dirname, 'frontend', 'index.html');
+  res.sendFile(indexPath);
+});
+
 // Health check
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
@@ -21,9 +27,9 @@ app.get('/api/test', (req, res) => {
   res.json({ message: 'VNX Nexus API working' });
 });
 
-// Catch-all handler: send back React's index.html file
+// Catch-all handler: send back the main index.html file
 app.get('*', (req, res) => {
-  const indexPath = path.join(__dirname, 'frontend', 'index.html');
+  const indexPath = path.join(__dirname, 'index.html');
   res.sendFile(indexPath, (err) => {
     if (err) {
       res.status(500).send(`
