@@ -2,7 +2,7 @@
   "name": "workspace",
   "version": "1.0.0",
   "description": "A modern, responsive web application built with React and Express, featuring 8 core platform pillars for digital innovation.",
-  "main": "dev.js",
+  "main": "simple-server.js",
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.11",
     "@radix-ui/react-alert-dialog": "^1.1.14",
@@ -326,7 +326,9 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node simple-server.js"
+    "dev": "node simple-server.js",
+    "build": "node build.js",
+    "start": "node simple-server.js"
   },
   "keywords": [],
   "author": "",
