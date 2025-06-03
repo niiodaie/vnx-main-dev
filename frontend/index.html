@@ -47,31 +47,86 @@
       </nav>
 
       <!-- Hero Section -->
-      <section class="bg-gradient-to-br from-blue-50 to-indigo-100 py-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div class="text-center">
-            <h1 class="text-5xl md:text-7xl font-bold text-gray-900 mb-6">
-              VNX Nexus
+      <section class="relative min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 overflow-hidden flex items-center">
+        <!-- Background gradient blobs -->
+        <div class="absolute inset-0">
+          <div class="absolute top-20 left-20 w-96 h-96 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-pulse"></div>
+          <div class="absolute top-40 right-20 w-96 h-96 bg-gradient-to-r from-purple-500 to-pink-400 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-pulse" style="animation-delay: 1s"></div>
+          <div class="absolute bottom-40 left-1/2 transform -translate-x-1/2 w-96 h-96 bg-gradient-to-r from-green-400 to-blue-400 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-pulse" style="animation-delay: 2s"></div>
+        </div>
+        
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <!-- Main heading with gradient text -->
+          <div class="mb-8">
+            <h1 class="text-6xl md:text-8xl lg:text-9xl font-black mb-4">
+              <span class="bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
+                Visnec
+              </span>
             </h1>
-            <p class="text-xl md:text-2xl text-gray-600 mb-4">
-              Digital Innovation Hub
-            </p>
-            <p class="text-lg text-gray-500 mb-12 max-w-2xl mx-auto">
-              Explore. Create. Succeed.
-            </p>
+            <h2 class="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6">
+              Nexus
+            </h2>
+          </div>
+          
+          <!-- Subtitle -->
+          <p class="text-xl md:text-2xl text-gray-300 font-medium mb-4">
+            Digital Innovation Hub
+          </p>
+          
+          <!-- Tagline -->
+          <p class="text-lg md:text-xl text-gray-400 mb-12 max-w-3xl mx-auto leading-relaxed">
+            Where innovation meets execution. Explore cutting-edge tools, create breakthrough solutions, and succeed in the digital frontier.
+          </p>
+          
+          <!-- CTA Buttons -->
+          <div class="flex flex-col sm:flex-row justify-center gap-6 mb-16">
+            <button class="group relative bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-10 py-4 rounded-2xl hover:from-blue-600 hover:to-cyan-600 transition-all duration-300 font-semibold text-lg shadow-2xl hover:shadow-blue-500/25 transform hover:-translate-y-1">
+              <span class="flex items-center justify-center">
+                <span class="text-2xl mr-3 group-hover:scale-110 transition-transform">🧪</span>
+                Explore Tools
+              </span>
+            </button>
             
-            <!-- CTA Buttons -->
-            <div class="flex flex-col sm:flex-row justify-center gap-4 mb-16">
-              <button class="bg-blue-600 text-white px-8 py-4 rounded-lg hover:bg-blue-700 transition-colors font-medium text-lg">
-                🧪 Explore Tools
-              </button>
-              <button class="bg-green-600 text-white px-8 py-4 rounded-lg hover:bg-green-700 transition-colors font-medium text-lg">
-                🚀 Visit Platforms
-              </button>
-              <button class="bg-purple-600 text-white px-8 py-4 rounded-lg hover:bg-purple-700 transition-colors font-medium text-lg">
-                🧭 Discover Experiences
-              </button>
+            <button class="group relative bg-gradient-to-r from-purple-500 to-pink-500 text-white px-10 py-4 rounded-2xl hover:from-purple-600 hover:to-pink-600 transition-all duration-300 font-semibold text-lg shadow-2xl hover:shadow-purple-500/25 transform hover:-translate-y-1">
+              <span class="flex items-center justify-center">
+                <span class="text-2xl mr-3 group-hover:scale-110 transition-transform">🚀</span>
+                Visit Platforms
+              </span>
+            </button>
+            
+            <button class="group relative bg-gradient-to-r from-green-500 to-emerald-500 text-white px-10 py-4 rounded-2xl hover:from-green-600 hover:to-emerald-600 transition-all duration-300 font-semibold text-lg shadow-2xl hover:shadow-green-500/25 transform hover:-translate-y-1">
+              <span class="flex items-center justify-center">
+                <span class="text-2xl mr-3 group-hover:scale-110 transition-transform">🧭</span>
+                Discover Experiences
+              </span>
+            </button>
+          </div>
+          
+          <!-- Stats with glassmorphism -->
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
+              <div class="text-3xl font-bold text-white mb-1">500+</div>
+              <div class="text-sm text-gray-300 font-medium">Digital Tools</div>
             </div>
+            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
+              <div class="text-3xl font-bold text-white mb-1">50K+</div>
+              <div class="text-sm text-gray-300 font-medium">Active Users</div>
+            </div>
+            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
+              <div class="text-3xl font-bold text-white mb-1">25+</div>
+              <div class="text-sm text-gray-300 font-medium">Countries</div>
+            </div>
+            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
+              <div class="text-3xl font-bold text-white mb-1">98%</div>
+              <div class="text-sm text-gray-300 font-medium">Satisfaction</div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Scroll indicator -->
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+          <div class="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
+            <div class="w-1 h-3 bg-white/50 rounded-full mt-2 animate-pulse"></div>
           </div>
         </div>
       </section>
