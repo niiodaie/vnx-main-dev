@@ -4,19 +4,19 @@ export default function Footer() {
   const [language, setLanguage] = useState("en");
   const [region, setRegion] = useState("auto");
 
-  const quickLinks = [
-    { label: "About Us", href: "#" },
-    { label: "Blog", href: "#" },
-    { label: "Careers", href: "#" },
-    { label: "Contact", href: "#" },
-  ];
+  // const quickLinks = [
+  //   { label: "About Us", href: "#" },
+  //   { label: "Blog", href: "#" },
+  //   { label: "Careers", href: "#" },
+  //   { label: "Contact", href: "#" },
+  // ];
 
-  const platformLinks = [
-    { label: "Tools", href: "#tools" },
-    { label: "Platforms", href: "#platforms" },
-    { label: "Community", href: "#community" },
-    { label: "Marketplace", href: "#marketplace" },
-  ];
+  // const platformLinks = [
+  //   { label: "Tools", href: "#tools" },
+  //   { label: "Platforms", href: "#platforms" },
+  //   { label: "Community", href: "#community" },
+  //   { label: "Marketplace", href: "#marketplace" },
+  // ];
 
   const supportLinks = [
     { label: "Help Center", href: "#" },

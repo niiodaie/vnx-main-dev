@@ -17,45 +17,28 @@ try {
     fs.mkdirSync(distDir, { recursive: true });
   }
 
-  // Build the frontend using Vite
-  console.log('📦 Building frontend with Vite...');
+  // Use static HTML for reliable deployment
+  console.log('📦 Preparing static frontend files...');
   const frontendDir = path.join(__dirname, 'frontend');
   
   if (fs.existsSync(frontendDir)) {
-    // Check if frontend has package.json and build script
-    const frontendPackageJson = path.join(frontendDir, 'package.json');
-    if (fs.existsSync(frontendPackageJson)) {
-      try {
-        execSync('npm run build', { 
-          cwd: frontendDir, 
-          stdio: 'inherit',
-          env: { ...process.env, NODE_ENV: 'production' }
-        });
-        
-        // Copy built files to root dist
-        const frontendDist = path.join(frontendDir, 'dist');
-        if (fs.existsSync(frontendDist)) {
-          execSync(`cp -r ${frontendDist}/* ${distDir}/`, { stdio: 'inherit' });
-          console.log('✓ Frontend built and copied to dist/');
-        }
-      } catch (error) {
-        console.log('⚠️  Frontend build failed, using fallback HTML');
-        // Fallback to copying static HTML
-        const sourceFile = path.join(frontendDir, 'index.html');
-        const destFile = path.join(distDir, 'index.html');
-        if (fs.existsSync(sourceFile)) {
-          fs.copyFileSync(sourceFile, destFile);
-          console.log('✓ Copied fallback index.html to dist/');
-        }
+    // Copy static HTML files for production
+    const sourceFile = path.join(frontendDir, 'index.html');
+    const destFile = path.join(distDir, 'index.html');
+    if (fs.existsSync(sourceFile)) {
+      fs.copyFileSync(sourceFile, destFile);
+      console.log('✓ Copied index.html to dist/');
+    }
+    
+    // Copy any static assets if they exist
+    const assetsDir = path.join(frontendDir, 'assets');
+    if (fs.existsSync(assetsDir)) {
+      const distAssetsDir = path.join(distDir, 'assets');
+      if (!fs.existsSync(distAssetsDir)) {
+        fs.mkdirSync(distAssetsDir, { recursive: true });
       }
-    } else {
-      // Copy static HTML files
-      const sourceFile = path.join(frontendDir, 'index.html');
-      const destFile = path.join(distDir, 'index.html');
-      if (fs.existsSync(sourceFile)) {
-        fs.copyFileSync(sourceFile, destFile);
-        console.log('✓ Copied index.html to dist/');
-      }
+      execSync(`cp -r ${assetsDir}/* ${distAssetsDir}/`, { stdio: 'inherit' });
+      console.log('✓ Copied assets to dist/');
     }
   } else {
     console.log('⚠️  No frontend directory found, creating minimal build');
