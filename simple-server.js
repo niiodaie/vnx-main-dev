@@ -6,8 +6,23 @@ import fs from 'fs';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+// Middleware
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: false, limit: '10mb' }));
+
+// Security headers
+app.use((req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'DENY');
+  res.setHeader('X-XSS-Protection', '1; mode=block');
+  next();
+});
+
+// Request logging for debugging
+app.use((req, res, next) => {
+  console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
+  next();
+});
 
 // Determine static files directory (dist for production, frontend for development)
 const isProduction = process.env.NODE_ENV === 'production';
@@ -21,12 +36,23 @@ app.use(express.static(staticDir));
 
 // Health check
 app.get('/health', (req, res) => {
-  res.json({ 
+  res.status(200).json({ 
     status: 'ok', 
     timestamp: new Date().toISOString(),
     environment: process.env.NODE_ENV || 'development',
-    staticDir: staticDir
+    uptime: process.uptime(),
+    memory: process.memoryUsage(),
+    version: '1.0.0'
   });
+});
+
+// Alternative health check routes
+app.get('/healthz', (req, res) => {
+  res.status(200).send('OK');
+});
+
+app.get('/ping', (req, res) => {
+  res.status(200).send('pong');
 });
 
 // API routes
@@ -115,7 +141,39 @@ app.get('*', (req, res) => {
     }
 });
 
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error('Error:', err);
+  res.status(500).json({ 
+    status: 'error', 
+    message: 'Internal server error',
+    timestamp: new Date().toISOString()
+  });
+});
+
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`VNX Nexus server running on port ${PORT}`);
+const HOST = '0.0.0.0';
+
+const server = app.listen(PORT, HOST, () => {
+  console.log(`VNX Nexus server running on ${HOST}:${PORT}`);
+  console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`Health check available at: http://${HOST}:${PORT}/health`);
+  console.log(`Static files served from: ${staticDir}`);
+});
+
+// Graceful shutdown
+process.on('SIGTERM', () => {
+  console.log('SIGTERM received, shutting down gracefully');
+  server.close(() => {
+    console.log('Server closed');
+    process.exit(0);
+  });
+});
+
+process.on('SIGINT', () => {
+  console.log('SIGINT received, shutting down gracefully');
+  server.close(() => {
+    console.log('Server closed');
+    process.exit(0);
+  });
 });
