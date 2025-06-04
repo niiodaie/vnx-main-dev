@@ -1,4 +1,4 @@
- import express, { type Request, Response, NextFunction } from "express";
+import express, { type Request, Response, NextFunction } from "express";
 import cors from "cors";
 import { registerRoutes } from "./routes"; // adjust this path if needed
 
