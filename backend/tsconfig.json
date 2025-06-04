@@ -1,4 +1,4 @@
-{
+ {
   "compilerOptions": {
     "target": "ES2020",
     "module": "ESNext",
@@ -13,7 +13,8 @@
     "rootDir": "./",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@shared/*": ["./shared/*"]
     }
   },
   "include": ["server/**/*", "shared/**/*"],
