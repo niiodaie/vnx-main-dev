@@ -1,10 +1,9 @@
 import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
-import { registerRoutes } from "./routes"; // Adjust this if needed
+import { registerRoutes } from "./routes"; // adjust this path if needed
 
 const app = express();
 
-// CORS middleware
 app.use(cors({
   origin: process.env.FRONTEND_URL || ["http://localhost:5173", "https://your-vercel-app.vercel.app"],
   credentials: true
@@ -13,15 +12,14 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// 🚨 Critical: Healthcheck must be ready before any async logic
+// ✅ Make healthcheck available immediately
 app.get("/health", (_req: Request, res: Response) => {
   res.status(200).json({ status: "ok", timestamp: new Date().toISOString() });
 });
 
-// Optional: request logging
+// Logging middleware (optional)
 app.use((req, res, next) => {
   const start = Date.now();
-  const path = req.path;
   let capturedJsonResponse: any;
 
   const originalResJson = res.json;
@@ -32,14 +30,10 @@ app.use((req, res, next) => {
 
   res.on("finish", () => {
     const duration = Date.now() - start;
-    if (path.startsWith("/api")) {
-      let logLine = `${req.method} ${path} ${res.statusCode} in ${duration}ms`;
-      if (capturedJsonResponse) {
-        logLine += ` :: ${JSON.stringify(capturedJsonResponse)}`;
-      }
-      if (logLine.length > 80) {
-        logLine = logLine.slice(0, 79) + "…";
-      }
+    if (req.path.startsWith("/api")) {
+      let logLine = `${req.method} ${req.path} ${res.statusCode} in ${duration}ms`;
+      if (capturedJsonResponse) logLine += ` :: ${JSON.stringify(capturedJsonResponse)}`;
+      if (logLine.length > 80) logLine = logLine.slice(0, 79) + "…";
       console.log(logLine);
     }
   });
@@ -47,19 +41,14 @@ app.use((req, res, next) => {
   next();
 });
 
-const PORT = process.env.PORT || 3001; // Required for Railway
-const HOST = "0.0.0.0"; // Must be 0.0.0.0 on Railway
+// ✅ Listen immediately before routes (important for Railway healthcheck!)
+const PORT = process.env.PORT || 3001;
+const HOST = "0.0.0.0"; // important
+app.listen(PORT, HOST, () => {
+  console.log(`✅ Server running on ${HOST}:${PORT}`);
+});
 
-(async () => {
-  const server = await registerRoutes(app);
-
-  // Error handler
-  app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
-    const status = err.status || 500;
-    res.status(status).json({ message: err.message || "Internal Server Error" });
-  });
-
-  server.listen(PORT, HOST, () => {
-    console.log(`✅ Server running on port ${PORT}`);
-  });
-})();
+// Load async routes AFTER server is listening
+registerRoutes(app).catch((err) => {
+  console.error("Route registration failed:", err);
+});
