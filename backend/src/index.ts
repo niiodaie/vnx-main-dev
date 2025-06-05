@@ -1,24 +1,14 @@
 import express from 'express';
 import cors from 'cors';
-import routes from '../server/routes'; // assuming routes.ts compiles to .js
+import routes from './server/routes';
 
 const app = express();
+const PORT = 3001;
 
-// Middlewares
 app.use(cors());
 app.use(express.json());
-
-// Routes
-app.use('/api', routes);
-
-// Port config with explicit number
-const PORT: number = Number(process.env.PORT) || 3001;
+app.use('/api', routes); // prefix API routes if needed
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
-});
-
-// Optional: error handling demo
-process.on('unhandledRejection', (err: unknown) => {
-  console.error('Unhandled promise rejection:', err);
 });
