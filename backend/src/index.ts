@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import routes from './routes.js'; // assuming routes.ts compiles to .js
+import routes from '../server/routes'; // assuming routes.ts compiles to .js
 
 const app = express();
 
