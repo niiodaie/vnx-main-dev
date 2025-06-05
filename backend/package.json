@@ -2,11 +2,10 @@
   "name": "vnx-backend",
   "version": "1.0.0",
   "type": "module",
-  "scripts": {
-    "dev": "npx tsx index.ts",
-    "build": "tsc",
-    "start": "node dist/index.js"
-  },
+ "scripts": {
+  "start": "tsx index.ts",
+  "build": "tsc"
+}
   "dependencies": {
     "@neondatabase/serverless": "^0.6.0",
     "@vitejs/plugin-react": "^4.5.1",
