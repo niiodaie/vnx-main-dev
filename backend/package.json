@@ -6,7 +6,7 @@
   "start": "tsx index.ts",
   "build": "tsc"
 }
-  "dependencies": {
+  "dependencies":
     "@neondatabase/serverless": "^0.6.0",
     "@vitejs/plugin-react": "^4.5.1",
     "connect-pg-simple": "^9.0.1",
