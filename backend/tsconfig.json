@@ -3,7 +3,7 @@
     "target": "es2020",
     "module": "commonjs",
     "rootDir": "./src",
-    "outDir": "./dist/src",
+    "outDir": "./dist",
     "moduleResolution": "node",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
