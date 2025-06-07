@@ -1,5 +1,8 @@
+const [tools, setTools] = useState([]);
+
 useEffect(() => {
-  fetch('/data/tools.json')
+  fetch(`${import.meta.env.VITE_API_BASE_URL}/api/tools`)
     .then(res => res.json())
-    .then(setTools);
+    .then(data => setTools(data))
+    .catch(err => console.error('Error fetching tools:', err));
 }, []);
