@@ -1,6 +1,6 @@
 # VNX Nexus - Digital Innovation Hub
 
-A modern, responsive web application built with React and Express, featuring 8 core platform pillars for digital innovation.
+A modern, responsive web application built with React and Express, featuring 10 core platform pillars for digital innovation.
 
 ## Project Structure
 
