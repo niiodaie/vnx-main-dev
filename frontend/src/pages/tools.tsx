@@ -11,17 +11,13 @@ const ToolsPage = () => {
   }, []);
 
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Tools</h1>
-      {tools.length === 0 ? (
-        <p>No tools found.</p>
-      ) : (
-        <ul className="list-disc pl-6">
-          {tools.map((tool: any, index: number) => (
-            <li key={index}>{tool.name}</li>
-          ))}
-        </ul>
-      )}
+    <div>
+      <h1>All Tools</h1>
+      <ul>
+        {tools.map((tool: any) => (
+          <li key={tool.id}>{tool.name}</li>
+        ))}
+      </ul>
     </div>
   );
 };
