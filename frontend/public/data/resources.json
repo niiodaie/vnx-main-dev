@@ -1,0 +1,12 @@
+[
+  {
+    "name": "Sample Resource",
+    "description": "Resource description.",
+    "url": "https://example.com",
+    "status": "coming_soon",
+    "tags": [
+      "resource",
+      "demo"
+    ]
+  }
+]

@@ -1,0 +1,12 @@
+[
+  {
+    "name": "Sample Platform",
+    "description": "Platform description.",
+    "url": "https://example.com",
+    "status": "coming_soon",
+    "tags": [
+      "platform",
+      "demo"
+    ]
+  }
+]

@@ -1,0 +1,12 @@
+[
+  {
+    "name": "Sample Tool",
+    "description": "Tool description.",
+    "url": "https://example.com",
+    "status": "coming_soon",
+    "tags": [
+      "utility",
+      "demo"
+    ]
+  }
+]
