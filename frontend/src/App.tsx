@@ -1,10 +1,7 @@
-const App = () => {
+export default function App() {
   return (
-    <div className="text-center mt-10">
-      <h1 className="text-4xl font-bold text-blue-600">VNX Nexus</h1>
-      <p className="mt-4 text-lg text-gray-700">Production TailwindCSS Setup Active</p>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 text-center p-10">
+      <h1 className="text-4xl font-bold text-blue-700">Tailwind is working 🎉</h1>
     </div>
   );
-};
-
-export default App;
+}
