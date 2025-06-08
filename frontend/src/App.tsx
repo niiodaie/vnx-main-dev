@@ -12,6 +12,8 @@ import Community from "@/pages/community";
 import Marketplace from "@/pages/marketplace";
 import Insights from "@/pages/insights";
 import Experiences from "@/pages/experiences";
+import Trends from "@/pages/trends";
+import Ventures from "@/pages/ventures";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -27,6 +29,8 @@ function Router() {
         <Route path="/marketplace" element={<Marketplace />} />
         <Route path="/insights" element={<Insights />} />
         <Route path="/experiences" element={<Experiences />} />
+        <Route path="/trends" element={<Trends />} />
+        <Route path="/ventures" element={<Ventures />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

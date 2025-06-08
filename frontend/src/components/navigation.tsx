@@ -28,30 +28,36 @@ export default function Navigation() {
             <span className="text-xl font-bold text-slate-800">VNX</span>
           </Link>
 
-          <div className="hidden md:flex items-center space-x-6">
-            <Link
-              to="/tools"
-              className="text-slate-600 hover:text-blue-600 transition-colors"
-            >
+          <div className="hidden lg:flex items-center space-x-4">
+            <Link to="/tools" className="text-slate-600 hover:text-purple-600 transition-colors text-sm font-medium">
               Tools
             </Link>
-            <Link
-              to="/platforms"
-              className="text-slate-600 hover:text-blue-600 transition-colors"
-            >
+            <Link to="/platforms" className="text-slate-600 hover:text-purple-600 transition-colors text-sm font-medium">
               Platforms
             </Link>
-            <Link
-              to="/community"
-              className="text-slate-600 hover:text-blue-600 transition-colors"
-            >
+            <Link to="/directories" className="text-slate-600 hover:text-purple-600 transition-colors text-sm font-medium">
+              Directories
+            </Link>
+            <Link to="/resources" className="text-slate-600 hover:text-purple-600 transition-colors text-sm font-medium">
+              Resources
+            </Link>
+            <Link to="/community" className="text-slate-600 hover:text-purple-600 transition-colors text-sm font-medium">
               Community
             </Link>
-            <Link
-              to="/experiences"
-              className="text-slate-600 hover:text-blue-600 transition-colors"
-            >
+            <Link to="/marketplace" className="text-slate-600 hover:text-purple-600 transition-colors text-sm font-medium">
+              Marketplace
+            </Link>
+            <Link to="/insights" className="text-slate-600 hover:text-purple-600 transition-colors text-sm font-medium">
+              Insights
+            </Link>
+            <Link to="/experiences" className="text-slate-600 hover:text-purple-600 transition-colors text-sm font-medium">
               Experiences
+            </Link>
+            <Link to="/trends" className="text-slate-600 hover:text-purple-600 transition-colors text-sm font-medium">
+              Trends
+            </Link>
+            <Link to="/ventures" className="text-slate-600 hover:text-purple-600 transition-colors text-sm font-medium">
+              Ventures
             </Link>
           </div>
 

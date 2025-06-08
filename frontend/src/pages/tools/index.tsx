@@ -29,13 +29,13 @@ export default function Tools() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-cyan-50 to-slate-50">
       {/* Header */}
-      <div className="bg-white shadow-sm">
+      <div className="bg-white/80 backdrop-blur-sm shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">Tools</h1>
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">Tools</h1>
               <p className="text-gray-600 mt-2">Handy utilities that solve real-world problems</p>
             </div>
             <Link to="/" className="text-blue-600 hover:text-blue-800 font-medium">
