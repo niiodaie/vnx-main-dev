@@ -11,7 +11,13 @@
     "jsx": "react-jsx",
     "noEmit": true,
     "strict": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    
+    // ✅ Add these two lines:
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
   },
   "include": ["src"]
 }
