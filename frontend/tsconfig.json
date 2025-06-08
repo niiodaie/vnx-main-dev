@@ -2,11 +2,7 @@
   "compilerOptions": {
     "target": "ESNext",
     "useDefineForClassFields": true,
-    "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "ESNext"
-    ],
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "module": "ESNext",
     "moduleResolution": "Node",
     "resolveJsonModule": true,
@@ -15,9 +11,11 @@
     "jsx": "react-jsx",
     "noEmit": true,
     "strict": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "baseUrl": ".",                     // 👈 Required for path aliases
+    "paths": {
+      "@/*": ["src/*"]                  // 👈 Path alias definition
+    }
   },
-  "include": [
-    "src"
-  ]
+  "include": ["src"]
 }
