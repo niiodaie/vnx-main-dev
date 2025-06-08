@@ -66,7 +66,16 @@
 
       function Home({ setCurrentPage }) {
         return createElement('div', { className: 'min-h-screen' },
-          createElement('section', { className: 'relative min-h-screen bg-gradient-to-br from-blue-800 via-indigo-800 to-purple-800 flex items-center pt-16' },
+          createElement('section', { 
+            className: 'relative min-h-screen flex items-center pt-16 overflow-hidden',
+            style: {
+              background: 'linear-gradient(135deg, #1e3a8a 0%, #3730a3 50%, #581c87 100%)',
+              backgroundImage: 'url(/tech-bg.svg)',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat'
+            }
+          },
             createElement('div', { className: 'max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center' },
               createElement('h1', { className: 'text-5xl md:text-7xl font-black mb-6' },
                 createElement('span', { className: 'text-white' }, 'The Future of'),
