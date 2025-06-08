@@ -1,10 +1,7 @@
-const App = () => {
+export default function App() {
   return (
-  <div className="bg-blue-200 text-center p-10">
-    <h1 className="text-4xl font-bold text-purple-700">Tailwind is finally working 🎉</h1>
-    <App />
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 text-center p-10">
+      <h1 className="text-4xl font-bold text-blue-700">Tailwind is working 🎉</h1>
     </div>
   );
-};
-
-export default App;
+}
