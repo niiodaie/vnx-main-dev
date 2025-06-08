@@ -66,7 +66,7 @@
 
       function Home({ setCurrentPage }) {
         return createElement('div', { className: 'min-h-screen' },
-          createElement('section', { className: 'relative min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-blue-900 flex items-center pt-16' },
+          createElement('section', { className: 'relative min-h-screen bg-gradient-to-br from-blue-800 via-indigo-800 to-purple-800 flex items-center pt-16' },
             createElement('div', { className: 'max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center' },
               createElement('h1', { className: 'text-5xl md:text-7xl font-black mb-6' },
                 createElement('span', { className: 'text-white' }, 'The Future of'),
@@ -122,12 +122,12 @@
               
               // Tech Partners Section
               createElement('div', { className: 'mb-8' },
-                createElement('p', { className: 'text-sm text-gray-400 mb-6 font-medium' }, 'Trusted by industry leaders'),
-                createElement('div', { className: 'flex justify-center items-center gap-4 flex-wrap' },
-                  createElement('div', { className: 'bg-white/10 backdrop-blur-sm px-6 py-3 rounded-xl border border-white/20 hover:bg-white/15 transition-all text-white font-medium text-sm' }, 'Microsoft'),
-                  createElement('div', { className: 'bg-white/10 backdrop-blur-sm px-6 py-3 rounded-xl border border-white/20 hover:bg-white/15 transition-all text-white font-medium text-sm' }, 'Google'),
-                  createElement('div', { className: 'bg-white/10 backdrop-blur-sm px-6 py-3 rounded-xl border border-white/20 hover:bg-white/15 transition-all text-white font-medium text-sm' }, 'Amazon'),
-                  createElement('div', { className: 'bg-white/10 backdrop-blur-sm px-6 py-3 rounded-xl border border-white/20 hover:bg-white/15 transition-all text-white font-medium text-sm' }, 'OpenAI')
+                createElement('p', { className: 'text-xs text-gray-400 mb-4 font-medium' }, 'Trusted by industry leaders'),
+                createElement('div', { className: 'flex justify-center items-center gap-8 flex-wrap' },
+                  createElement('span', { className: 'text-gray-300 text-sm font-medium opacity-70' }, 'Microsoft'),
+                  createElement('span', { className: 'text-gray-300 text-sm font-medium opacity-70' }, 'Google'),
+                  createElement('span', { className: 'text-gray-300 text-sm font-medium opacity-70' }, 'Amazon'),
+                  createElement('span', { className: 'text-gray-300 text-sm font-medium opacity-70' }, 'OpenAI')
                 )
               )
             )
