@@ -1,0 +1,75 @@
+import { Link } from "react-router-dom";
+
+export default function Tools() {
+  const toolCategories = [
+    {
+      title: "AI & Machine Learning",
+      description: "Advanced AI tools for automation and intelligence",
+      tools: ["VNX-NetScan", "AI Content Generator", "Smart Analytics"],
+      color: "bg-blue-500"
+    },
+    {
+      title: "Development & DevOps",
+      description: "Tools for developers and system administrators",
+      tools: ["Code Optimizer", "Deploy Manager", "API Testing Suite"],
+      color: "bg-green-500"
+    },
+    {
+      title: "Design & Creative",
+      description: "Creative tools for designers and content creators",
+      tools: ["Design Studio", "Asset Generator", "Brand Builder"],
+      color: "bg-purple-500"
+    },
+    {
+      title: "Business & Analytics",
+      description: "Enterprise tools for business intelligence",
+      tools: ["Business Intelligence", "Report Generator", "Data Visualizer"],
+      color: "bg-orange-500"
+    }
+  ];
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <div className="bg-white shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">Tools</h1>
+              <p className="text-gray-600 mt-2">Handy utilities that solve real-world problems</p>
+            </div>
+            <Link to="/" className="text-blue-600 hover:text-blue-800 font-medium">
+              ← Back to Home
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* Tools Grid */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {toolCategories.map((category, index) => (
+            <div key={index} className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+              <div className={`w-12 h-12 ${category.color} rounded-lg flex items-center justify-center mb-4`}>
+                <span className="text-white font-bold text-lg">{category.title[0]}</span>
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">{category.title}</h3>
+              <p className="text-gray-600 mb-4">{category.description}</p>
+              <div className="space-y-2">
+                {category.tools.map((tool, toolIndex) => (
+                  <div key={toolIndex} className="flex items-center text-sm text-gray-700">
+                    <span className="w-2 h-2 bg-gray-400 rounded-full mr-2"></span>
+                    {tool}
+                  </div>
+                ))}
+              </div>
+              <button className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                Explore Tools
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
