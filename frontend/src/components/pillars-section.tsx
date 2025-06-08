@@ -1,59 +1,64 @@
+import { Link } from "react-router-dom";
+
 export default function PillarsSection() {
   const pillars = [
     {
       id: "tools",
+      path: "/tools",
       icon: "🛠️",
       title: "Tools",
       description: "Handy utilities that solve real-world problems",
     },
     {
       id: "platforms",
+      path: "/platforms",
       icon: "🧩",
       title: "Platforms",
       description: "Interactive launchpads and service layers",
     },
     {
       id: "directories",
+      path: "/directories",
       icon: "📚",
       title: "Directories",
       description: "Discover niche resources by category",
     },
     {
       id: "resources",
+      path: "/resources",
       icon: "🗂️",
       title: "Resources",
       description: "Templates, guides, and downloadable kits",
     },
     {
       id: "community",
+      path: "/community",
       icon: "🧑‍🤝‍🧑",
       title: "Community",
       description: "Peer collaboration and feedback forums",
     },
     {
       id: "marketplace",
+      path: "/marketplace",
       icon: "🛒",
       title: "Marketplace",
       description: "Digital products, services, and SaaS tools",
     },
     {
       id: "insights",
+      path: "/insights",
       icon: "📈",
       title: "Insights",
       description: "Trends, forecasts, and business analytics",
     },
     {
-      id: "experience",
+      id: "experiences",
+      path: "/experiences",
       icon: "✨",
-      title: "Experience",
+      title: "Experiences",
       description: "Immersive digital journeys and exploration",
     },
   ];
-
-  const handleExplore = (pillarId: string) => {
-    console.log(`Exploring ${pillarId} pillar`);
-    // Navigation logic would go here
-  };
 
   return (
     <section id="pillars" className="py-20 bg-slate-50">
@@ -79,12 +84,12 @@ export default function PillarsSection() {
               </div>
               <h3 className="text-xl font-bold text-slate-800 mb-3">{pillar.title}</h3>
               <p className="text-slate-600 mb-6 text-sm leading-relaxed">{pillar.description}</p>
-              <button
-                onClick={() => handleExplore(pillar.id)}
-                className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
+              <Link
+                to={pillar.path}
+                className="block w-full px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors text-center"
               >
                 Learn More
-              </button>
+              </Link>
             </div>
           ))}
         </div>
