@@ -37,12 +37,14 @@
             createElement('div', { className: 'flex justify-between items-center h-16' },
               createElement('button', { 
                 onClick: () => setCurrentPage('home'),
-                className: 'flex items-center space-x-2'
+                className: 'flex items-center space-x-3'
               },
-                createElement('div', { className: 'w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center' },
-                  createElement('span', { className: 'text-white font-bold text-sm' }, 'VX')
-                ),
-                createElement('span', { className: 'text-xl font-bold text-slate-800' }, 'VNX')
+                createElement('img', { 
+                  src: '/attached_assets/WhatsApp Image 2025-06-08 at 03.43.19_1b7ee752_1749372216130.jpg',
+                  alt: 'VNX Logo',
+                  className: 'w-10 h-10 object-contain'
+                }),
+                createElement('span', { className: 'text-2xl font-bold text-slate-800' }, 'VNX')
               ),
               createElement('div', { className: 'hidden lg:flex items-center space-x-4' },
                 pillars.map(pillar =>
@@ -72,11 +74,52 @@
                 createElement('button', { 
                   onClick: () => setCurrentPage('tools'),
                   className: 'bg-gradient-to-r from-blue-600 to-blue-700 text-white px-8 py-4 rounded-2xl font-bold text-lg transform hover:scale-105 transition-all' 
-                }, 'Explore Tools'),
+                }, '≡ Explore Tools'),
                 createElement('button', { 
                   onClick: () => setCurrentPage('platforms'),
                   className: 'bg-white/10 backdrop-blur-sm text-white px-8 py-4 rounded-2xl font-bold text-lg border border-white/20 transform hover:scale-105 transition-all' 
-                }, 'Visit Platforms')
+                }, '⚙ Visit Platforms'),
+                createElement('button', { 
+                  onClick: () => setCurrentPage('experiences'),
+                  className: 'bg-gradient-to-r from-purple-600 to-pink-600 text-white px-8 py-4 rounded-2xl font-bold text-lg transform hover:scale-105 transition-all' 
+                }, '✦ Discover Experiences')
+              ),
+              // Statistics Section
+              createElement('div', { className: 'grid grid-cols-2 md:grid-cols-4 gap-8 mb-16 max-w-4xl mx-auto' },
+                createElement('div', { className: 'bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20' },
+                  createElement('div', { className: 'text-3xl font-black text-white mb-2' }, '50K+'),
+                  createElement('div', { className: 'text-sm text-gray-300' }, 'Global Innovators')
+                ),
+                createElement('div', { className: 'bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20' },
+                  createElement('div', { className: 'text-3xl font-black text-white mb-2' }, '500+'),
+                  createElement('div', { className: 'text-sm text-gray-300' }, 'AI-Powered Tools')
+                ),
+                createElement('div', { className: 'bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20' },
+                  createElement('div', { className: 'text-3xl font-black text-white mb-2' }, '99.9%'),
+                  createElement('div', { className: 'text-sm text-gray-300' }, 'Platform Uptime')
+                ),
+                createElement('div', { className: 'bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20' },
+                  createElement('div', { className: 'text-3xl font-black text-white mb-2' }, '24/7'),
+                  createElement('div', { className: 'text-sm text-gray-300' }, 'Expert Support')
+                )
+              ),
+              // Tech Partners Section
+              createElement('div', { className: 'mb-8' },
+                createElement('p', { className: 'text-sm text-gray-400 mb-6' }, 'Trusted by industry leaders'),
+                createElement('div', { className: 'flex justify-center items-center gap-8 flex-wrap' },
+                  createElement('button', { 
+                    className: 'bg-white/10 backdrop-blur-sm px-6 py-3 rounded-lg border border-white/20 hover:bg-white/20 transition-all text-white font-medium' 
+                  }, 'Microsoft'),
+                  createElement('button', { 
+                    className: 'bg-white/10 backdrop-blur-sm px-6 py-3 rounded-lg border border-white/20 hover:bg-white/20 transition-all text-white font-medium' 
+                  }, 'Google'),
+                  createElement('button', { 
+                    className: 'bg-white/10 backdrop-blur-sm px-6 py-3 rounded-lg border border-white/20 hover:bg-white/20 transition-all text-white font-medium' 
+                  }, 'Amazon'),
+                  createElement('button', { 
+                    className: 'bg-white/10 backdrop-blur-sm px-6 py-3 rounded-lg border border-white/20 hover:bg-white/20 transition-all text-white font-medium' 
+                  }, 'OpenAI')
+                )
               )
             )
           ),
@@ -102,6 +145,45 @@
                   )
                 )
               )
+            )
+          ),
+          // Social Media Section
+          createElement('section', { className: 'py-16 bg-gradient-to-br from-slate-900 via-purple-900 to-indigo-900' },
+            createElement('div', { className: 'container mx-auto px-4 sm:px-6 lg:px-8 text-center' },
+              createElement('h3', { className: 'text-2xl font-bold text-white mb-8' }, 'Connect With Us'),
+              createElement('div', { className: 'flex justify-center items-center gap-6' },
+                createElement('a', { 
+                  href: 'https://twitter.com/vnxnexus',
+                  target: '_blank',
+                  className: 'bg-blue-500 hover:bg-blue-600 text-white p-4 rounded-full transition-all duration-300 hover:scale-110 shadow-lg'
+                }, '🐦'),
+                createElement('a', { 
+                  href: 'https://linkedin.com/company/vnxnexus',
+                  target: '_blank',
+                  className: 'bg-blue-700 hover:bg-blue-800 text-white p-4 rounded-full transition-all duration-300 hover:scale-110 shadow-lg'
+                }, '💼'),
+                createElement('a', { 
+                  href: 'https://github.com/vnxnexus',
+                  target: '_blank',
+                  className: 'bg-gray-800 hover:bg-gray-900 text-white p-4 rounded-full transition-all duration-300 hover:scale-110 shadow-lg'
+                }, '🔧'),
+                createElement('a', { 
+                  href: 'https://discord.gg/vnxnexus',
+                  target: '_blank',
+                  className: 'bg-indigo-600 hover:bg-indigo-700 text-white p-4 rounded-full transition-all duration-300 hover:scale-110 shadow-lg'
+                }, '💬'),
+                createElement('a', { 
+                  href: 'https://youtube.com/@vnxnexus',
+                  target: '_blank',
+                  className: 'bg-red-600 hover:bg-red-700 text-white p-4 rounded-full transition-all duration-300 hover:scale-110 shadow-lg'
+                }, '📺'),
+                createElement('a', { 
+                  href: 'https://instagram.com/vnxnexus',
+                  target: '_blank',
+                  className: 'bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white p-4 rounded-full transition-all duration-300 hover:scale-110 shadow-lg'
+                }, '📸')
+              ),
+              createElement('p', { className: 'text-gray-400 mt-8 max-w-2xl mx-auto' }, 'Join our global community of innovators, developers, and digital pioneers. Stay updated with the latest trends, tools, and breakthrough technologies.')
             )
           )
         );
