@@ -49,8 +49,8 @@ export default function Tools() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {toolCategories.map((category, index) => (
-            <div key={index} className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
-              <div className={`w-12 h-12 ${category.color} rounded-lg flex items-center justify-center mb-4`}>
+            <div key={index} className="bg-white/60 backdrop-blur-sm rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 border border-white/20">
+              <div className={`w-12 h-12 ${category.color} rounded-lg flex items-center justify-center mb-4 shadow-lg`}>
                 <span className="text-white font-bold text-lg">{category.title[0]}</span>
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">{category.title}</h3>
@@ -58,12 +58,12 @@ export default function Tools() {
               <div className="space-y-2">
                 {category.tools.map((tool, toolIndex) => (
                   <div key={toolIndex} className="flex items-center text-sm text-gray-700">
-                    <span className="w-2 h-2 bg-gray-400 rounded-full mr-2"></span>
+                    <span className="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
                     {tool}
                   </div>
                 ))}
               </div>
-              <button className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+              <button className="mt-4 bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-4 py-2 rounded-lg hover:from-blue-700 hover:to-cyan-700 transition-colors font-medium">
                 Explore Tools
               </button>
             </div>

@@ -62,10 +62,10 @@ export default function Navigation() {
           </div>
 
           <div className="flex items-center space-x-4">
-            <button className="hidden sm:block px-4 py-2 text-slate-600 hover:text-blue-600 transition-colors">
+            <button className="hidden sm:block px-4 py-2 text-slate-600 hover:text-purple-600 transition-colors">
               Sign In
             </button>
-            <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+            <button className="px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:from-purple-700 hover:to-blue-700 transition-colors">
               Get Started
             </button>
           </div>
