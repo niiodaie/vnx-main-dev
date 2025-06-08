@@ -1,7 +1,3 @@
-import React from 'react';
-
-const App = () => {
-  return <h1 className="text-3xl font-bold text-green-600">Tailwind is LIVE on Vercel 🚀</h1>;
-};
-
-export default App;
+export default function App() {
+  return <h1 className="text-green-600 font-bold text-2xl">Tailwind is LIVE on Vercel 🚀</h1>;
+}
