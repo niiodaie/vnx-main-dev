@@ -60,6 +60,20 @@ app.get('/api/test', (req, res) => {
   res.json({ message: 'VNX Nexus API working', version: '1.0.0' });
 });
 
+// Handle React modules and assets
+app.get('/src/*', (req, res, next) => {
+  const filePath = path.join(staticDir, req.path);
+  if (fs.existsSync(filePath)) {
+    // Set proper MIME type for TypeScript/JavaScript modules
+    if (filePath.endsWith('.tsx') || filePath.endsWith('.ts')) {
+      res.setHeader('Content-Type', 'application/javascript');
+    }
+    res.sendFile(filePath);
+  } else {
+    next();
+  }
+});
+
 // Serve the main index.html for the root route and SPA routing
 app.get('*', (req, res) => {
   const indexPath = path.join(staticDir, 'index.html');
