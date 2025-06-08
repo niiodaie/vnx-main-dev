@@ -1,0 +1,12 @@
+[
+  {
+    "name": "Sample Marketplace",
+    "description": "Marketplace description.",
+    "url": "https://example.com",
+    "status": "coming_soon",
+    "tags": [
+      "market",
+      "demo"
+    ]
+  }
+]

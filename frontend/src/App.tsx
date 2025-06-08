@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
@@ -35,17 +36,8 @@ function Router() {
       </Routes>
     </BrowserRouter>
   );
+=======
+export default function App() {
+  return <h1 className="text-green-600 font-bold text-2xl">Tailwind is LIVE on Vercel 🚀</h1>;
+>>>>>>> a45a90a1c2f271bad22ca5ab1d2943437ad40604
 }
-
-function App() {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Router />
-      </TooltipProvider>
-    </QueryClientProvider>
-  );
-}
-
-export default App;
