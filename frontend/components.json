@@ -1,20 +1,62 @@
-{
-    "$schema": "https://ui.shadcn.com/schema.json",
-    "style": "new-york",
-    "rsc": false,
-    "tsx": true,
-    "tailwind": {
-      "config": "tailwind.config.ts",
-      "css": "client/src/index.css",
-      "baseColor": "neutral",
-      "cssVariables": true,
-      "prefix": ""
-    },
-    "aliases": {
-      "components": "@/components",
-      "utils": "@/lib/utils",
-      "ui": "@/components/ui",
-      "lib": "@/lib",
-      "hooks": "@/hooks"
-    }
-}
+[
+  {
+    "name": "Tools",
+    "slug": "tools",
+    "description": "Discover powerful AI tools and utilities.",
+    "link": "https://vnx-shell-tools.vercel.app"
+  },
+  {
+    "name": "Platforms",
+    "slug": "platforms",
+    "description": "Explore our interactive digital platforms.",
+    "link": "https://vnx-shell-platforms.vercel.app"
+  },
+  {
+    "name": "Directories",
+    "slug": "directories",
+    "description": "Browse categorized directories of apps, services, and knowledge.",
+    "link": "https://vnx-shell-directories.vercel.app"
+  },
+  {
+    "name": "Resources",
+    "slug": "resources",
+    "description": "Templates, guides, and downloadable tools to accelerate your journey.",
+    "link": "https://vnx-shell-resources.vercel.app"
+  },
+  {
+    "name": "Community",
+    "slug": "community",
+    "description": "Connect, collaborate, and grow with others in the Visnec ecosystem.",
+    "link": "https://vnx-shell-community.vercel.app"
+  },
+  {
+    "name": "Marketplace",
+    "slug": "marketplace",
+    "description": "Buy and sell digital products tailored for creators and professionals.",
+    "link": "https://vnx-shell-marketplace.vercel.app"
+  },
+  {
+    "name": "Insights",
+    "slug": "insights",
+    "description": "Analyze trends, performance, and opportunities in your space.",
+    "link": "https://vnx-shell-insights.vercel.app"
+  },
+  {
+    "name": "Experiences",
+    "slug": "experiences",
+    "description": "Dive into immersive journeys and case studies.",
+    "link": "https://vnx-shell-experiences.vercel.app"
+  },
+  {
+    "name": "Trends",
+    "slug": "trends",
+    "description": "Stay on top of the latest developments and viral shifts.",
+    "link": "https://vnx-shell-trends.vercel.app"
+  },
+  {
+    "name": "Training",
+    "slug": "training",
+    "description": "Free IT training in networking, security, cloud, and more.",
+    "link": "https://vnx-shell-training.vercel.app"
+  }
+]
