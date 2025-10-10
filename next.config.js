@@ -4,6 +4,7 @@ const nextConfig = {
   images: {
     domains: ['images.unsplash.com'],
   },
+  // Remove output: 'export' to use Vercel's default server-side rendering
   async redirects() {
     return [
       {
@@ -42,4 +43,3 @@ const nextConfig = {
 };
 
 module.exports = nextConfig;
-
