@@ -28,12 +28,17 @@ export default function Navigation() {
     >
       <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <Link href="/" className="flex items-center space-x-2 group">
-            <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-              <span className="text-white font-bold text-sm">VX</span>
-            </div>
+          <Link href="/" className="flex items-center space-x-3 group">
+            <img 
+              src="/favicon/favicon.svg" 
+              alt="VNX Logo" 
+              className="w-10 h-10 group-hover:scale-110 transition-transform"
+            />
             <span className="text-xl font-bold text-slate-800 group-hover:text-purple-600 transition-colors">
-              VNX
+              VISNEC NEXUS
+            </span>
+            <span className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full font-semibold">
+              Digital Innovation Hub
             </span>
           </Link>
 
