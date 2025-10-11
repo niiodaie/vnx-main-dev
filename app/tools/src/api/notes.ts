@@ -5,7 +5,7 @@ export async function fetchNotes() {
   return res.json();
 }
 
-export async function createNote(note) {
+export async function createNote(note: { title: string; content: string }) {
   const res = await fetch(`${API_BASE}/notes`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
