@@ -11,10 +11,16 @@ export const metadata: Metadata = {
 
 const tools = [
   {
+    name: "VNX Netscan",
+    href: "/tools/netscan",
+    description: "Network diagnostic tool for IP lookup, geolocation, and security analysis",
+    gradient: "from-blue-600 to-cyan-600",
+  },
+  {
     name: "Snap Toolkit",
     href: "/tools/snap-toolkit",
     description: "All-in-one toolkit for image optimization and file management",
-    gradient: "from-blue-600 to-cyan-600",
+    gradient: "from-cyan-600 to-teal-600",
   },
   {
     name: "ScamShield",
