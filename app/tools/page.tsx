@@ -11,6 +11,12 @@ export const metadata: Metadata = {
 
 const tools = [
   {
+    name: "VNX Speed Test",
+    href: "/tools/speedtest",
+    description: "Test your internet connection speed - download, upload, and latency",
+    gradient: "from-purple-600 to-pink-600",
+  },
+  {
     name: "VNX Netscan",
     href: "/tools/netscan",
     description: "Network diagnostic tool for IP lookup, geolocation, and security analysis",
@@ -32,7 +38,7 @@ const tools = [
     name: "Search Trend Analyzer",
     href: "/tools/search-analyzer",
     description: "Analyze search trends and discover SEO insights",
-    gradient: "from-purple-600 to-pink-600",
+    gradient: "from-green-600 to-emerald-600",
   },
 ];
 

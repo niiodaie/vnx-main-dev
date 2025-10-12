@@ -89,18 +89,12 @@ const diagnosticTools = [
 
 const recommendedTools = [
   {
-    name: 'Fast.com',
-    url: 'https://fast.com',
-    description: 'Quick internet speed test by Netflix',
+    name: 'VNX Speed Test',
+    url: '/tools/speedtest',
+    description: 'Built-in speed test for download, upload, and latency',
     icon: Zap,
-    category: 'Speed Test'
-  },
-  {
-    name: 'Speedtest.net',
-    url: 'https://www.speedtest.net',
-    description: 'Comprehensive bandwidth and latency testing',
-    icon: TrendingUp,
-    category: 'Speed Test'
+    category: 'Speed Test',
+    internal: true
   },
   {
     name: 'Down Detector',
@@ -344,23 +338,24 @@ export default function NetscanPage() {
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {recommendedTools.map((tool, index) => {
                 const Icon = tool.icon;
+                const isInternal = (tool as any).internal;
                 return (
                   <a
                     key={index}
                     href={tool.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    target={isInternal ? '_self' : '_blank'}
+                    rel={isInternal ? undefined : 'noopener noreferrer'}
                     className="bg-slate-50 rounded-xl border border-slate-200 p-6 hover:shadow-lg hover:border-blue-300 transition-all group"
                   >
                     <div className="flex items-start justify-between mb-3">
-                      <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center group-hover:bg-blue-200 transition-colors">
-                        <Icon className="w-5 h-5 text-blue-600" />
+                      <div className={`w-10 h-10 rounded-lg ${isInternal ? 'bg-purple-100' : 'bg-blue-100'} flex items-center justify-center ${isInternal ? 'group-hover:bg-purple-200' : 'group-hover:bg-blue-200'} transition-colors`}>
+                        <Icon className={`w-5 h-5 ${isInternal ? 'text-purple-600' : 'text-blue-600'}`} />
                       </div>
-                      <span className="text-xs bg-slate-200 text-slate-700 px-2 py-1 rounded-full font-medium">
+                      <span className={`text-xs ${isInternal ? 'bg-purple-100 text-purple-700' : 'bg-slate-200 text-slate-700'} px-2 py-1 rounded-full font-medium`}>
                         {tool.category}
                       </span>
                     </div>
-                    <h3 className="text-lg font-bold text-slate-800 mb-2 group-hover:text-blue-600 transition-colors">
+                    <h3 className={`text-lg font-bold text-slate-800 mb-2 ${isInternal ? 'group-hover:text-purple-600' : 'group-hover:text-blue-600'} transition-colors`}>
                       {tool.name}
                     </h3>
                     <p className="text-sm text-slate-600">
