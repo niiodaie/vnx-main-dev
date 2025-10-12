@@ -1,3 +1,4 @@
+// app/tools/src/api/notes.ts
 import { Note } from "../types/note";
 
 const API_BASE = "https://vnx-main-backend.onrender.com/tools/vnx-note-api";
