@@ -1,3 +1,4 @@
+// app/tools/src/main.tsx
 import { useEffect, useState } from "react";
 import { fetchNotes } from "./api/notes";
 import { Note } from "./types/note";
