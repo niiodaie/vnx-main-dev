@@ -1,5 +1,5 @@
 "use client";
-
+import "./netscan.css";
 import { useState } from "react";
 import Navigation from "@/components/navigation";
 import Footer from "@/components/footer";
