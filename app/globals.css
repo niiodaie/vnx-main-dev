@@ -2,10 +2,14 @@
    🌐 VNX Global Styles (Visnec Standard)
    ======================================= */
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@import "tailwindcss/utilities";
+@import "tailwindcss/theme" layer(theme);
+@import "tailwindcss/base" layer(base);
+@import "tailwindcss/components" layer(components);
+
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
 
 /* Root Color System */
 :root {
