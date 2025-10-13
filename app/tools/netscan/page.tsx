@@ -177,43 +177,58 @@ export default function NetscanPage() {
 
       {/* Tool grid */}
       <section className="py-12">
-        <div className="max-w-6xl mx-auto px-4 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {diagnosticTools.map((tool) => {
-            const Icon = tool.icon;
-            const isCurrentScan = currentScan === tool.id;
-            return (
+  <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="max-w-6xl mx-auto">
+      <h2 className="text-3xl font-bold text-slate-800 mb-4 text-center">
+        Network Diagnostic Tools
+      </h2>
+      <p className="text-center text-slate-600 mb-10 max-w-3xl mx-auto">
+        Choose a diagnostic tool to analyze IPs, domains, and network performance.
+      </p>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {diagnosticTools.map((tool) => {
+          const Icon = tool.icon;
+          const isCurrentScan = currentScan === tool.id;
+          const btnColor = tool.iconColor.replace("text-", "bg-");
+
+          return (
+            <div
+              key={tool.id}
+              className={`relative group bg-white rounded-xl border-2 ${tool.borderColor} p-6 hover:shadow-xl hover:scale-[1.02] transition-transform duration-200`}
+            >
               <div
-                key={tool.id}
-                className={`bg-white border-2 ${tool.borderColor} rounded-xl p-6 hover:shadow-md transition`}
+                className={`w-12 h-12 ${tool.color} flex items-center justify-center rounded-lg mb-4`}
               >
-                <div
-                  className={`w-12 h-12 ${tool.color} flex items-center justify-center rounded-lg mb-3`}
-                >
-                  {isCurrentScan ? (
-                    <Loader2 className={`${tool.iconColor} w-6 h-6 animate-spin`} />
-                  ) : (
-                    <Icon className={`${tool.iconColor} w-6 h-6`} />
-                  )}
-                </div>
-                <h3 className="text-lg font-semibold text-slate-800 mb-2">
-                  {tool.name}
-                </h3>
-                <p className="text-sm text-slate-600 mb-4">{tool.description}</p>
-                <button
-                  onClick={() => performScan(tool.id)}
-                  disabled={isScanning}
-                  className={`${tool.iconColor.replace(
-                    "text-",
-                    "bg-"
-                  )} w-full text-white py-2 rounded-lg font-medium hover:opacity-90 disabled:opacity-50`}
-                >
-                  {isCurrentScan ? "Scanning..." : "Run Scan"}
-                </button>
+                {isCurrentScan ? (
+                  <Loader2 className={`${tool.iconColor} w-6 h-6 animate-spin`} />
+                ) : (
+                  <Icon className={`${tool.iconColor} w-6 h-6`} />
+                )}
               </div>
-            );
-          })}
-        </div>
-      </section>
+
+              <h3 className="text-lg font-semibold text-slate-800 mb-2">
+                {tool.name}
+              </h3>
+              <p className="text-sm text-slate-600 mb-6 leading-relaxed">
+                {tool.description}
+              </p>
+
+              <button
+                onClick={() => performScan(tool.id)}
+                disabled={isScanning}
+                className={`${btnColor} w-full text-white py-2 rounded-lg font-medium hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed`}
+              >
+                {isCurrentScan ? "Scanning..." : "Run Scan"}
+              </button>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  </div>
+</section>
+
 
       {/* Results */}
       {results.length > 0 && (
