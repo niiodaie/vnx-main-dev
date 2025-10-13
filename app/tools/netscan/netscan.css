@@ -1,0 +1,72 @@
+/* ==============================
+   VNX-Netscan Scoped Styles
+   ============================== */
+
+/* 💠 General Layout */
+.netscan-hero {
+  @apply bg-gradient-to-br from-[#0047FF] to-[#06B6D4] text-white text-center pt-32 pb-20 shadow-lg;
+}
+
+.netscan-card {
+  @apply rounded-2xl border-2 transition-transform duration-200 bg-white shadow-sm hover:shadow-xl hover:scale-[1.02] p-6;
+}
+
+/* 🌐 IP Lookup Card */
+.netscan-card.ip {
+  @apply border-blue-200 hover:border-blue-400;
+}
+.netscan-card.ip .icon {
+  @apply text-blue-600 bg-blue-50;
+}
+
+/* 🛡️ Port Scan Card */
+.netscan-card.port {
+  @apply border-orange-200 hover:border-orange-400;
+}
+.netscan-card.port .icon {
+  @apply text-orange-600 bg-orange-50;
+}
+
+/* 🌍 Domain Tools Card */
+.netscan-card.domain {
+  @apply border-purple-200 hover:border-purple-400;
+}
+.netscan-card.domain .icon {
+  @apply text-purple-600 bg-purple-50;
+}
+
+/* 🛰️ Traceroute Card */
+.netscan-card.traceroute {
+  @apply border-teal-200 hover:border-teal-400;
+}
+.netscan-card.traceroute .icon {
+  @apply text-teal-600 bg-teal-50;
+}
+
+/* 🧭 GeoIP Card */
+.netscan-card.geoip {
+  @apply border-green-200 hover:border-green-400;
+}
+.netscan-card.geoip .icon {
+  @apply text-green-600 bg-green-50;
+}
+
+/* ✨ Button Styling */
+.netscan-button {
+  @apply text-white font-medium py-2 w-full rounded-lg transition-all;
+}
+.netscan-button.ip {
+  @apply bg-blue-600 hover:bg-blue-700;
+}
+.netscan-button.port {
+  @apply bg-orange-600 hover:bg-orange-700;
+}
+.netscan-button.domain {
+  @apply bg-purple-600 hover:bg-purple-700;
+}
+.netscan-button.traceroute {
+  @apply bg-teal-600 hover:bg-teal-700;
+}
+.netscan-button.geoip {
+  @apply bg-green-600 hover:bg-green-700;
+}
