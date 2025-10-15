@@ -7,13 +7,9 @@
 @import "tailwindcss/utilities";
 @import "tailwindcss/theme";
 @import "tailwindcss/preflight";
-
-/* ✅ Fonts must come AFTER Tailwind imports */
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 
-/* =======================================================
-   🎨 Brand Theme
-   ======================================================= */
+/* Visnec Global Colors */
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -24,6 +20,7 @@
   --brand-green: #00c853;
   --brand-teal: #00bfa5;
 }
+
 
 /* Dark mode */
 @media (prefers-color-scheme: dark) {
