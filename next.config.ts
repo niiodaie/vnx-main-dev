@@ -1,15 +1,28 @@
+import path from "path";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  reactStrictMode: true,
-  swcMinify: true,
   experimental: {
     turbo: {
+      resolveAlias: {
+        // 👇 This forces all nested CSS to use the root PostCSS config
+        "postcss.config.js": path.resolve("./postcss.config.js"),
+      },
       rules: {
-        "*.css": ["postcss-loader"], // Ensure Tailwind runs through PostCSS
+        "*.css": {
+          loaders: [
+            {
+              loader: "postcss-loader",
+              options: {
+                postcssOptions: {
+                  config: path.resolve("./postcss.config.js"),
+                },
+              },
+            },
+          ],
+        },
       },
     },
-    optimizeCss: false, // Disable LightningCSS to avoid conflict
   },
 };
 
