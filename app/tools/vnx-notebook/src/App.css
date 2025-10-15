@@ -1,4 +1,2 @@
-/* App.css - additional styling if needed */
-textarea {
-  resize: vertical;
-}
+/* VNX Notebook App Styles */
+@import "tailwindcss";

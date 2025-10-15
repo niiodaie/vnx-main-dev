@@ -1,13 +1,15 @@
 /* =======================================================
-   🌐 VNX Global Styles — Tailwind v4 Safe Configuration
+   🌐 VNX Global Styles — Tailwind v4 Configuration
    ======================================================= */
 
-/* ✅ Tailwind imports MUST come first */
+/* ✅ Import fonts BEFORE Tailwind */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+/* ✅ Tailwind imports MUST come after fonts */
 @import "tailwindcss";
 @import "tailwindcss/utilities";
 @import "tailwindcss/theme";
 @import "tailwindcss/preflight";
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 
 /* Visnec Global Colors */
 :root {
@@ -20,7 +22,6 @@
   --brand-green: #00c853;
   --brand-teal: #00bfa5;
 }
-
 
 /* Dark mode */
 @media (prefers-color-scheme: dark) {
@@ -103,3 +104,4 @@ button:active {
 html {
   scroll-behavior: smooth;
 }
+
