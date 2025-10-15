@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
   experimental: {
     turbo: {
       rules: {
-        "*.css": ["postcss-loader"], // Force Turbopack to use PostCSS
+        "*.css": ["postcss-loader"], // Ensure Tailwind runs through PostCSS
       },
     },
     optimizeCss: false, // Disable LightningCSS to avoid conflict
