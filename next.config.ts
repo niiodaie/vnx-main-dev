@@ -1,28 +1,17 @@
-import path from "path";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  experimental: {
-    turbo: {
-      resolveAlias: {
-        // 👇 This forces all nested CSS to use the root PostCSS config
-        "postcss.config.js": path.resolve("./postcss.config.js"),
+  // Turbopack is enabled via CLI flag (--turbopack)
+  // PostCSS config is automatically detected from root postcss.config.js
+  
+  // Image configuration
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**",
       },
-      rules: {
-        "*.css": {
-          loaders: [
-            {
-              loader: "postcss-loader",
-              options: {
-                postcssOptions: {
-                  config: path.resolve("./postcss.config.js"),
-                },
-              },
-            },
-          ],
-        },
-      },
-    },
+    ],
   },
 };
 

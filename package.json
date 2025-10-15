@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
-    "start": "next start"
+    "start": "next start",
+    "lint": "next lint"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",
@@ -21,12 +22,13 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
-    "autoprefixer": "^10.4.20",
-    "postcss-loader": "^8.1.1",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
 }
+
