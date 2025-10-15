@@ -1,15 +1,19 @@
-/* =======================================
-   🌐 VNX Global Styles (Visnec Standard)
-   ======================================= */
+/* =======================================================
+   🌐 VNX Global Styles — Tailwind v4 Safe Configuration
+   ======================================================= */
+
+/* ✅ Tailwind imports MUST come first */
 @import "tailwindcss";
 @import "tailwindcss/utilities";
 @import "tailwindcss/theme";
 @import "tailwindcss/preflight";
+
+/* ✅ Fonts must come AFTER Tailwind imports */
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 
-/* -----------------------------
-   🎨 Root Brand Color System
------------------------------ */
+/* =======================================================
+   🎨 Brand Theme
+   ======================================================= */
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -29,9 +33,9 @@
   }
 }
 
-/* -----------------------------
-   ✨ Global Body & Typography
------------------------------ */
+/* =======================================================
+   🧭 Base Styles
+   ======================================================= */
 body {
   background: var(--background);
   color: var(--foreground);
@@ -40,17 +44,15 @@ body {
   transition: background 0.3s ease, color 0.3s ease;
 }
 
-h1,
-h2,
-h3,
-h4 {
+/* Typography */
+h1, h2, h3, h4 {
   font-weight: 600;
   color: #1e293b; /* slate-800 */
 }
 
-/* -----------------------------
-   🧭 UI Components
------------------------------ */
+/* =======================================================
+   ✨ Visnec UI Defaults
+   ======================================================= */
 
 /* Scrollbar */
 ::-webkit-scrollbar {
@@ -85,7 +87,7 @@ button:active {
 /* Cards */
 .card {
   background-color: #fff;
-  border: 1px solid #e2e8f0; /* slate-200 */
+  border: 1px solid #e2e8f0;
   border-radius: 1rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   transition: box-shadow 0.2s ease, transform 0.2s ease;
@@ -95,12 +97,12 @@ button:active {
   transform: translateY(-2px);
 }
 
-/* Gradient utility */
+/* Gradients */
 .bg-vnx-gradient {
   background: linear-gradient(90deg, var(--brand-primary), var(--brand-accent));
 }
 
-/* Page smooth scrolling */
+/* Smooth scroll */
 html {
   scroll-behavior: smooth;
 }
