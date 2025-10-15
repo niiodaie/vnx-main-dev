@@ -5,8 +5,11 @@ const nextConfig: NextConfig = {
   swcMinify: true,
   experimental: {
     turbo: {
-      rules: {},
+      rules: {
+        "*.css": ["postcss-loader"], // Force Turbopack to use PostCSS
+      },
     },
+    optimizeCss: false, // Disable LightningCSS to avoid conflict
   },
 };
 
