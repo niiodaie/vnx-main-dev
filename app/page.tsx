@@ -7,15 +7,13 @@ import Footer from "@/components/footer";
 
 export default function Home() {
   return (
-    <>
+    <div className="min-h-screen bg-white">
       <Navigation />
-      <main className="flex flex-col gap-28">
-        <HeroSection />
-        <TrendingSection />
-        <PillarsSection />
-        <CTASection />
-      </main>
+      <HeroSection />
+      <TrendingSection />
+      <PillarsSection />
+      <CTASection />
       <Footer />
-    </>
+    </div>
   );
 }
