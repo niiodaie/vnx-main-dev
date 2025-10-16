@@ -1,99 +1,121 @@
 "use client";
-import Link from "next/link";
+
 import { useState, useEffect } from "react";
-import { Menu } from "lucide-react";
+import Link from "next/link";
+import { Menu, X } from "lucide-react";
+import { pillars } from "@/config/site";
 
 export default function Navigation() {
-  const [open, setOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 10);
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 100);
+    };
+
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const links = [
-    "Tools",
-    "Platforms",
-    "Directories",
-    "Resources",
-    "Community",
-    "Marketplace",
-    "Insights",
-    "Experiences",
-    "Trends",
-    "Ventures",
-    "E-Services",
-  ];
-
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-white/90 shadow-sm backdrop-blur-md"
-          : "bg-white/60 backdrop-blur-sm"
-      }`}
+      className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+        isScrolled
+          ? "bg-white/98 backdrop-blur-sm shadow-md"
+          : "bg-white/95 backdrop-blur-sm"
+      } border-b border-slate-200`}
     >
-      <div className="max-w-7xl mx-auto flex items-center justify-between px-4 py-3">
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 text-lg font-bold text-slate-900">
-          <span className="text-blue-600">VNX</span>
-          <span className="text-slate-600 hidden sm:inline">Visnec Nexus</span>
-        </Link>
-
-        {/* Desktop Nav */}
-        <nav className="hidden lg:flex gap-6 text-sm font-medium text-slate-700">
-          {links.map((item) => (
-            <Link
-              key={item}
-              href={`/${item.toLowerCase().replace(/\s+/g, "-")}`}
-              className="hover:text-blue-600 transition-colors"
-            >
-              {item}
-            </Link>
-          ))}
-        </nav>
-
-        {/* CTA & Mobile Menu */}
-        <div className="flex items-center gap-3">
-          <Link
-            href="/join"
-            className="hidden sm:inline bg-gradient-to-r from-blue-600 to-cyan-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition"
-          >
-            Get Started
+      <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          <Link href="/" className="flex items-center space-x-3 group">
+            <img 
+              src="/favicon/favicon.svg" 
+              alt="VNX Logo" 
+              className="w-10 h-10 group-hover:scale-110 transition-transform"
+            />
+            <span className="text-xl font-bold text-slate-800 group-hover:text-purple-600 transition-colors">
+              VISNEC NEXUS
+            </span>
+            <span className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full font-semibold">
+              Digital Innovation Hub
+            </span>
           </Link>
+
+          {/* Desktop Navigation */}
+          <div className="hidden lg:flex items-center space-x-1">
+            {pillars.slice(0, 8).map((pillar) => (
+              <Link
+                key={pillar.id}
+                href={pillar.href}
+                className="px-3 py-2 text-slate-600 hover:text-purple-600 hover:bg-purple-50 rounded-md transition-all text-sm font-medium"
+              >
+                {pillar.name}
+              </Link>
+            ))}
+            <div className="relative group">
+              <button className="px-3 py-2 text-slate-600 hover:text-purple-600 hover:bg-purple-50 rounded-md transition-all text-sm font-medium">
+                More
+              </button>
+              <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-slate-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+                {pillars.slice(8).map((pillar) => (
+                  <Link
+                    key={pillar.id}
+                    href={pillar.href}
+                    className="block px-4 py-2 text-sm text-slate-600 hover:text-purple-600 hover:bg-purple-50 first:rounded-t-lg last:rounded-b-lg"
+                  >
+                    {pillar.name}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Mobile Menu Button */}
           <button
-            className="lg:hidden p-2 text-slate-700"
-            onClick={() => setOpen(!open)}
-            aria-label="Toggle menu"
+            className="lg:hidden p-2 text-slate-600 hover:text-purple-600"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
-            <Menu className="w-6 h-6" />
+            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
-        </div>
-      </div>
 
-      {/* Mobile Dropdown */}
-      {open && (
-        <div className="lg:hidden bg-white border-t border-slate-200 shadow-md">
-          {links.map((item) => (
+          {/* Desktop CTA */}
+          <div className="hidden lg:flex items-center space-x-4">
             <Link
-              key={item}
-              href={`/${item.toLowerCase().replace(/\s+/g, "-")}`}
-              className="block px-6 py-3 text-slate-700 hover:bg-slate-50 hover:text-blue-600 transition"
-              onClick={() => setOpen(false)}
+              href="/e-services"
+              className="px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all shadow-md hover:shadow-lg"
             >
-              {item}
+              Get Started
             </Link>
-          ))}
-          <Link
-            href="/join"
-            className="block m-4 text-center bg-gradient-to-r from-blue-600 to-cyan-500 text-white py-2 rounded-lg"
-          >
-            Get Started
-          </Link>
+          </div>
         </div>
-      )}
+
+        {/* Mobile Menu */}
+        {isMobileMenuOpen && (
+          <div className="lg:hidden py-4 border-t border-slate-200">
+            <div className="flex flex-col space-y-2">
+              {pillars.map((pillar) => (
+                <Link
+                  key={pillar.id}
+                  href={pillar.href}
+                  className="px-4 py-2 text-slate-600 hover:text-purple-600 hover:bg-purple-50 rounded-md transition-colors text-sm font-medium"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  {pillar.name}
+                </Link>
+              ))}
+              <Link
+                href="/e-services"
+                className="mx-4 mt-2 px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:from-purple-700 hover:to-blue-700 transition-colors text-center"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Get Started
+              </Link>
+            </div>
+          </div>
+        )}
+      </nav>
     </header>
   );
 }
+
