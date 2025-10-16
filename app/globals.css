@@ -105,3 +105,10 @@ html {
   scroll-behavior: smooth;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+header {
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
