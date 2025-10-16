@@ -1,16 +1,17 @@
 /* =======================================================
-   🌐 VNX Global Styles — Tailwind v4 Compatible
+   🌐 VNX Global Styles — Tailwind v4 Configuration
    ======================================================= */
 
 /* ✅ Import fonts BEFORE Tailwind */
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 
-/* ✅ Single Tailwind import (v4 auto-handles layers) */
+/* ✅ Tailwind imports MUST come after fonts */
 @import "tailwindcss";
+@import "tailwindcss/utilities";
+@import "tailwindcss/theme";
+@import "tailwindcss/preflight";
 
-/* =======================================================
-   🎨 Visnec Global Color Variables
-   ======================================================= */
+/* Visnec Global Colors */
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -103,3 +104,4 @@ button:active {
 html {
   scroll-behavior: smooth;
 }
+

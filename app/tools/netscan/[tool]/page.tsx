@@ -1,166 +1,187 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useParams } from "next/navigation";
-import Navigation from "@/components/navigation";
-import Footer from "@/components/footer";
-import {
-  Search,
-  Shield,
-  Globe,
-  BarChart3,
-  Network,
-  Loader2,
-  ArrowLeft,
-} from "lucide-react";
-import Link from "next/link";
+import { useState } from 'react';
+import { useParams } from 'next/navigation';
+import { ArrowLeft, Loader2, Search } from 'lucide-react';
+import Link from 'next/link';
+import ResultViewer from '@/components/netscan/ResultViewer';
 
-const toolDetails: Record<
+const toolConfig: Record<
   string,
-  { name: string; description: string; icon: any; color: string; api: string }
+  { title: string; placeholder: string; param: string; description: string }
 > = {
-  "ip-lookup": {
-    name: "IP Address Lookup",
-    description: "Get detailed geolocation, ISP, and ASN details for any IP address.",
-    icon: Search,
-    color: "from-blue-600 to-cyan-600",
-    api: "/api/tools/netscan/ip-lookup",
-  },
-  "port-scan": {
-    name: "Port Scanner",
-    description: "Scan for open ports and identify running services on a network host.",
-    icon: Shield,
-    color: "from-orange-500 to-yellow-500",
-    api: "/api/tools/netscan/ports",
-  },
-  "domain-tools": {
-    name: "Domain Tools",
-    description: "Run WHOIS lookups and analyze DNS & domain registration data.",
-    icon: Globe,
-    color: "from-purple-500 to-pink-500",
-    api: "/api/tools/netscan/whois",
-  },
-  traceroute: {
-    name: "Traceroute",
-    description: "Trace the path packets take through the internet to their destination.",
-    icon: Network,
-    color: "from-teal-500 to-green-500",
-    api: "/api/tools/netscan/traceroute",
+  'ip-lookup': {
+    title: 'IP Lookup',
+    placeholder: 'Enter IP address (e.g., 8.8.8.8)',
+    param: 'ip',
+    description:
+      'Get detailed information about an IP address including location, ISP, and network details.',
   },
   geoip: {
-    name: "GeoIP Lookup",
-    description: "Locate an IP's city, country, and ISP for mapping and analytics.",
-    icon: BarChart3,
-    color: "from-green-500 to-lime-500",
-    api: "/api/tools/netscan/geoip",
+    title: 'GeoIP Lookup',
+    placeholder: 'Enter IP address (e.g., 1.1.1.1)',
+    param: 'ip',
+    description:
+      'Discover geographic location, timezone, and network information for an IP address.',
+  },
+  whois: {
+    title: 'WHOIS Lookup',
+    placeholder: 'Enter domain (e.g., example.com)',
+    param: 'domain',
+    description:
+      'Query domain registration information including registrar, dates, and nameservers.',
+  },
+  dns: {
+    title: 'DNS Lookup',
+    placeholder: 'Enter domain (e.g., google.com)',
+    param: 'domain',
+    description: 'Query DNS records (A, AAAA, MX, TXT, NS) for a domain name.',
   },
 };
 
 export default function ToolPage() {
-  const { tool } = useParams();
-  const details = toolDetails[tool as string];
+  const params = useParams();
+  const toolId = params.tool as string;
+  const config = toolConfig[toolId];
 
-  const [target, setTarget] = useState("");
-  const [data, setData] = useState<any>(null);
+  const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
 
-  if (!details) {
+  if (!config) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50">
-        <h1 className="text-3xl font-bold text-slate-800 mb-4">Tool Not Found</h1>
-        <Link href="/tools/netscan" className="text-blue-600 hover:underline">
-          ← Back to Netscan
-        </Link>
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">
+            Tool Not Found
+          </h1>
+          <Link
+            href="/tools/netscan"
+            className="text-blue-600 hover:underline flex items-center justify-center gap-2"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Back to Netscan
+          </Link>
+        </div>
       </div>
     );
   }
 
-  const Icon = details.icon;
-
-  const handleRun = async () => {
-    if (!target.trim() && tool !== "geoip") {
-      setError("Please enter a valid IP address or domain");
+  const handleScan = async () => {
+    if (!input.trim()) {
+      setError('Please enter a value');
       return;
     }
 
     setLoading(true);
     setError(null);
+    setResult(null);
 
     try {
-      const res = await fetch(
-        `${details.api}${tool === "geoip" ? "" : `?target=${target}`}`
+      const response = await fetch(
+        `/api/tools/netscan/${toolId}?${config.param}=${encodeURIComponent(
+          input
+        )}`
       );
-      const json = await res.json();
-      setData(json);
-    } catch (e) {
-      setError("Failed to fetch results");
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Scan failed');
+      }
+
+      const data = await response.json();
+      setResult(data);
+    } catch (err: any) {
+      setError(err.message || 'An error occurred');
     } finally {
       setLoading(false);
     }
   };
 
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleScan();
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-slate-50">
-      <Navigation />
-
-      {/* Hero Section */}
-      <section
-        className={`pt-28 pb-16 bg-gradient-to-r ${details.color} text-white text-center`}
-      >
-        <Icon className="w-14 h-14 mx-auto mb-4" />
-        <h1 className="text-4xl font-bold mb-2">{details.name}</h1>
-        <p className="text-white/90 max-w-xl mx-auto">{details.description}</p>
-      </section>
-
-      {/* Input + Action */}
-      <div className="max-w-3xl mx-auto p-6 bg-white shadow-md rounded-lg -mt-8">
-        {tool !== "geoip" && (
-          <input
-            type="text"
-            placeholder="Enter IP or domain (e.g., 8.8.8.8)"
-            value={target}
-            onChange={(e) => setTarget(e.target.value)}
-            className="w-full border px-4 py-3 rounded-md mb-4 focus:ring-2 focus:ring-blue-500 outline-none"
-          />
-        )}
-        <button
-          onClick={handleRun}
-          disabled={loading}
-          className="w-full bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 disabled:opacity-50"
-        >
-          {loading ? (
-            <Loader2 className="w-5 h-5 animate-spin inline-block mr-2" />
-          ) : (
-            "Run"
-          )}
-        </button>
-
-        {error && (
-          <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded text-red-700 text-sm">
-            {error}
-          </div>
-        )}
-
-        {data && (
-          <div className="mt-6 bg-slate-50 border border-slate-200 rounded-lg p-4 text-left overflow-x-auto">
-            <pre className="text-sm text-slate-800">
-              {JSON.stringify(data, null, 2)}
-            </pre>
-          </div>
-        )}
-
-        <div className="mt-6 text-center">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
+      {/* Header */}
+      <div className="bg-gradient-to-br from-blue-600 to-cyan-600 text-white py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Link
             href="/tools/netscan"
-            className="inline-flex items-center gap-2 text-slate-600 hover:text-blue-600 transition"
+            className="inline-flex items-center gap-2 text-blue-100 hover:text-white mb-6 transition-colors"
           >
-            <ArrowLeft className="w-4 h-4" /> Back to Dashboard
+            <ArrowLeft className="w-4 h-4" />
+            Back to Netscan
           </Link>
+          <h1 className="text-3xl md:text-4xl font-bold mb-2">
+            {config.title}
+          </h1>
+          <p className="text-lg text-blue-100">{config.description}</p>
         </div>
       </div>
 
-      <Footer />
+      {/* Main Content */}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* Input Section */}
+        <div className="bg-white rounded-lg border-2 border-gray-200 p-6 mb-8">
+          <div className="flex flex-col sm:flex-row gap-3">
+            <input
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyPress={handleKeyPress}
+              placeholder={config.placeholder}
+              className="flex-1 border-2 border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+              disabled={loading}
+            />
+            <button
+              onClick={handleScan}
+              disabled={loading}
+              className="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-8 py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-cyan-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                  Scanning...
+                </>
+              ) : (
+                <>
+                  <Search className="w-5 h-5" />
+                  Scan
+                </>
+              )}
+            </button>
+          </div>
+
+          {error && (
+            <div className="mt-4 p-4 bg-red-50 border-2 border-red-200 rounded-lg text-red-700">
+              {error}
+            </div>
+          )}
+        </div>
+
+        {/* Results Section */}
+        {result && <ResultViewer data={result} title={config.title} />}
+
+        {/* Info Section */}
+        {!result && !loading && (
+          <div className="bg-blue-50 rounded-lg border-2 border-blue-200 p-6">
+            <h3 className="text-lg font-semibold text-blue-900 mb-2">
+              How to use
+            </h3>
+            <p className="text-blue-700 text-sm">
+              Enter a {config.param === 'ip' ? 'valid IP address' : 'domain name'}{' '}
+              in the field above and click "Scan" to get detailed information.
+              Results are cached for 10 minutes for faster subsequent queries.
+            </p>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
+

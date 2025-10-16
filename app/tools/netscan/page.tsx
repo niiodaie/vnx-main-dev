@@ -1,260 +1,177 @@
-"use client";
-import "./netscan.css";
-import { useState } from "react";
-import Navigation from "@/components/navigation";
-import Footer from "@/components/footer";
+'use client';
+
 import {
-  Search,
-  Shield,
   Globe,
-  BarChart3,
-  ShieldCheck,
-  Network,
-  Loader2,
   MapPin,
+  Shield,
+  Network,
   Activity,
-  Star,
+  Wifi,
+  Search,
   Zap,
-} from "lucide-react";
+} from 'lucide-react';
+import ToolCard from '@/components/netscan/ToolCard';
 
-interface ScanResult {
-  type: string;
-  data: any;
-  timestamp: string;
-}
-
-// Diagnostic tools list
-const diagnosticTools = [
+const tools = [
   {
-    id: "ip-lookup",
-    name: "IP Address Lookup",
+    id: 'ip-lookup',
+    title: 'IP Lookup',
     description:
-      "Get detailed geolocation, ISP information, and network details for any IP address",
-    icon: Search,
-    color: "bg-blue-50",
-    iconColor: "text-blue-600",
-    borderColor: "border-blue-200",
-    available: true,
-  },
-  {
-    id: "port-scan",
-    name: "Port Scanner",
-    description:
-      "Scan for open ports, identify running services, and assess network security",
-    icon: Shield,
-    color: "bg-orange-50",
-    iconColor: "text-orange-600",
-    borderColor: "border-orange-200",
-    available: true,
-  },
-  {
-    id: "domain-tools",
-    name: "Domain Tools",
-    description:
-      "WHOIS lookups, DNS analysis, domain registration and hosting information",
+      'Get detailed information about any IP address including location, ISP, and network details.',
     icon: Globe,
-    color: "bg-purple-50",
-    iconColor: "text-purple-600",
-    borderColor: "border-purple-200",
-    available: true,
+    gradient: 'bg-gradient-to-br from-blue-500 to-cyan-500 text-white',
   },
   {
-    id: "traceroute",
-    name: "Traceroute",
-    description: "Trace the path your packets take across the network",
-    icon: Network,
-    color: "bg-teal-50",
-    iconColor: "text-teal-600",
-    borderColor: "border-teal-200",
-    available: true,
-  },
-  {
-    id: "geoip",
-    name: "GeoIP Lookup",
+    id: 'geoip',
+    title: 'GeoIP',
     description:
-      "Locate an IP’s origin city, country, and ISP for analysis and mapping",
-    icon: BarChart3,
-    color: "bg-green-50",
-    iconColor: "text-green-600",
-    borderColor: "border-green-200",
-    available: true,
+      'Discover geographic location, timezone, and network information for any IP address.',
+    icon: MapPin,
+    gradient: 'bg-gradient-to-br from-green-500 to-emerald-500 text-white',
+  },
+  {
+    id: 'whois',
+    title: 'WHOIS',
+    description:
+      'Query domain registration information including registrar, dates, and nameservers.',
+    icon: Search,
+    gradient: 'bg-gradient-to-br from-purple-500 to-pink-500 text-white',
+  },
+  {
+    id: 'dns',
+    title: 'DNS Lookup',
+    description:
+      'Query DNS records (A, AAAA, MX, TXT, NS) for any domain name.',
+    icon: Network,
+    gradient: 'bg-gradient-to-br from-orange-500 to-red-500 text-white',
+  },
+];
+
+const proTools = [
+  {
+    id: 'port-scan',
+    title: 'Port Scanner',
+    description:
+      'Scan for open ports and identify running services on target hosts.',
+    icon: Shield,
+    gradient: '',
+    comingSoon: true,
+  },
+  {
+    id: 'traceroute',
+    title: 'Traceroute',
+    description:
+      'Trace the network path to a destination and measure latency at each hop.',
+    icon: Activity,
+    gradient: '',
+    comingSoon: true,
+  },
+  {
+    id: 'ssl-check',
+    title: 'SSL/TLS Check',
+    description:
+      'Analyze SSL/TLS certificates and security configuration of websites.',
+    icon: Wifi,
+    gradient: '',
+    comingSoon: true,
+  },
+  {
+    id: 'speed-test',
+    title: 'Network Speed',
+    description:
+      'Test your network speed including download, upload, and latency.',
+    icon: Zap,
+    gradient: '',
+    comingSoon: true,
   },
 ];
 
 export default function NetscanPage() {
-  const [target, setTarget] = useState("");
-  const [isScanning, setIsScanning] = useState(false);
-  const [currentScan, setCurrentScan] = useState<string | null>(null);
-  const [results, setResults] = useState<ScanResult[]>([]);
-  const [error, setError] = useState<string | null>(null);
-
-  // 🔌 Call backend mock endpoints
-  const performScan = async (scanType: string) => {
-    if (!target.trim()) {
-      setError("Please enter an IP address or domain");
-      return;
-    }
-
-    setIsScanning(true);
-    setCurrentScan(scanType);
-    setError(null);
-
-    try {
-      const response = await fetch(`/api/tools/netscan/${scanType}?target=${target}`);
-      if (!response.ok) throw new Error(`Scan failed: ${response.statusText}`);
-      const data = await response.json();
-
-      const newResult: ScanResult = {
-        type: scanType,
-        data,
-        timestamp: new Date().toISOString(),
-      };
-      setResults((prev) => [newResult, ...prev]);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Scan failed");
-    } finally {
-      setIsScanning(false);
-      setCurrentScan(null);
-    }
-  };
-
-  const detectMyIP = async () => {
-    setIsScanning(true);
-    setError(null);
-    try {
-      const res = await fetch(`/api/tools/netscan/geoip`);
-      const data = await res.json();
-      setTarget(data.ip || "");
-    } catch {
-      setError("Failed to detect your IP address");
-    } finally {
-      setIsScanning(false);
-    }
-  };
-
   return (
-    <div className="min-h-screen bg-slate-50">
-      <Navigation />
-
-      {/* Hero */}
-      <section className="pt-32 pb-20 bg-gradient-to-br from-blue-600 to-cyan-600 text-center text-white">
-        <Activity className="w-16 h-16 mx-auto mb-6" />
-        <h1 className="text-5xl md:text-6xl font-bold mb-4">VNX-Netscan</h1>
-        <p className="max-w-2xl mx-auto text-lg text-white/90">
-          Comprehensive network analysis and monitoring tools for IP lookup,
-          port scanning, WHOIS queries, and traceroutes — powered by the VNX
-          backend.
-        </p>
-      </section>
-
-      {/* Input */}
-      <section className="py-10 -mt-10">
-        <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow p-6">
-          <div className="flex flex-col md:flex-row gap-3">
-            <input
-              type="text"
-              value={target}
-              onChange={(e) => setTarget(e.target.value)}
-              placeholder="Enter IP address or domain (e.g., 8.8.8.8)"
-              className="flex-1 border border-slate-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none"
-              disabled={isScanning}
-            />
-            <button
-              onClick={detectMyIP}
-              disabled={isScanning}
-              className="bg-slate-600 text-white px-6 py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-slate-700 disabled:opacity-50"
-            >
-              <MapPin className="w-5 h-5" /> Detect My IP
-            </button>
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
+      {/* Hero Section */}
+      <div className="bg-gradient-to-br from-blue-600 to-cyan-600 text-white py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+              VNX-Netscan
+            </h1>
+            <p className="text-xl md:text-2xl text-blue-100 mb-8">
+              Professional Network Diagnostic Tools
+            </p>
+            <p className="text-lg text-blue-50 max-w-3xl mx-auto">
+              Comprehensive network analysis and monitoring tools for IP lookup,
+              geolocation, WHOIS queries, DNS records, and more. Professional-grade
+              diagnostics made simple.
+            </p>
           </div>
-          {error && (
-            <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded text-red-700 text-sm">
-              {error}
-            </div>
-          )}
         </div>
-      </section>
-
-      {/* Tool grid */}
-      <section className="py-12">
-  <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-    <div className="max-w-6xl mx-auto">
-      <h2 className="text-3xl font-bold text-slate-800 mb-4 text-center">
-        Network Diagnostic Tools
-      </h2>
-      <p className="text-center text-slate-600 mb-10 max-w-3xl mx-auto">
-        Choose a diagnostic tool to analyze IPs, domains, and network performance.
-      </p>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {diagnosticTools.map((tool) => {
-          const Icon = tool.icon;
-          const isCurrentScan = currentScan === tool.id;
-          const btnColor = tool.iconColor.replace("text-", "bg-");
-
-          return (
-            <div
-              key={tool.id}
-              className={`relative group bg-white rounded-xl border-2 ${tool.borderColor} p-6 hover:shadow-xl hover:scale-[1.02] transition-transform duration-200`}
-            >
-              <div
-                className={`w-12 h-12 ${tool.color} flex items-center justify-center rounded-lg mb-4`}
-              >
-                {isCurrentScan ? (
-                  <Loader2 className={`${tool.iconColor} w-6 h-6 animate-spin`} />
-                ) : (
-                  <Icon className={`${tool.iconColor} w-6 h-6`} />
-                )}
-              </div>
-
-              <h3 className="text-lg font-semibold text-slate-800 mb-2">
-                {tool.name}
-              </h3>
-              <p className="text-sm text-slate-600 mb-6 leading-relaxed">
-                {tool.description}
-              </p>
-
-              <button
-                onClick={() => performScan(tool.id)}
-                disabled={isScanning}
-                className={`${btnColor} w-full text-white py-2 rounded-lg font-medium hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed`}
-              >
-                {isCurrentScan ? "Scanning..." : "Run Scan"}
-              </button>
-            </div>
-          );
-        })}
       </div>
-    </div>
-  </div>
-</section>
 
-
-      {/* Results */}
-      {results.length > 0 && (
-        <section className="py-10">
-          <div className="max-w-5xl mx-auto bg-white rounded-2xl shadow p-6">
-            <h2 className="text-2xl font-bold mb-6 flex items-center text-slate-800">
-              <Search className="w-5 h-5 text-blue-600 mr-2" /> Scan Results
-            </h2>
-            {results.map((r, i) => (
-              <div key={i} className="mb-6 border border-slate-200 rounded-lg p-4">
-                <div className="flex justify-between mb-2">
-                  <span className="font-semibold capitalize">{r.type}</span>
-                  <span className="text-sm text-slate-500">
-                    {new Date(r.timestamp).toLocaleString()}
-                  </span>
-                </div>
-                <pre className="bg-slate-50 text-sm p-3 rounded overflow-x-auto">
-                  {JSON.stringify(r.data, null, 2)}
-                </pre>
-              </div>
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        {/* Available Tools */}
+        <div className="mb-16">
+          <h2 className="text-3xl font-bold text-gray-900 mb-8">
+            Available Tools
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {tools.map((tool) => (
+              <ToolCard key={tool.id} {...tool} />
             ))}
           </div>
-        </section>
-      )}
+        </div>
 
-      <Footer />
+        {/* Pro Tools Coming Soon */}
+        <div>
+          <div className="flex items-center gap-3 mb-8">
+            <h2 className="text-3xl font-bold text-gray-900">
+              Advanced Scanning
+            </h2>
+            <span className="bg-yellow-400 text-yellow-900 text-sm font-bold px-3 py-1 rounded">
+              PRO COMING SOON
+            </span>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {proTools.map((tool) => (
+              <ToolCard key={tool.id} {...tool} />
+            ))}
+          </div>
+        </div>
+
+        {/* Features */}
+        <div className="mt-16 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-8">
+          <h3 className="text-2xl font-bold text-gray-900 mb-6">Features</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div>
+              <div className="text-blue-600 font-semibold mb-2">
+                ⚡ Fast & Cached
+              </div>
+              <p className="text-gray-600 text-sm">
+                Results are cached for 10 minutes to ensure lightning-fast
+                responses.
+              </p>
+            </div>
+            <div>
+              <div className="text-blue-600 font-semibold mb-2">
+                🗺️ Visual Maps
+              </div>
+              <p className="text-gray-600 text-sm">
+                See geographic locations on interactive Mapbox maps.
+              </p>
+            </div>
+            <div>
+              <div className="text-blue-600 font-semibold mb-2">
+                📊 Structured Data
+              </div>
+              <p className="text-gray-600 text-sm">
+                Clean JSON output with copy and download functionality.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
+
