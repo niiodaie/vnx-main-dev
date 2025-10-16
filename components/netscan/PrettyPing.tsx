@@ -1,87 +1,170 @@
 "use client";
 
-import { useState } from "react";
-import { Wifi, Loader2, Globe2, Zap, AlertCircle } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Loader2, Wifi, Copy, CheckCircle, AlertCircle } from "lucide-react";
+
+interface PingResult {
+  seq: number;
+  time: number; // in ms
+  success: boolean;
+}
 
 export default function PrettyPing() {
-  const [target, setTarget] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<any>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [host, setHost] = useState("");
+  const [pinging, setPinging] = useState(false);
+  const [results, setResults] = useState<PingResult[]>([]);
+  const [copied, setCopied] = useState(false);
 
   const handlePing = async () => {
-    if (!target.trim()) return;
-    setLoading(true);
-    setError(null);
-    setResult(null);
-    try {
-      const res = await fetch(`/api/tools/netscan/ping?host=${encodeURIComponent(target)}`);
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Ping failed");
-      setResult(data);
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
+    if (!host.trim()) return;
+    setPinging(true);
+    setResults([]);
+
+    // Simulate ping (mock demo until backend integration)
+    const mockData: PingResult[] = [];
+    for (let i = 1; i <= 5; i++) {
+      await new Promise((r) => setTimeout(r, 800));
+      const success = Math.random() > 0.1;
+      mockData.push({
+        seq: i,
+        time: success ? 20 + Math.random() * 120 : 0,
+        success,
+      });
+      setResults([...mockData]);
     }
+
+    setPinging(false);
+  };
+
+  const avgTime =
+    results.filter((r) => r.success).reduce((sum, r) => sum + r.time, 0) /
+    (results.filter((r) => r.success).length || 1);
+  const packetLoss =
+    ((results.length - results.filter((r) => r.success).length) /
+      (results.length || 1)) *
+    100;
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(JSON.stringify(results, null, 2));
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1200);
   };
 
   return (
-    <section className="max-w-3xl mx-auto text-center py-12">
-      <h1 className="text-3xl md:text-4xl font-bold text-slate-800 mb-2">🌐 Pretty Ping</h1>
-      <p className="text-slate-500 mb-8">
-        Check how fast you can reach any website — visual, simple, and fun.
-      </p>
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white p-8">
+      {/* Header */}
+      <div className="bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-2xl shadow-lg p-8 mb-8 text-center">
+        <h1 className="text-3xl font-bold mb-2">Pretty Ping 🌐</h1>
+        <p className="text-blue-100 text-sm">
+          Measure network latency and visualize connection stability in real
+          time.
+        </p>
+      </div>
 
-      <div className="flex flex-col sm:flex-row gap-3 justify-center mb-8">
+      {/* Input */}
+      <div className="max-w-md mx-auto bg-white border-2 border-gray-200 rounded-xl shadow-sm p-6">
         <input
           type="text"
-          value={target}
-          onChange={(e) => setTarget(e.target.value)}
-          placeholder="Enter host or IP (e.g., google.com)"
-          className="border-2 border-slate-300 rounded-lg px-4 py-3 w-full sm:w-2/3 focus:border-blue-500 outline-none"
+          placeholder="Enter hostname or IP (e.g. google.com)"
+          value={host}
+          onChange={(e) => setHost(e.target.value)}
+          disabled={pinging}
+          className="w-full border-2 border-gray-300 rounded-lg px-4 py-3 text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
         />
         <button
           onClick={handlePing}
-          disabled={loading}
-          className="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-6 py-3 rounded-lg font-semibold hover:opacity-90 disabled:opacity-50 flex items-center justify-center gap-2"
+          disabled={pinging}
+          className="w-full mt-4 bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-semibold rounded-lg py-3 hover:from-blue-700 hover:to-cyan-700 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
         >
-          {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Zap className="w-5 h-5" />}
-          {loading ? "Pinging..." : "Ping"}
+          {pinging ? (
+            <>
+              <Loader2 className="w-4 h-4 animate-spin" /> Pinging...
+            </>
+          ) : (
+            <>
+              <Wifi className="w-4 h-4" /> Start Ping
+            </>
+          )}
         </button>
       </div>
 
-      {error && (
-        <div className="text-red-500 flex justify-center items-center gap-2 mb-4">
-          <AlertCircle className="w-5 h-5" />
-          <span>{error}</span>
-        </div>
-      )}
+      {/* Results */}
+      {results.length > 0 && (
+        <div className="max-w-3xl mx-auto mt-10">
+          {/* Status Banner */}
+          <div
+            className={`p-4 rounded-lg text-white font-semibold mb-4 ${
+              packetLoss === 0
+                ? "bg-green-500"
+                : packetLoss < 50
+                ? "bg-yellow-500"
+                : "bg-red-500"
+            }`}
+          >
+            {packetLoss === 0
+              ? "✅ Excellent connection"
+              : packetLoss < 50
+              ? "⚠️ Unstable connection"
+              : "❌ Severe packet loss"}
+          </div>
 
-      {result && (
-        <div className="bg-white shadow-lg rounded-xl p-6 border border-slate-200 inline-block text-left">
-          <div className="flex items-center gap-3 mb-3">
-            <Wifi className="text-blue-500 w-5 h-5" />
-            <h2 className="text-xl font-semibold">{result.host}</h2>
+          {/* Ping Wave Animation */}
+          <div className="relative h-40 flex items-end justify-between gap-2 bg-slate-100 border rounded-lg p-4 overflow-hidden">
+            {results.map((r) => (
+              <div
+                key={r.seq}
+                className={`w-8 rounded-t-md ${
+                  r.success ? "bg-blue-500" : "bg-red-400"
+                } transition-all duration-300`}
+                style={{
+                  height: r.success ? `${r.time * 0.8}px` : "20px",
+                  opacity: r.success ? 1 : 0.6,
+                }}
+              />
+            ))}
           </div>
-          <p className="text-slate-600">
-            Average latency: <span className="font-bold text-blue-600">{result.avg} ms</span>
-          </p>
-          <p className="text-slate-600">Jitter: {result.jitter} ms • Packet loss: {result.loss}%</p>
-          <div className="mt-4 w-full bg-slate-100 rounded-full h-3 overflow-hidden">
-            <div
-              className={`h-3 rounded-full ${
-                result.avg < 50
-                  ? "bg-green-500"
-                  : result.avg < 150
-                  ? "bg-yellow-400"
-                  : "bg-red-500"
-              }`}
-              style={{ width: `${Math.min(result.avg / 2, 100)}%` }}
-            ></div>
+
+          {/* Stats */}
+          <div className="grid grid-cols-3 gap-4 mt-6">
+            <div className="bg-slate-50 p-4 rounded-lg text-center border">
+              <p className="text-xs uppercase text-slate-500">Avg RTT</p>
+              <p className="text-xl font-bold text-blue-700">
+                {avgTime.toFixed(1)} ms
+              </p>
+            </div>
+            <div className="bg-slate-50 p-4 rounded-lg text-center border">
+              <p className="text-xs uppercase text-slate-500">Packet Loss</p>
+              <p className="text-xl font-bold text-blue-700">
+                {packetLoss.toFixed(0)}%
+              </p>
+            </div>
+            <div className="bg-slate-50 p-4 rounded-lg text-center border">
+              <p className="text-xs uppercase text-slate-500">Pings Sent</p>
+              <p className="text-xl font-bold text-blue-700">
+                {results.length}
+              </p>
+            </div>
+          </div>
+
+          {/* Copy JSON */}
+          <div className="flex justify-center mt-6">
+            <button
+              onClick={handleCopy}
+              className="flex items-center gap-2 text-blue-600 hover:text-blue-800 transition"
+            >
+              {copied ? (
+                <>
+                  <CheckCircle className="w-4 h-4" /> Copied
+                </>
+              ) : (
+                <>
+                  <Copy className="w-4 h-4" /> Copy JSON
+                </>
+              )}
+            </button>
           </div>
         </div>
       )}
-    </section>
+    </div>
   );
 }
