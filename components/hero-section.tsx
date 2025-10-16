@@ -41,7 +41,7 @@ export default function HeroSection() {
           }`}
         >
           <Sparkles className="w-4 h-4" />
-          <span>Powering the Future of Innovation</span>
+          <a href="https://visnec.ai" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Powering the Future of Innovation</a>
         </div>
 
         <h1
