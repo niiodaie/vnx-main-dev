@@ -8,9 +8,7 @@ export default function Navigation() {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 10);
-    };
+    const handleScroll = () => setScrolled(window.scrollY > 10);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -44,7 +42,7 @@ export default function Navigation() {
           <span className="text-slate-600 hidden sm:inline">Visnec Nexus</span>
         </Link>
 
-        {/* Desktop Menu */}
+        {/* Desktop Nav */}
         <nav className="hidden lg:flex gap-6 text-sm font-medium text-slate-700">
           {links.map((item) => (
             <Link
@@ -57,7 +55,7 @@ export default function Navigation() {
           ))}
         </nav>
 
-        {/* CTA + Mobile Toggle */}
+        {/* CTA & Mobile Menu */}
         <div className="flex items-center gap-3">
           <Link
             href="/join"
