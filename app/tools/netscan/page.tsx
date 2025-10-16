@@ -1,177 +1,93 @@
-'use client';
+"use client";
 
-import {
-  Globe,
-  MapPin,
-  Shield,
-  Network,
-  Activity,
-  Wifi,
-  Search,
-  Zap,
-} from 'lucide-react';
-import ToolCard from '@/components/netscan/ToolCard';
+import Link from "next/link";
 
-const tools = [
+const toolGroups = [
   {
-    id: 'ip-lookup',
-    title: 'IP Lookup',
-    description:
-      'Get detailed information about any IP address including location, ISP, and network details.',
-    icon: Globe,
-    gradient: 'bg-gradient-to-br from-blue-500 to-cyan-500 text-white',
+    title: "Core Lookups",
+    description: "Essential IP and domain intelligence tools",
+    tools: [
+      { name: "IP Lookup", href: "/tools/netscan/ip-lookup", color: "from-blue-500 to-cyan-500", emoji: "🌐", status: "Live" },
+      { name: "GeoIP", href: "/tools/netscan/geoip", color: "from-green-500 to-emerald-500", emoji: "🗺️", status: "Live" },
+      { name: "WHOIS Lookup", href: "/tools/netscan/whois", color: "from-purple-500 to-pink-500", emoji: "🔍", status: "Live" },
+      { name: "DNS Lookup", href: "/tools/netscan/dns", color: "from-orange-500 to-red-500", emoji: "🧩", status: "Live" },
+    ],
   },
   {
-    id: 'geoip',
-    title: 'GeoIP',
-    description:
-      'Discover geographic location, timezone, and network information for any IP address.',
-    icon: MapPin,
-    gradient: 'bg-gradient-to-br from-green-500 to-emerald-500 text-white',
+    title: "Diagnostics & Monitoring",
+    description: "Measure connectivity, latency, and network paths",
+    tools: [
+      { name: "Pretty Ping", href: "/tools/netscan/ping", color: "from-sky-500 to-indigo-500", emoji: "📡", status: "Beta" },
+      { name: "Smart Traceroute", href: "/tools/netscan/traceroute", color: "from-teal-500 to-cyan-600", emoji: "🌐", status: "Live" },
+      { name: "Speed Test", href: "/tools/netscan/speed", color: "from-yellow-400 to-orange-500", emoji: "⚡", status: "Soon" },
+    ],
   },
   {
-    id: 'whois',
-    title: 'WHOIS',
-    description:
-      'Query domain registration information including registrar, dates, and nameservers.',
-    icon: Search,
-    gradient: 'bg-gradient-to-br from-purple-500 to-pink-500 text-white',
-  },
-  {
-    id: 'dns',
-    title: 'DNS Lookup',
-    description:
-      'Query DNS records (A, AAAA, MX, TXT, NS) for any domain name.',
-    icon: Network,
-    gradient: 'bg-gradient-to-br from-orange-500 to-red-500 text-white',
-  },
-];
-
-const proTools = [
-  {
-    id: 'port-scan',
-    title: 'Port Scanner',
-    description:
-      'Scan for open ports and identify running services on target hosts.',
-    icon: Shield,
-    gradient: '',
-    comingSoon: true,
-  },
-  {
-    id: 'traceroute',
-    title: 'Traceroute',
-    description:
-      'Trace the network path to a destination and measure latency at each hop.',
-    icon: Activity,
-    gradient: '',
-    comingSoon: true,
-  },
-  {
-    id: 'ssl-check',
-    title: 'SSL/TLS Check',
-    description:
-      'Analyze SSL/TLS certificates and security configuration of websites.',
-    icon: Wifi,
-    gradient: '',
-    comingSoon: true,
-  },
-  {
-    id: 'speed-test',
-    title: 'Network Speed',
-    description:
-      'Test your network speed including download, upload, and latency.',
-    icon: Zap,
-    gradient: '',
-    comingSoon: true,
+    title: "IT Utilities (Pro)",
+    description: "Advanced network and wireless analysis tools",
+    tools: [
+      { name: "Port Scanner", href: "#", color: "from-slate-500 to-slate-700", emoji: "🛠️", status: "Pro" },
+      { name: "SSL/TLS Checker", href: "#", color: "from-blue-700 to-indigo-700", emoji: "🔐", status: "Pro" },
+      { name: "Wireless Scanner", href: "#", color: "from-pink-500 to-rose-600", emoji: "📶", status: "Pro" },
+      { name: "MAC Lookup", href: "#", color: "from-cyan-500 to-teal-600", emoji: "💻", status: "Pro" },
+    ],
   },
 ];
 
 export default function NetscanPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
-      {/* Hero Section */}
-      <div className="bg-gradient-to-br from-blue-600 to-cyan-600 text-white py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              VNX-Netscan
-            </h1>
-            <p className="text-xl md:text-2xl text-blue-100 mb-8">
-              Professional Network Diagnostic Tools
-            </p>
-            <p className="text-lg text-blue-50 max-w-3xl mx-auto">
-              Comprehensive network analysis and monitoring tools for IP lookup,
-              geolocation, WHOIS queries, DNS records, and more. Professional-grade
-              diagnostics made simple.
-            </p>
+    <main className="min-h-screen bg-gradient-to-b from-slate-50 to-white pb-20">
+      {/* HERO */}
+      <section className="bg-gradient-to-r from-blue-600 to-cyan-600 text-white text-center py-16 shadow-md">
+        <h1 className="text-4xl md:text-5xl font-extrabold mb-4">VNX-Netscan</h1>
+        <p className="text-lg md:text-xl text-blue-100 max-w-2xl mx-auto leading-relaxed">
+          Professional Network Diagnostic Suite — analyze IPs, trace routes, and monitor connectivity in real-time.
+        </p>
+      </section>
+
+      {/* TOOL GROUPS */}
+      <div className="max-w-7xl mx-auto px-6 mt-12 space-y-16">
+        {toolGroups.map((group) => (
+          <div key={group.title}>
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold text-slate-800 flex items-center gap-2">
+                {group.title}
+              </h2>
+              <p className="text-slate-500">{group.description}</p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {group.tools.map((tool) => (
+                <Link
+                  key={tool.name}
+                  href={tool.href}
+                  className={`group relative bg-gradient-to-br ${tool.color} text-white rounded-xl p-6 flex flex-col justify-between shadow-md hover:shadow-xl transition-transform hover:-translate-y-1`}
+                >
+                  <div>
+                    <div className="text-4xl mb-3">{tool.emoji}</div>
+                    <h3 className="text-lg font-semibold mb-2">{tool.name}</h3>
+                    <p className="text-sm opacity-90">
+                      {tool.status === "Pro" ? "Available in Pro version" : "Click to explore"}
+                    </p>
+                  </div>
+
+                  <div
+                    className={`absolute top-3 right-3 text-xs font-semibold px-2 py-1 rounded-full ${
+                      tool.status === "Live"
+                        ? "bg-green-100 text-green-700"
+                        : tool.status === "Beta"
+                        ? "bg-yellow-100 text-yellow-700"
+                        : "bg-slate-200 text-slate-700"
+                    }`}
+                  >
+                    {tool.status}
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
-        </div>
+        ))}
       </div>
-
-      {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        {/* Available Tools */}
-        <div className="mb-16">
-          <h2 className="text-3xl font-bold text-gray-900 mb-8">
-            Available Tools
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {tools.map((tool) => (
-              <ToolCard key={tool.id} {...tool} />
-            ))}
-          </div>
-        </div>
-
-        {/* Pro Tools Coming Soon */}
-        <div>
-          <div className="flex items-center gap-3 mb-8">
-            <h2 className="text-3xl font-bold text-gray-900">
-              Advanced Scanning
-            </h2>
-            <span className="bg-yellow-400 text-yellow-900 text-sm font-bold px-3 py-1 rounded">
-              PRO COMING SOON
-            </span>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {proTools.map((tool) => (
-              <ToolCard key={tool.id} {...tool} />
-            ))}
-          </div>
-        </div>
-
-        {/* Features */}
-        <div className="mt-16 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-8">
-          <h3 className="text-2xl font-bold text-gray-900 mb-6">Features</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div>
-              <div className="text-blue-600 font-semibold mb-2">
-                ⚡ Fast & Cached
-              </div>
-              <p className="text-gray-600 text-sm">
-                Results are cached for 10 minutes to ensure lightning-fast
-                responses.
-              </p>
-            </div>
-            <div>
-              <div className="text-blue-600 font-semibold mb-2">
-                🗺️ Visual Maps
-              </div>
-              <p className="text-gray-600 text-sm">
-                See geographic locations on interactive Mapbox maps.
-              </p>
-            </div>
-            <div>
-              <div className="text-blue-600 font-semibold mb-2">
-                📊 Structured Data
-              </div>
-              <p className="text-gray-600 text-sm">
-                Clean JSON output with copy and download functionality.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    </main>
   );
 }
-
