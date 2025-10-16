@@ -9,10 +9,12 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-white">
       <Navigation />
-      <HeroSection />
-      <TrendingSection />
-      <PillarsSection />
-      <CTASection />
+      <main className="pt-28 md:pt-32 space-y-28">
+        <HeroSection />
+        <TrendingSection />
+        <PillarsSection />
+        <CTASection />
+      </main>
       <Footer />
     </div>
   );
