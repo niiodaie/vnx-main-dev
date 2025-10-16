@@ -85,17 +85,16 @@ export default function SmartTracerouteMap({ hops }: SmartTracerouteMapProps) {
       const lineId = `hop-line-${Date.now()}`;
 
       currentMap.addSource(lineId, {
-  type: "geojson",
-  data: {
-    type: "Feature",
-    properties: {}, // ✅ add empty properties to satisfy type
-    geometry: {
-      type: "LineString",
-      coordinates: lineCoords,
-    },
-  },
-});
-
+        type: "geojson",
+        data: {
+          type: "Feature",
+          properties: {}, // ✅ Type requirement
+          geometry: {
+            type: "LineString",
+            coordinates: lineCoords,
+          },
+        },
+      });
 
       currentMap.addLayer({
         id: lineId,
@@ -110,16 +109,16 @@ export default function SmartTracerouteMap({ hops }: SmartTracerouteMapProps) {
 
       const bounds = new mapboxgl.LngLatBounds();
 
-// Ensure coordinates are valid [lon, lat] tuples
-lineCoords.forEach(([lon, lat]) => {
-  if (typeof lon === "number" && typeof lat === "number") {
-    bounds.extend([lon, lat] as [number, number]);
-  }
-});
+      // Ensure coordinates are valid [lon, lat] tuples
+      lineCoords.forEach(([lon, lat]) => {
+        if (typeof lon === "number" && typeof lat === "number") {
+          bounds.extend([lon, lat] as [number, number]);
+        }
+      });
 
-currentMap.fitBounds(bounds, { padding: 80, duration: 1000 });
-
-  }, [hops]);
+      currentMap.fitBounds(bounds, { padding: 80, duration: 1000 });
+    }
+  }, [hops]); // ✅ closed all brackets properly
 
   return (
     <div className="mt-8 rounded-xl overflow-hidden border border-slate-200 shadow-md">
