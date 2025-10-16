@@ -5,24 +5,23 @@ import Link from "next/link";
 export default function HeroSection() {
   return (
     <section
-      className="relative overflow-hidden bg-gradient-to-br from-blue-700 via-indigo-600 to-cyan-500 text-white pt-32 md:pt-40 pb-28 text-center"
+      className="relative min-h-[75vh] flex flex-col justify-center items-center text-center overflow-hidden bg-gradient-to-br from-blue-700 via-indigo-600 to-cyan-500 text-white"
       id="hero"
     >
-      {/* Background overlay for contrast */}
+      {/* Overlay for contrast */}
       <div className="absolute inset-0 bg-black/20 backdrop-blur-sm"></div>
 
-      {/* Hero content */}
-      <div className="relative z-10 max-w-3xl mx-auto px-6 fade-in">
-        <h1 className="text-4xl md:text-6xl font-extrabold mb-6 leading-tight drop-shadow-lg">
+      {/* Hero Content */}
+      <div className="relative z-10 max-w-3xl px-6 fade-in">
+        <h1 className="text-5xl md:text-6xl font-extrabold mb-6 leading-tight drop-shadow-lg">
           Powering the Future of Innovation
         </h1>
 
-        <p className="text-lg md:text-xl text-white/90 mb-10 fade-in-delayed leading-relaxed">
-          Unlock the power of AI-driven tools, cutting-edge platforms, and immersive digital experiences.  
+        <p className="text-lg md:text-xl text-white/90 mb-10 leading-relaxed fade-in-delayed">
+          Unlock the power of AI-driven tools, cutting-edge platforms, and immersive experiences.  
           Join thousands of innovators shaping tomorrow’s digital landscape.
         </p>
 
-        {/* Action Buttons */}
         <div className="flex flex-wrap justify-center gap-4 fade-in-late">
           <Link
             href="/tools"
@@ -45,9 +44,9 @@ export default function HeroSection() {
         </div>
       </div>
 
-      {/* Decorative gradient rings */}
-      <div className="absolute -top-24 -left-24 w-80 h-80 bg-cyan-400/20 rounded-full blur-3xl animate-pulse"></div>
-      <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-indigo-500/20 rounded-full blur-3xl animate-pulse"></div>
+      {/* Gradient Decorations */}
+      <div className="absolute -top-24 -left-24 w-96 h-96 bg-cyan-400/30 rounded-full blur-3xl"></div>
+      <div className="absolute -bottom-24 -right-24 w-[30rem] h-[30rem] bg-indigo-500/30 rounded-full blur-3xl"></div>
     </section>
   );
 }
