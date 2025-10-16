@@ -85,12 +85,17 @@ export default function SmartTracerouteMap({ hops }: SmartTracerouteMapProps) {
       const lineId = `hop-line-${Date.now()}`;
 
       currentMap.addSource(lineId, {
-        type: "geojson",
-        data: {
-          type: "Feature",
-          geometry: { type: "LineString", coordinates: lineCoords },
-        },
-      });
+  type: "geojson",
+  data: {
+    type: "Feature",
+    properties: {}, // ✅ add empty properties to satisfy type
+    geometry: {
+      type: "LineString",
+      coordinates: lineCoords,
+    },
+  },
+});
+
 
       currentMap.addLayer({
         id: lineId,
