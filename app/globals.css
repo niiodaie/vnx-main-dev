@@ -131,7 +131,7 @@ header.scrolled {
 }
 
 /* Push content down to avoid overlap */
-body {
+main {
   padding-top: 80px;
 }
 
