@@ -1,0 +1,138 @@
+═══════════════════════════════════════════════════════════════════
+  VNX-NETSCAN LICENSE AND USAGE AGREEMENT
+═══════════════════════════════════════════════════════════════════
+
+Copyright (c) 2025 Visnec Nexus (VNX)
+All Rights Reserved.
+
+INTERNAL USE LICENSE
+───────────────────────────────────────────────────────────────────
+
+This software and associated documentation files (the "Software") are
+proprietary to Visnec Nexus and are provided for internal use only.
+
+PERMITTED USE:
+- Internal network diagnostics and monitoring
+- Development and testing purposes
+- Integration within VNX ecosystem tools
+- Educational and research purposes
+
+PROHIBITED USE:
+- Unauthorized scanning of third-party networks
+- Malicious or illegal network reconnaissance
+- Distribution or resale of the Software
+- Removal of copyright or attribution notices
+
+SAFE SCANNING PRACTICES
+───────────────────────────────────────────────────────────────────
+
+Users of VNX-Netscan must adhere to the following guidelines:
+
+1. AUTHORIZATION REQUIRED
+   - Only scan networks and systems you own or have explicit
+     permission to test
+   - Obtain written authorization before scanning third-party
+     infrastructure
+
+2. RESPECT RATE LIMITS
+   - Do not overwhelm target systems with excessive requests
+   - Respect robots.txt and other access control mechanisms
+   - Use caching features to minimize redundant queries
+
+3. LEGAL COMPLIANCE
+   - Comply with all applicable laws and regulations
+   - Respect privacy and data protection requirements
+   - Follow industry best practices and ethical guidelines
+
+4. RESPONSIBLE DISCLOSURE
+   - Report discovered vulnerabilities responsibly
+   - Do not exploit or publicize security issues
+   - Follow coordinated disclosure practices
+
+DISCLAIMER OF WARRANTY
+───────────────────────────────────────────────────────────────────
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+LIMITATION OF LIABILITY
+───────────────────────────────────────────────────────────────────
+
+Visnec Nexus shall not be held liable for:
+- Misuse of the Software by users
+- Unauthorized scanning activities
+- Legal consequences of improper use
+- Damages resulting from Software use
+- Third-party service failures or data accuracy
+
+USER RESPONSIBILITY
+───────────────────────────────────────────────────────────────────
+
+Users are solely responsible for:
+- Ensuring authorized use of scanning tools
+- Compliance with applicable laws and regulations
+- Proper configuration and security of API keys
+- Ethical and responsible scanning practices
+- Consequences of their scanning activities
+
+THIRD-PARTY SERVICES
+───────────────────────────────────────────────────────────────────
+
+VNX-Netscan integrates with third-party services:
+- ipapi.co (IP geolocation)
+- whoisjson.com (WHOIS data)
+- Mapbox (optional map visualization)
+
+Users must comply with the terms of service of these providers.
+Visnec Nexus is not responsible for third-party service availability,
+accuracy, or terms of use.
+
+API KEY SECURITY
+───────────────────────────────────────────────────────────────────
+
+Users are responsible for:
+- Keeping API keys confidential
+- Not committing keys to version control
+- Rotating keys if compromised
+- Monitoring API usage for unauthorized access
+
+DATA PRIVACY
+───────────────────────────────────────────────────────────────────
+
+- VNX-Netscan does not store scan results permanently
+- Cache data is temporary (10-minute TTL)
+- Users are responsible for handling scan results appropriately
+- Comply with GDPR, CCPA, and other privacy regulations
+
+MODIFICATIONS
+───────────────────────────────────────────────────────────────────
+
+Visnec Nexus reserves the right to modify this license at any time.
+Continued use of the Software constitutes acceptance of any changes.
+
+TERMINATION
+───────────────────────────────────────────────────────────────────
+
+This license is effective until terminated. Your rights under this
+license will terminate automatically without notice if you fail to
+comply with any term(s) of this license.
+
+CONTACT
+───────────────────────────────────────────────────────────────────
+
+For questions, permissions, or licensing inquiries:
+Email: legal@visnec.com
+Web: https://visnec.com
+
+═══════════════════════════════════════════════════════════════════
+  VNX-Netscan Phase 1
+  Part of the Visnec Nexus (VNX) Ecosystem
+  https://visnec.ai
+═══════════════════════════════════════════════════════════════════
+
