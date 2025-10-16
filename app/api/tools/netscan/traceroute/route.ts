@@ -1,5 +1,8 @@
 import { NextResponse } from "next/server";
-import traceroute from "traceroute";
+import { exec } from "child_process";
+import util from "util";
+
+const execPromise = util.promisify(exec);
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
@@ -9,35 +12,52 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: "Missing host parameter" }, { status: 400 });
 
   try {
-    const hops: any[] = [];
-    await new Promise<void>((resolve, reject) => {
-      traceroute.trace(host, async (err: any, hopsData: any) => {
-        if (err) return reject(err);
+    // Run traceroute command safely
+    const { stdout } = await execPromise(`traceroute -m 10 -q 1 ${host}`);
 
-        const geoPromises = hopsData.map(async (hop: any) => {
-          if (!hop.ip) return { hop: hop.hop, ip: null };
-          const geoRes = await fetch(`https://ipapi.co/${hop.ip}/json`);
+    const lines = stdout
+      .split("\n")
+      .filter((line) => line.trim().length > 0 && !line.startsWith("traceroute"));
+
+    const hops = await Promise.all(
+      lines.map(async (line) => {
+        const match = line.match(/\s*(\d+)\s+([\d\.]+)\s+\(([\d\.]+)\)\s+([\d\.]+)\s+ms/);
+        if (!match) return null;
+
+        const hopNum = Number(match[1]);
+        const ip = match[3];
+        const rtt = Number(match[4]);
+
+        // Get geolocation for each hop (using ipapi)
+        try {
+          const geoRes = await fetch(`https://ipapi.co/${ip}/json`);
           const geo = await geoRes.json();
-
           return {
-            hop: hop.hop,
-            ip: hop.ip,
-            rtt: hop.rtt1 || 0,
+            hop: hopNum,
+            ip,
+            rtt,
             city: geo.city || "Unknown",
             country: geo.country_name || "Unknown",
             lat: geo.latitude,
             lon: geo.longitude,
           };
-        });
+        } catch {
+          return { hop: hopNum, ip, rtt, city: "Unknown", country: "Unknown" };
+        }
+      })
+    );
 
-        const results = await Promise.all(geoPromises);
-        hops.push(...results);
-        resolve();
-      });
+    return NextResponse.json({
+      host,
+      hops: hops.filter(Boolean),
+      total: hops.length,
+      timestamp: new Date().toISOString(),
     });
-
-    return NextResponse.json({ host, hops });
   } catch (err: any) {
-    return NextResponse.json({ error: err.message || "Traceroute failed" }, { status: 500 });
+    console.error("Traceroute error:", err);
+    return NextResponse.json(
+      { error: err.message || "Traceroute failed" },
+      { status: 500 }
+    );
   }
 }
