@@ -109,9 +109,16 @@ export default function SmartTracerouteMap({ hops }: SmartTracerouteMapProps) {
       });
 
       const bounds = new mapboxgl.LngLatBounds();
-      lineCoords.forEach((c) => bounds.extend(c));
-      currentMap.fitBounds(bounds, { padding: 80, duration: 1000 });
-    }
+
+// Ensure coordinates are valid [lon, lat] tuples
+lineCoords.forEach(([lon, lat]) => {
+  if (typeof lon === "number" && typeof lat === "number") {
+    bounds.extend([lon, lat] as [number, number]);
+  }
+});
+
+currentMap.fitBounds(bounds, { padding: 80, duration: 1000 });
+
   }, [hops]);
 
   return (
