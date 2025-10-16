@@ -2,9 +2,9 @@
 
 import { useState } from 'react';
 import { useParams } from 'next/navigation';
-import { ArrowLeft, Loader2, Search } from 'lucide-react';
+import { ArrowLeft, Search } from 'lucide-react';
 import Link from 'next/link';
-import ResultViewer from '@/components/netscan/ResultViewer';
+import ResultPanel from '@/components/netscan/ResultPanel';
 
 const toolConfig: Record<
   string,
@@ -143,33 +143,23 @@ export default function ToolPage() {
               disabled={loading}
               className="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-8 py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-cyan-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
             >
-              {loading ? (
-                <>
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                  Scanning...
-                </>
-              ) : (
-                <>
-                  <Search className="w-5 h-5" />
-                  Scan
-                </>
-              )}
+              <Search className="w-5 h-5" />
+              {loading ? 'Scanning...' : 'Scan'}
             </button>
           </div>
-
-          {error && (
-            <div className="mt-4 p-4 bg-red-50 border-2 border-red-200 rounded-lg text-red-700">
-              {error}
-            </div>
-          )}
         </div>
 
-        {/* Results Section */}
-        {result && <ResultViewer data={result} title={config.title} />}
+        {/* Results Section with new ResultPanel */}
+        <ResultPanel 
+          title={config.title} 
+          data={result} 
+          loading={loading} 
+          error={error} 
+        />
 
         {/* Info Section */}
-        {!result && !loading && (
-          <div className="bg-blue-50 rounded-lg border-2 border-blue-200 p-6">
+        {!result && !loading && !error && (
+          <div className="bg-blue-50 rounded-lg border-2 border-blue-200 p-6 mt-8">
             <h3 className="text-lg font-semibold text-blue-900 mb-2">
               How to use
             </h3>
@@ -184,4 +174,3 @@ export default function ToolPage() {
     </div>
   );
 }
-
