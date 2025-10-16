@@ -9,14 +9,12 @@ export default function Home() {
   return (
     <>
       <Navigation />
-
-      <main className="pt-28 md:pt-32 flex flex-col gap-28">
+      <main className="flex flex-col gap-28">
         <HeroSection />
         <TrendingSection />
         <PillarsSection />
         <CTASection />
       </main>
-
       <Footer />
     </>
   );
