@@ -8,21 +8,9 @@ const cache = new LRUCache<string, any>({
 });
 
 // Optional API key security
-const API_KEY = process.env.NETSCAN_API_KEY;
 
 export async function GET(request: NextRequest) {
   try {
-    // Check API key if configured
-    if (API_KEY) {
-      const authHeader = request.headers.get('authorization');
-      if (authHeader !== `Bearer ${API_KEY}`) {
-        return NextResponse.json(
-          { error: 'Unauthorized' },
-          { status: 401 }
-        );
-      }
-    }
-
     const { searchParams } = new URL(request.url);
     const ip = searchParams.get('ip');
 
