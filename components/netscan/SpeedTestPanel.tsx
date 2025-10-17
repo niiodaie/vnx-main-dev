@@ -7,8 +7,8 @@ interface Metric {
   label: string;
   value: number;
   unit: string;
-  icon: JSX.Element;
-  color: string;
+  icon: React.ReactNode;
+  color: "blue" | "cyan" | "violet";
 }
 
 export default function SpeedTestPanel() {
@@ -16,24 +16,30 @@ export default function SpeedTestPanel() {
   const [metrics, setMetrics] = useState<Metric[]>([]);
   const [status, setStatus] = useState<string>("Ready to Test");
 
+  const colorMap: Record<string, string> = {
+    blue: "bg-blue-100 text-blue-600",
+    cyan: "bg-cyan-100 text-cyan-600",
+    violet: "bg-violet-100 text-violet-600",
+  };
+
   const runSpeedTest = async () => {
     setTesting(true);
     setStatus("Running speed test...");
     setMetrics([]);
 
-    // Simulate live test values (replace with backend call later)
-    const simulated = [
+    const simulated: Metric[] = [
       { label: "Download", value: 0, unit: "Mbps", color: "blue", icon: <ArrowDown className="w-4 h-4" /> },
       { label: "Upload", value: 0, unit: "Mbps", color: "cyan", icon: <ArrowUp className="w-4 h-4" /> },
       { label: "Latency", value: 0, unit: "ms", color: "violet", icon: <Gauge className="w-4 h-4" /> },
     ];
     setMetrics(simulated);
 
+    // Simulated gradual results for visual feedback
     for (let i = 0; i < 30; i++) {
       await new Promise((r) => setTimeout(r, 150));
-      simulated[0].value = Math.min(100, simulated[0].value + Math.random() * 6); // download
-      simulated[1].value = Math.min(40, simulated[1].value + Math.random() * 3); // upload
-      simulated[2].value = 5 + Math.random() * 40; // latency
+      simulated[0].value = Math.min(100, simulated[0].value + Math.random() * 6);
+      simulated[1].value = Math.min(40, simulated[1].value + Math.random() * 3);
+      simulated[2].value = 5 + Math.random() * 40;
       setMetrics([...simulated]);
     }
 
@@ -74,7 +80,7 @@ export default function SpeedTestPanel() {
 
         {/* Status Banner */}
         <div
-          className={`mt-8 mx-auto max-w-md text-white font-semibold py-3 rounded-lg ${
+          className={`mt-8 mx-auto max-w-md text-white font-semibold py-3 rounded-lg transition-all ${
             status.includes("Complete")
               ? "bg-green-500"
               : status.includes("Running")
@@ -87,20 +93,22 @@ export default function SpeedTestPanel() {
 
         {/* Metrics Display */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-10">
-          {metrics.map((m, i) => (
-            <div
-              key={i}
-              className="bg-white border border-slate-200 rounded-xl shadow-sm p-6 flex flex-col items-center justify-center transition-all"
-            >
-              <div className={`p-3 rounded-full bg-${m.color}-100 text-${m.color}-600 mb-2`}>
-                {m.icon}
+          {metrics.map((m, i) => {
+            const colors = colorMap[m.color];
+            const [bg, text] = colors.split(" ");
+            return (
+              <div
+                key={i}
+                className="bg-white border border-slate-200 rounded-xl shadow-sm p-6 flex flex-col items-center justify-center transition-all animate-[popIn_0.3s_ease-in-out]"
+              >
+                <div className={`p-3 rounded-full ${bg} ${text} mb-2`}>{m.icon}</div>
+                <h3 className="text-lg font-semibold text-slate-700">{m.label}</h3>
+                <p className={`text-3xl font-bold ${text}`}>
+                  {m.value.toFixed(1)} {m.unit}
+                </p>
               </div>
-              <h3 className="text-lg font-semibold text-slate-700">{m.label}</h3>
-              <p className={`text-3xl font-bold text-${m.color}-600`}>
-                {m.value.toFixed(1)} {m.unit}
-              </p>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* Footer */}
@@ -114,3 +122,5 @@ export default function SpeedTestPanel() {
     </div>
   );
 }
+
+/* Add this CSS to globals.css for animation */
