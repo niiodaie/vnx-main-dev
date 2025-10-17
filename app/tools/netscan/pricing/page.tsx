@@ -1,12 +1,14 @@
 'use client';
-export const dynamic = "force-dynamic";
+export const dynamic = 'force-dynamic';
 export const fetchCache = 'force-no-store';
+export const revalidate = 0; // disable prerender caching
+
 import { useState } from 'react';
+import Link from 'next/link';
 import { Check, Zap, Crown, Loader2 } from 'lucide-react';
 import { useAuth } from '@/lib/auth/AuthContext';
-import { SUBSCRIPTION_PLANS } from '@/lib/payments/stripe';
-import Link from 'next/link';
 import { getStripe } from '@/lib/payments/stripeClient';
+import { SUBSCRIPTION_PLANS } from '@/lib/payments/stripe';
 
 export default function PricingPage() {
   const { user, isPro } = useAuth();
