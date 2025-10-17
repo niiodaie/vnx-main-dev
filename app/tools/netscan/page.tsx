@@ -2,9 +2,12 @@
 
 export const dynamic = 'force-dynamic';
 export const fetchCache = 'force-no-store';
-export const revalidate = 0; // always number (never boolean)
+export const revalidate = 0;
 
+import Link from 'next/link';
+import { Crown, Lock, Zap } from 'lucide-react';
 import { useAuth } from '@/lib/auth/AuthContext';
+import { NETSCAN_TOOLS } from '@/config/tools';
 
 
 export default function NetscanPage() {
