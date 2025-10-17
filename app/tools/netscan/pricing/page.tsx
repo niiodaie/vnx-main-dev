@@ -1,5 +1,6 @@
 'use client';
 export const dynamic = "force-dynamic";
+export const fetchCache = 'force-no-store';
 import { useState } from 'react';
 import { Check, Zap, Crown, Loader2 } from 'lucide-react';
 import { useAuth } from '@/lib/auth/AuthContext';
