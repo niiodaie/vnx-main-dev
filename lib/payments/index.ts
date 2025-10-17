@@ -1,18 +1,14 @@
- import { createLemonCheckout } from "./lemon";
+import { createLemonCheckout } from "./lemon";
 import { createStripeCheckout } from "./stripe";
 
 /**
- * ✅ Hybrid checkout selector
- * Automatically switches between Stripe and LemonSqueezy based on ENV.
+ * ✅ Hybrid checkout selector (Stripe or LemonSqueezy)
  */
 export async function createCheckoutSession(email: string, priceId: string) {
   const useStripe = process.env.NEXT_PUBLIC_USE_STRIPE === "true";
-
-  if (useStripe) {
-    return await createStripeCheckout(email, priceId);
-  } else {
-    return await createLemonCheckout(email, priceId);
-  }
+  return useStripe
+    ? await createStripeCheckout(email, priceId)
+    : await createLemonCheckout(email, priceId);
 }
 
 // Re-export utilities
