@@ -2,20 +2,13 @@
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User } from '@supabase/supabase-js';
-import {
-  getCurrentUser,
-  getUserTier,
-  hasProAccess,
-  onAuthStateChange,
-  signOut as supabaseSignOut,
-  UserTier,
-} from './supabase';
+import { supabase, getCurrentUser, getUserTier } from './supabase';
 
 interface AuthContextType {
   user: User | null;
-  tier: UserTier;
-  isPro: boolean;
   loading: boolean;
+  isPro: boolean;
+  tier: 'free' | 'pro';
   signOut: () => Promise<void>;
   refreshUser: () => Promise<void>;
 }
@@ -24,27 +17,24 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
-  const [tier, setTier] = useState<UserTier>('free');
-  const [isPro, setIsPro] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [tier, setTier] = useState<'free' | 'pro'>('free');
 
   const refreshUser = async () => {
-    setLoading(true);
     try {
       const currentUser = await getCurrentUser();
       setUser(currentUser);
-
+      
       if (currentUser) {
         const userTier = await getUserTier(currentUser.id);
-        const proAccess = await hasProAccess(currentUser.id);
         setTier(userTier);
-        setIsPro(proAccess);
       } else {
         setTier('free');
-        setIsPro(false);
       }
     } catch (error) {
       console.error('Error refreshing user:', error);
+      setUser(null);
+      setTier('free');
     } finally {
       setLoading(false);
     }
@@ -53,38 +43,51 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     refreshUser();
 
-    const { data: authListener } = onAuthStateChange((user) => {
-      setUser(user);
-      if (user) {
-        getUserTier(user.id).then(setTier);
-        hasProAccess(user.id).then(setIsPro);
-      } else {
-        setTier('free');
-        setIsPro(false);
-      }
+    if (!supabase) {
       setLoading(false);
-    });
+      return;
+    }
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        setUser(session?.user ?? null);
+        
+        if (session?.user) {
+          const userTier = await getUserTier(session.user.id);
+          setTier(userTier);
+        } else {
+          setTier('free');
+        }
+        
+        setLoading(false);
+      }
+    );
 
     return () => {
-      authListener.subscription.unsubscribe();
+      subscription.unsubscribe();
     };
   }, []);
 
-  const handleSignOut = async () => {
-    await supabaseSignOut();
-    setUser(null);
-    setTier('free');
-    setIsPro(false);
+  const signOut = async () => {
+    if (!supabase) return;
+    
+    try {
+      await supabase.auth.signOut();
+      setUser(null);
+      setTier('free');
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
   };
 
   return (
     <AuthContext.Provider
       value={{
         user,
-        tier,
-        isPro,
         loading,
-        signOut: handleSignOut,
+        isPro: tier === 'pro',
+        tier,
+        signOut,
         refreshUser,
       }}
     >
@@ -100,4 +103,3 @@ export function useAuth() {
   }
   return context;
 }
-
