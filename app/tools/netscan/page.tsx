@@ -104,7 +104,6 @@ export default function NetscanPage() {
           </section>
         )}
       </div>
-    </main>
   );
 }
 
