@@ -6,7 +6,6 @@ import { siteConfig } from "@/config/site";
 import VNXIntroSplash from "@/components/VNXIntroSplash";
 import VNXPageLoader from "@/components/VNXPageLoader";
 
-
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -68,26 +67,19 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        {children}
-        <Analytics />
-      </body>
-    </html>
-  );
-}
-
-export default function RootLayout({ children }) {
-  return (
-    <html lang="en">
-      <body className="antialiased">
+      <body className={`${inter.className} antialiased`}>
+        {/* Hybrid Loaders */}
         <VNXIntroSplash />
         <VNXPageLoader />
+
+        {/* Main Content */}
         {children}
+
+        {/* Analytics (Visnec Insights) */}
+        <Analytics />
       </body>
     </html>
   );
