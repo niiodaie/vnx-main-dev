@@ -1,18 +1,9 @@
+ /**
+ * ✅ LemonSqueezy Checkout Handler
+ * Used when NEXT_PUBLIC_USE_STRIPE !== "true"
+ */
 export async function createLemonCheckout(email: string, priceId: string) {
-  const response = await fetch("https://api.lemonsqueezy.com/v1/checkouts", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${process.env.LEMON_API_KEY}`,
-    },
-    body: JSON.stringify({
-      data: {
-        type: "checkouts",
-        attributes: { product_id: priceId, email },
-      },
-    }),
-  });
-
-  const json = await response.json();
-  return json.data?.attributes?.url;
+  const storeUrl = process.env.NEXT_PUBLIC_LEMON_STORE_URL || "https://store.lemonsqueezy.com";
+  const productUrl = `${storeUrl}/checkout/buy/${priceId}?email=${encodeURIComponent(email)}`;
+  return productUrl;
 }
