@@ -1,61 +1,45 @@
 // lib/payments/stripe.ts
 import Stripe from "stripe";
 
-// ✅ Let Stripe handle API version automatically
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "");
-
-  apiVersion: "2024-06-20",
+/**
+ * ✅ Initialize Stripe securely using your secret key.
+ * Do not include this file in client bundles.
+ */
+export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "", {
+  // Let Stripe pick the right version automatically
+  apiVersion: "2025-09-30.clover" as any,
 });
 
-// ✅ Add missing function
+/**
+ * ✅ Creates a Stripe Checkout session for subscription payments.
+ * @param email - The user's email address.
+ * @param priceId - The Stripe price ID (from your dashboard).
+ * @returns A checkout URL string or null.
+ */
 export async function createStripeCheckout(email: string, priceId: string) {
+  if (!process.env.STRIPE_SECRET_KEY) {
+    console.error("❌ Missing STRIPE_SECRET_KEY in environment.");
+    return null;
+  }
+
   try {
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
+      payment_method_types: ["card"],
       customer_email: email,
-      line_items: [{ price: priceId, quantity: 1 }],
+      line_items: [
+        {
+          price: priceId,
+          quantity: 1,
+        },
+      ],
       success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/tools/netscan/success`,
-      cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/tools/netscan/cancel`,
+      cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/tools/netscan/pricing`,
     });
 
-    return session.url; // Return Stripe-hosted checkout URL
-  } catch (error) {
-    console.error("❌ Stripe Checkout Error:", error);
-    throw new Error("Failed to create Stripe checkout session");
+    return session.url;
+  } catch (error: any) {
+    console.error("Stripe checkout creation failed:", error.message);
+    return null;
   }
 }
-
-// Keep your subscription plans here too
-export const SUBSCRIPTION_PLANS = {
-  PRO_MONTHLY: {
-    name: "Pro Monthly",
-    price: 9.99,
-    priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_MONTHLY || "",
-    interval: "month" as const,
-    features: [
-      "All network diagnostic tools",
-      "Port Scanner & SSL Check",
-      "Wireshark Light",
-      "No ads",
-      "Export history",
-      "Priority support",
-      "Unlimited requests",
-    ],
-  },
-  PRO_YEARLY: {
-    name: "Pro Yearly",
-    price: 99.0,
-    priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_YEARLY || "",
-    interval: "year" as const,
-    features: [
-      "All network diagnostic tools",
-      "Port Scanner & SSL Check",
-      "Wireshark Light",
-      "No ads",
-      "Export history",
-      "Priority support",
-      "Unlimited requests",
-      "Save $20/year",
-    ],
-  },
-};
