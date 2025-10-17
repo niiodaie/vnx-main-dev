@@ -1,29 +1,40 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createCheckoutSession } from '@/lib/payments/stripe';
+import { getCurrentUser } from '@/lib/auth/supabase';
 
 export async function POST(request: NextRequest) {
   try {
-    const { userId, priceId } = await request.json();
-
-    if (!userId || !priceId) {
+    const user = await getCurrentUser();
+    
+    if (!user) {
       return NextResponse.json(
-        { error: 'Missing required fields' },
+        { error: 'Authentication required' },
+        { status: 401 }
+      );
+    }
+
+    const body = await request.json();
+    const { priceId } = body;
+
+    if (!priceId) {
+      return NextResponse.json(
+        { error: 'Price ID is required' },
         { status: 400 }
       );
     }
 
-    const origin = request.headers.get('origin') || 'http://localhost:3000';
-    const successUrl = `${origin}/tools/netscan?success=true`;
-    const cancelUrl = `${origin}/tools/netscan?canceled=true`;
+    const origin = request.headers.get('origin') || process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+    const successUrl = `${origin}/tools/netscan?upgraded=true`;
+    const cancelUrl = `${origin}/tools/netscan/pricing?canceled=true`;
 
     const session = await createCheckoutSession(
-      userId,
+      user.id,
       priceId,
       successUrl,
       cancelUrl
     );
 
-    return NextResponse.json({ sessionId: session.id, url: session.url });
+    return NextResponse.json({ sessionId: session.id });
   } catch (error: any) {
     console.error('Checkout error:', error);
     return NextResponse.json(
@@ -32,4 +43,3 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-
