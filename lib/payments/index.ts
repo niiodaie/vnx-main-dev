@@ -1,11 +1,9 @@
-// lib/payments/index.ts
-
-import { createLemonCheckout } from "./lemon";
+ import { createLemonCheckout } from "./lemon";
 import { createStripeCheckout } from "./stripe";
 
 /**
- * Hybrid checkout selector
- * Automatically switches between Stripe and LemonSqueezy based on ENV config
+ * ✅ Hybrid checkout selector
+ * Automatically switches between Stripe and LemonSqueezy based on ENV.
  */
 export async function createCheckoutSession(email: string, priceId: string) {
   const useStripe = process.env.NEXT_PUBLIC_USE_STRIPE === "true";
@@ -17,5 +15,7 @@ export async function createCheckoutSession(email: string, priceId: string) {
   }
 }
 
+// Re-export utilities
 export * from "./stripe";
 export * from "./stripeClient";
+export * from "./lemon";
