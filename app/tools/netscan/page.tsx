@@ -22,20 +22,6 @@ export default function NetscanPage() {
         </p>
       </section>
 
-      {!loading && !isPro && (
-        <Link
-          href="/tools/netscan/pricing"
-          className="inline-flex items-center gap-2 px-6 py-3 bg-white text-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition-colors"
-        >
-          <Crown className="w-5 h-5" />
-          Upgrade to Pro
-        </Link>
-      )}
-    </main>
-  );
-}
-
-
       {/* TOOL GROUPS */}
       <div className="max-w-7xl mx-auto px-6 mt-12 space-y-16">
         {/* Free Tools */}
@@ -48,7 +34,7 @@ export default function NetscanPage() {
             </span>
           </div>
           <p className="text-gray-600 mb-8">
-            Essential network diagnostic tools available for free with rate limiting
+            Essential network diagnostic tools available for free with rate limiting.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -68,7 +54,7 @@ export default function NetscanPage() {
             </span>
           </div>
           <p className="text-gray-600 mb-8">
-            Advanced network analysis tools with unlimited requests
+            Advanced network analysis tools with unlimited requests.
             {!isPro && (
               <Link
                 href="/tools/netscan/pricing"
@@ -92,7 +78,7 @@ export default function NetscanPage() {
             <Crown className="w-16 h-16 mx-auto mb-6" />
             <h2 className="text-3xl font-bold mb-4">Ready to unlock all tools?</h2>
             <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-              Upgrade to VNX-Netscan Pro and get unlimited access to all 10 professional network diagnostic tools
+              Upgrade to VNX-Netscan Pro and get unlimited access to all 10 professional network diagnostic tools.
             </p>
             <Link
               href="/tools/netscan/pricing"
@@ -102,7 +88,11 @@ export default function NetscanPage() {
               View Pricing
             </Link>
           </section>
-      
+        )}
+      </div>
+    </main>
+  );
+}
 
 interface ToolCardProps {
   tool: {
@@ -156,4 +146,3 @@ function ToolCard({ tool, isPro, hasAccess }: ToolCardProps) {
     </Link>
   );
 }
-
