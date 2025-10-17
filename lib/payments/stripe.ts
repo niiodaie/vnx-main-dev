@@ -1,20 +1,15 @@
-// lib/payments/stripe.ts
-import Stripe from "stripe";
+ import Stripe from "stripe";
 
 /**
  * ✅ Initialize Stripe securely using your secret key.
- * Do not include this file in client bundles.
+ * This file runs only on the server — do not import in client components.
  */
 export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "", {
-  // Let Stripe pick the right version automatically
   apiVersion: "2025-09-30.clover" as any,
 });
 
 /**
- * ✅ Creates a Stripe Checkout session for subscription payments.
- * @param email - The user's email address.
- * @param priceId - The Stripe price ID (from your dashboard).
- * @returns A checkout URL string or null.
+ * ✅ Create Stripe Checkout Session for subscriptions.
  */
 export async function createStripeCheckout(email: string, priceId: string) {
   if (!process.env.STRIPE_SECRET_KEY) {
@@ -39,7 +34,7 @@ export async function createStripeCheckout(email: string, priceId: string) {
 
     return session.url;
   } catch (error: any) {
-    console.error("Stripe checkout creation failed:", error.message);
+    console.error("❌ Stripe checkout creation failed:", error.message);
     return null;
   }
 }
