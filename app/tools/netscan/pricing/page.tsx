@@ -3,9 +3,9 @@
 import { useState } from 'react';
 import { Check, Zap, Crown, Loader2 } from 'lucide-react';
 import { useAuth } from '@/lib/auth/AuthContext';
-import { getStripe } from '@/lib/payments/stripe';
 import { SUBSCRIPTION_PLANS } from '@/lib/payments/stripe';
 import Link from 'next/link';
+import { getStripe } from '@/lib/payments/stripeClient';
 
 export default function PricingPage() {
   const { user, isPro } = useAuth();
