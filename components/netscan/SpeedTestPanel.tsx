@@ -146,87 +146,85 @@ export default function SpeedTestPanel() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white py-12 px-6">
-      <div className="max-w-3xl mx-auto text-center">
-        <h1 className="text-4xl font-bold text-slate-800 mb-2">
-          VNX Speed Test
-        </h1>
-        <p className="text-slate-500 mb-6">
-          Real network diagnostics powered by VNX-Netscan — measure latency,
-          download, and upload speed.
-        </p>
-        <div className="inline-flex items-center text-sm text-blue-600 font-medium">
-          <Wifi className="w-4 h-4 mr-1" /> Running via Cloudflare Network
-        </div>
-
-        <div className="mt-8">
-          <button
-            onClick={runSpeedTest}
-            disabled={testing}
-            className="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-8 py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-cyan-700 transition-all disabled:opacity-50 flex items-center justify-center mx-auto gap-2"
-          >
-            {testing ? (
-              <>
-                <Loader2 className="w-4 h-4 animate-spin" /> Testing...
-              </>
-            ) : (
-              <>
-                <Gauge className="w-4 h-4" /> Start Test
-              </>
-            )}
-          </button>
-        </div>
-
-        <div
-          className={`mt-8 mx-auto max-w-md text-white font-semibold py-3 rounded-lg transition-all ${
-            status.includes("Complete")
-              ? "bg-green-500"
-              : status.includes("Running") || status.includes("Testing")
-              ? "bg-blue-500 animate-pulse"
-              : "bg-slate-400"
-          }`}
-        >
-          {status}
-        </div>
-
-        {/* Metrics */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-10">
-          {metrics.map((m, i) => {
-            const colors = colorMap[m.color];
-            const [bg, text] = colors.split(" ");
-            return (
-              <div
-                key={i}
-                className="bg-white border border-slate-200 rounded-xl shadow-sm p-6 flex flex-col items-center justify-center transition-all animate-[popIn_0.3s_ease-in-out]"
-              >
-                <div className={`p-3 rounded-full ${bg} ${text} mb-2`}>
-                  {m.icon}
-                </div>
-                <h3 className="text-lg font-semibold text-slate-700">
-                  {m.label}
-                </h3>
-                <p className={`text-3xl font-bold ${text}`}>
-                  {m.value.toFixed(1)} {m.unit}
-                </p>
-              </div>
-            );
-          })}
-        </div>
-
-        {error && (
-          <div className="mt-6 bg-red-100 text-red-600 px-4 py-3 rounded-lg flex items-center justify-center gap-2">
-            <AlertTriangle className="w-4 h-4" /> {error}
-          </div>
-        )}
-
-        {!testing && status.includes("Complete") && (
-          <div className="mt-8 text-slate-500 text-sm flex justify-center items-center gap-2">
-            <CheckCircle className="w-4 h-4 text-green-600" />
-            <span>Network test completed successfully.</span>
-          </div>
-        )}
-      </div>
+    <div className="min-h-screen bg-gradient-to-b from-white via-slate-50 to-slate-100 pt-28 pb-20 px-6">
+  <div className="max-w-4xl mx-auto text-center">
+    {/* Header */}
+    <h1 className="text-5xl md:text-6xl font-extrabold text-slate-800 mb-4 tracking-tight">
+      VNX Speed Test
+    </h1>
+    <p className="text-lg text-slate-600 mb-6 leading-relaxed">
+      Real-time network diagnostics powered by <span className="font-semibold text-blue-600">VNX-Netscan</span> — 
+      measure <span className="text-blue-500">download</span>, <span className="text-cyan-500">upload</span>, and <span className="text-violet-500">latency</span>.
+    </p>
+    <div className="inline-flex items-center text-sm text-blue-600 font-medium mb-10 bg-blue-50 px-4 py-2 rounded-full">
+      <Wifi className="w-4 h-4 mr-2" /> Running via Cloudflare Network
     </div>
+
+    {/* Start Button */}
+    <div className="mt-4">
+      <button
+        onClick={runSpeedTest}
+        disabled={testing}
+        className="px-10 py-4 rounded-xl text-lg font-semibold bg-gradient-to-r from-blue-600 to-cyan-600 text-white shadow-md hover:from-blue-700 hover:to-cyan-700 disabled:opacity-50 transition-all duration-300 flex items-center justify-center mx-auto gap-3"
+      >
+        {testing ? (
+          <>
+            <Loader2 className="w-5 h-5 animate-spin" /> Testing...
+          </>
+        ) : (
+          <>
+            <Gauge className="w-5 h-5" /> Start Test
+          </>
+        )}
+      </button>
+    </div>
+
+    {/* Status Bar */}
+    <div
+      className={`mt-10 mx-auto max-w-md text-white font-semibold py-3 rounded-xl shadow-sm transition-all ${
+        status.includes("Complete")
+          ? "bg-green-500"
+          : status.includes("Running") || status.includes("Testing")
+          ? "bg-blue-500 animate-pulse"
+          : "bg-slate-400"
+      }`}
+    >
+      {status}
+    </div>
+
+    {/* Results Grid */}
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mt-12">
+      {metrics.map((m, i) => {
+        const colors = colorMap[m.color];
+        const [bg, text] = colors.split(" ");
+        return (
+          <div
+            key={i}
+            className="bg-white rounded-2xl shadow-lg p-8 flex flex-col items-center justify-center border border-slate-100 hover:shadow-xl transition-all duration-300"
+          >
+            <div className={`p-4 rounded-full ${bg} ${text} mb-3`}>{m.icon}</div>
+            <h3 className="text-xl font-semibold text-slate-700 mb-1">{m.label}</h3>
+            <p className={`text-4xl font-bold ${text}`}>{m.value.toFixed(1)} {m.unit}</p>
+          </div>
+        );
+      })}
+    </div>
+
+    {/* Footer */}
+    {!testing && status.includes("Complete") && (
+      <div className="mt-12 text-slate-500 text-sm flex justify-center items-center gap-2">
+        <CheckCircle className="w-5 h-5 text-green-600" />
+        <span>Network test completed successfully.</span>
+      </div>
+    )}
+
+    {error && (
+      <div className="mt-10 bg-red-100 text-red-600 px-4 py-3 rounded-lg flex items-center justify-center gap-2 shadow-sm">
+        <AlertTriangle className="w-5 h-5" /> {error}
+      </div>
+    )}
+  </div>
+</div>
   );
 }
 
