@@ -1,10 +1,11 @@
 'use client';
-export const dynamic = "force-dynamic";
 
-import Link from 'next/link';
-import { Crown, Lock, Zap } from 'lucide-react';
+export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store';
+export const revalidate = 0; // always number (never boolean)
+
 import { useAuth } from '@/lib/auth/AuthContext';
-import { NETSCAN_TOOLS } from '@/config/tools';
+
 
 export default function NetscanPage() {
   const { isPro, loading } = useAuth();
