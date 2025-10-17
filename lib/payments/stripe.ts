@@ -5,7 +5,25 @@ export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "", {
   apiVersion: "2024-06-20",
 });
 
-// ✅ Add the missing export for SUBSCRIPTION_PLANS
+// ✅ Add missing function
+export async function createStripeCheckout(email: string, priceId: string) {
+  try {
+    const session = await stripe.checkout.sessions.create({
+      mode: "subscription",
+      customer_email: email,
+      line_items: [{ price: priceId, quantity: 1 }],
+      success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/tools/netscan/success`,
+      cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/tools/netscan/cancel`,
+    });
+
+    return session.url; // Return Stripe-hosted checkout URL
+  } catch (error) {
+    console.error("❌ Stripe Checkout Error:", error);
+    throw new Error("Failed to create Stripe checkout session");
+  }
+}
+
+// Keep your subscription plans here too
 export const SUBSCRIPTION_PLANS = {
   PRO_MONTHLY: {
     name: "Pro Monthly",
