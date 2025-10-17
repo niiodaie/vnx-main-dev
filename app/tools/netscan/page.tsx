@@ -102,10 +102,7 @@ export default function NetscanPage() {
               View Pricing
             </Link>
           </section>
-        )}
-      </div>
-  );
-}
+      
 
 interface ToolCardProps {
   tool: {
