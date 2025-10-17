@@ -1,5 +1,6 @@
 'use client';
-
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 import Link from 'next/link';
 import { Crown, Lock, Zap } from 'lucide-react';
 import { useAuth } from '@/lib/auth/AuthContext';
