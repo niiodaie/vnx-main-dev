@@ -1,13 +1,10 @@
-'use client';
+import { loadStripe, Stripe } from "@stripe/stripe-js";
 
-import { loadStripe, Stripe as StripeJS } from '@stripe/stripe-js';
-
-let stripePromise: Promise<StripeJS | null>;
+let stripePromise: Promise<Stripe | null>;
 
 export const getStripe = () => {
   if (!stripePromise) {
-    const key = process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY || '';
-    stripePromise = loadStripe(key);
+    stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY || "");
   }
   return stripePromise;
 };
