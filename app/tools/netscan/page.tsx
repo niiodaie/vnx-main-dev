@@ -1,6 +1,6 @@
 'use client';
 export const dynamic = "force-dynamic";
-export const revalidate = 0;
+
 import Link from 'next/link';
 import { Crown, Lock, Zap } from 'lucide-react';
 import { useAuth } from '@/lib/auth/AuthContext';
@@ -18,19 +18,23 @@ export default function NetscanPage() {
       <section className="bg-gradient-to-r from-blue-600 to-cyan-600 text-white text-center py-16 shadow-md">
         <h1 className="text-4xl md:text-5xl font-extrabold mb-4">VNX-Netscan</h1>
         <p className="text-lg md:text-xl text-blue-100 max-w-2xl mx-auto leading-relaxed mb-6">
-          Professional Network Diagnostic Suite — analyze IPs, trace routes, and monitor connectivity in real-time.
+          Professional Network Diagnostic Suite — analyze IPs, trace routes, and monitor connectivity in real time.
         </p>
-
-        {!loading && !isPro && (
-          <Link
-            href="/tools/netscan/pricing"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-white text-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition-colors"
-          >
-            <Crown className="w-5 h-5" />
-            Upgrade to Pro
-          </Link>
-        )}
       </section>
+
+      {!loading && !isPro && (
+        <Link
+          href="/tools/netscan/pricing"
+          className="inline-flex items-center gap-2 px-6 py-3 bg-white text-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition-colors"
+        >
+          <Crown className="w-5 h-5" />
+          Upgrade to Pro
+        </Link>
+      )}
+    </main>
+  );
+}
+
 
       {/* TOOL GROUPS */}
       <div className="max-w-7xl mx-auto px-6 mt-12 space-y-16">
