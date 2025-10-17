@@ -1,93 +1,158 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-
-const toolGroups = [
-  {
-    title: "Core Lookups",
-    description: "Essential IP and domain intelligence tools",
-    tools: [
-      { name: "IP Lookup", href: "/tools/netscan/ip-lookup", color: "from-blue-500 to-cyan-500", emoji: "🌐", status: "Live" },
-      { name: "GeoIP", href: "/tools/netscan/geoip", color: "from-green-500 to-emerald-500", emoji: "🗺️", status: "Live" },
-      { name: "WHOIS Lookup", href: "/tools/netscan/whois", color: "from-purple-500 to-pink-500", emoji: "🔍", status: "Live" },
-      { name: "DNS Lookup", href: "/tools/netscan/dns", color: "from-orange-500 to-red-500", emoji: "🧩", status: "Live" },
-    ],
-  },
-  {
-    title: "Diagnostics & Monitoring",
-    description: "Measure connectivity, latency, and network paths",
-    tools: [
-      { name: "Pretty Ping", href: "/tools/netscan/ping", color: "from-sky-500 to-indigo-500", emoji: "📡", status: "Beta" },
-      { name: "Smart Traceroute", href: "/tools/netscan/traceroute", color: "from-teal-500 to-cyan-600", emoji: "🌐", status: "Live" },
-      { name: "Speed Test", href: "/tools/netscan/speed", color: "from-yellow-400 to-orange-500", emoji: "⚡", status: "Soon" },
-    ],
-  },
-  {
-    title: "IT Utilities (Pro)",
-    description: "Advanced network and wireless analysis tools",
-    tools: [
-      { name: "Port Scanner", href: "#", color: "from-slate-500 to-slate-700", emoji: "🛠️", status: "Pro" },
-      { name: "SSL/TLS Checker", href: "#", color: "from-blue-700 to-indigo-700", emoji: "🔐", status: "Pro" },
-      { name: "Wireless Scanner", href: "#", color: "from-pink-500 to-rose-600", emoji: "📶", status: "Pro" },
-      { name: "MAC Lookup", href: "#", color: "from-cyan-500 to-teal-600", emoji: "💻", status: "Pro" },
-    ],
-  },
-];
+import Link from 'next/link';
+import { Crown, Lock, Zap } from 'lucide-react';
+import { useAuth } from '@/lib/auth/AuthContext';
+import { NETSCAN_TOOLS } from '@/config/tools';
 
 export default function NetscanPage() {
+  const { isPro, loading } = useAuth();
+
+  const freeTools = NETSCAN_TOOLS.filter((tool) => tool.tier === 'free' && tool.enabled);
+  const proTools = NETSCAN_TOOLS.filter((tool) => tool.tier === 'pro' && tool.enabled);
+
   return (
     <main className="min-h-screen bg-gradient-to-b from-slate-50 to-white pb-20">
       {/* HERO */}
       <section className="bg-gradient-to-r from-blue-600 to-cyan-600 text-white text-center py-16 shadow-md">
         <h1 className="text-4xl md:text-5xl font-extrabold mb-4">VNX-Netscan</h1>
-        <p className="text-lg md:text-xl text-blue-100 max-w-2xl mx-auto leading-relaxed">
+        <p className="text-lg md:text-xl text-blue-100 max-w-2xl mx-auto leading-relaxed mb-6">
           Professional Network Diagnostic Suite — analyze IPs, trace routes, and monitor connectivity in real-time.
         </p>
+
+        {!loading && !isPro && (
+          <Link
+            href="/tools/netscan/pricing"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-white text-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition-colors"
+          >
+            <Crown className="w-5 h-5" />
+            Upgrade to Pro
+          </Link>
+        )}
       </section>
 
       {/* TOOL GROUPS */}
       <div className="max-w-7xl mx-auto px-6 mt-12 space-y-16">
-        {toolGroups.map((group) => (
-          <div key={group.title}>
-            <div className="mb-6">
-              <h2 className="text-2xl font-bold text-slate-800 flex items-center gap-2">
-                {group.title}
-              </h2>
-              <p className="text-slate-500">{group.description}</p>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {group.tools.map((tool) => (
-                <Link
-                  key={tool.name}
-                  href={tool.href}
-                  className={`group relative bg-gradient-to-br ${tool.color} text-white rounded-xl p-6 flex flex-col justify-between shadow-md hover:shadow-xl transition-transform hover:-translate-y-1`}
-                >
-                  <div>
-                    <div className="text-4xl mb-3">{tool.emoji}</div>
-                    <h3 className="text-lg font-semibold mb-2">{tool.name}</h3>
-                    <p className="text-sm opacity-90">
-                      {tool.status === "Pro" ? "Available in Pro version" : "Click to explore"}
-                    </p>
-                  </div>
-
-                  <div
-                    className={`absolute top-3 right-3 text-xs font-semibold px-2 py-1 rounded-full ${
-                      tool.status === "Live"
-                        ? "bg-green-100 text-green-700"
-                        : tool.status === "Beta"
-                        ? "bg-yellow-100 text-yellow-700"
-                        : "bg-slate-200 text-slate-700"
-                    }`}
-                  >
-                    {tool.status}
-                  </div>
-                </Link>
-              ))}
-            </div>
+        {/* Free Tools */}
+        <section>
+          <div className="flex items-center gap-3 mb-6">
+            <Zap className="w-6 h-6 text-blue-600" />
+            <h2 className="text-3xl font-bold text-gray-900">Free Tools</h2>
+            <span className="px-3 py-1 bg-blue-100 text-blue-700 text-sm font-semibold rounded-full">
+              5 requests/min
+            </span>
           </div>
-        ))}
+          <p className="text-gray-600 mb-8">
+            Essential network diagnostic tools available for free with rate limiting
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {freeTools.map((tool) => (
+              <ToolCard key={tool.id} tool={tool} isPro={false} hasAccess={true} />
+            ))}
+          </div>
+        </section>
+
+        {/* Pro Tools */}
+        <section>
+          <div className="flex items-center gap-3 mb-6">
+            <Crown className="w-6 h-6 text-yellow-500" />
+            <h2 className="text-3xl font-bold text-gray-900">Pro Tools</h2>
+            <span className="px-3 py-1 bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-sm font-semibold rounded-full">
+              Unlimited
+            </span>
+          </div>
+          <p className="text-gray-600 mb-8">
+            Advanced network analysis tools with unlimited requests
+            {!isPro && (
+              <Link
+                href="/tools/netscan/pricing"
+                className="ml-2 text-blue-600 hover:text-blue-700 font-semibold"
+              >
+                Upgrade to unlock →
+              </Link>
+            )}
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {proTools.map((tool) => (
+              <ToolCard key={tool.id} tool={tool} isPro={true} hasAccess={isPro} />
+            ))}
+          </div>
+        </section>
+
+        {/* CTA Section */}
+        {!loading && !isPro && (
+          <section className="bg-gradient-to-r from-blue-600 to-cyan-600 rounded-2xl p-12 text-center text-white">
+            <Crown className="w-16 h-16 mx-auto mb-6" />
+            <h2 className="text-3xl font-bold mb-4">Ready to unlock all tools?</h2>
+            <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
+              Upgrade to VNX-Netscan Pro and get unlimited access to all 10 professional network diagnostic tools
+            </p>
+            <Link
+              href="/tools/netscan/pricing"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-white text-blue-600 rounded-lg font-semibold text-lg hover:bg-blue-50 transition-colors"
+            >
+              <Crown className="w-5 h-5" />
+              View Pricing
+            </Link>
+          </section>
+        )}
       </div>
     </main>
   );
 }
+
+interface ToolCardProps {
+  tool: {
+    id: string;
+    name: string;
+    description: string;
+    icon: string;
+    color: string;
+  };
+  isPro: boolean;
+  hasAccess: boolean;
+}
+
+function ToolCard({ tool, isPro, hasAccess }: ToolCardProps) {
+  const href = hasAccess ? `/tools/netscan/${tool.id}` : '/tools/netscan/pricing';
+
+  return (
+    <Link href={href}>
+      <div
+        className={`relative group bg-white rounded-xl shadow-md border-2 border-slate-200 p-6 transition-all hover:shadow-xl hover:scale-105 ${
+          !hasAccess ? 'opacity-75' : ''
+        }`}
+      >
+        {/* Pro Badge */}
+        {isPro && !hasAccess && (
+          <div className="absolute top-4 right-4 flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-xs font-bold rounded-full">
+            <Lock className="w-3 h-3" />
+            PRO
+          </div>
+        )}
+
+        {/* Icon */}
+        <div
+          className={`w-16 h-16 rounded-xl bg-gradient-to-br ${tool.color} flex items-center justify-center text-3xl mb-4`}
+        >
+          {tool.icon}
+        </div>
+
+        {/* Content */}
+        <h3 className="text-xl font-bold text-gray-900 mb-2">{tool.name}</h3>
+        <p className="text-gray-600 text-sm">{tool.description}</p>
+
+        {/* Locked Overlay */}
+        {!hasAccess && (
+          <div className="mt-4 flex items-center gap-2 text-blue-600 font-semibold text-sm">
+            <Crown className="w-4 h-4" />
+            Upgrade to unlock
+          </div>
+        )}
+      </div>
+    </Link>
+  );
+}
+
