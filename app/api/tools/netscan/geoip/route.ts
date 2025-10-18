@@ -8,21 +8,24 @@ import { hasToolAccess } from '@/config/tools';
 /**
  * GeoIP route
  *
- * - Accepts `ip` (IP or domain) and optional `mock=true`
+ * - Accepts `ip` (ip or domain) and optional `mock=true`
  * - Returns standardized JSON:
  *   { success: boolean, tool: 'geoip', data: {...}, timestamp, cached, rateLimit: {...} }
  *
  * Notes:
- * - In development (`NODE_ENV !== 'production'`) this route bypasses the Pro-only gate
- * - Supports IPv4, IPv6, and domain resolution (via DNS or DoH)
+ * - In development (`NODE_ENV !== 'production'`) this route bypasses the pro-only gate
+ *   so you can iterate without being blocked by subscription flags.
+ * - Domain resolution tries node dns.promises first; if unavailable (Edge runtime)
+ *   falls back to DNS-over-HTTPS (Google).
  */
 
-// Cache results for 10 minutes
+// LRU cache for lookups (10 minutes)
 const cache = new LRUCache<string, any>({
   max: 200,
   ttl: 1000 * 60 * 10,
 });
 
+// simple IPv4/IPv6 regexes
 const IPV4_REGEX = /^(25[0-5]|2[0-4]\d|1?\d{1,2})(\.(25[0-5]|2[0-4]\d|1?\d{1,2})){3}$/;
 const IPV6_REGEX = /^[0-9a-fA-F:]{2,}$/;
 
@@ -33,7 +36,7 @@ export async function GET(request: NextRequest) {
     const raw = (searchParams.get('ip') || '').trim();
     const useMocks = (searchParams.get('mock') || '').toLowerCase() === 'true';
 
-    // 1️⃣ Mock for testing
+    // quick mock support for dev/demo
     if (useMocks) {
       const mock = {
         success: true,
@@ -64,17 +67,17 @@ export async function GET(request: NextRequest) {
       });
     }
 
-    // 2️⃣ Validate input
+    // require ip parameter
     if (!raw) {
       return NextResponse.json({ error: 'IP address or domain is required' }, { status: 400 });
     }
 
-    // 3️⃣ User + Tier
+    // auth / tier / access
     const user = await getCurrentUser().catch(() => null);
     const userTier = user ? await getUserTier(user.id).catch(() => 'free') : 'free';
     const isProduction = process.env.NODE_ENV === 'production';
 
-    // 4️⃣ Tier Access (Pro gate only in production)
+    // DEV: allow using tool when not production to avoid showing "Pro" gate while building
     const safeTier: 'free' | 'pro' = userTier === 'pro' ? 'pro' : 'free';
 
     if (isProduction && !hasToolAccess('geoip', safeTier)) {
@@ -88,7 +91,7 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // 5️⃣ Rate limiting
+    // rate limiting (allow higher limits for pro)
     const clientIp = getClientIp(request);
     const identifier = user?.id || clientIp || 'anon';
     const isPro = userTier === 'pro';
@@ -98,9 +101,10 @@ export async function GET(request: NextRequest) {
       return rateLimitResponse(rateLimit.resetIn);
     }
 
-    // 6️⃣ Resolve domain if needed
+    // resolve domain -> IP if necessary
     let ipToQuery = raw;
     if (!IPV4_REGEX.test(raw) && !IPV6_REGEX.test(raw)) {
+      // assume domain name: attempt resolution
       const resolved = await resolveDomainToIp(raw).catch((err) => {
         console.error('DNS resolution failed:', err);
         return null;
@@ -109,15 +113,14 @@ export async function GET(request: NextRequest) {
       if (!resolved) {
         return NextResponse.json({ error: 'Failed to resolve domain to IP' }, { status: 400 });
       }
-
       ipToQuery = resolved;
     }
 
+    // final validation
     if (!IPV4_REGEX.test(ipToQuery) && !IPV6_REGEX.test(ipToQuery)) {
       return NextResponse.json({ error: 'Invalid IP address format' }, { status: 400 });
     }
 
-    // 7️⃣ Cache lookup
     const cacheKey = `geoip:${ipToQuery}`;
     const cached = cache.get(cacheKey);
     if (cached) {
@@ -128,7 +131,7 @@ export async function GET(request: NextRequest) {
       });
     }
 
-    // 8️⃣ Fetch from provider
+    // call provider (ipapi.co) - swap if you prefer another provider
     const providerUrl = `https://ipapi.co/${encodeURIComponent(ipToQuery)}/json/`;
     const resp = await fetch(providerUrl, {
       headers: { 'User-Agent': 'VNX-Netscan/1.0' },
@@ -141,7 +144,7 @@ export async function GET(request: NextRequest) {
 
     const data = await resp.json();
 
-    // 9️⃣ Normalize data
+    // normalize data shape (safe access)
     const result = {
       success: true,
       tool: 'geoip',
@@ -173,7 +176,6 @@ export async function GET(request: NextRequest) {
 
     cache.set(cacheKey, result);
 
-    // 🔟 Return final response
     return NextResponse.json({
       ...result,
       cached: false,
@@ -185,48 +187,71 @@ export async function GET(request: NextRequest) {
   }
 }
 
-/** Utilities ****************************************************/
+/** Helpers ****************************************************/
 
+/** safe number parse or null */
 function parseNumberSafe(v: any): number | null {
   if (v == null) return null;
   const n = Number(v);
   return Number.isFinite(n) ? n : null;
 }
 
-/** Resolve domain name to IP (via Node DNS or Google DoH fallback) */
+/**
+ * Resolve domain to IP address.
+ * Tries dns.promises.lookup first (Node), otherwise uses DNS-over-HTTPS fallback (Google).
+ *
+ * NOTE: We cast the dynamic import to `any` for the lookup call to avoid
+ * TypeScript overload issues in environments where the Node `dns` types differ.
+ */
 async function resolveDomainToIp(domain: string): Promise<string | null> {
+  // remove protocol if present
   domain = domain.replace(/^https?:\/\//, '').replace(/\/.*$/, '');
+
+  // Basic validation for domain form:
   if (!/^[a-z0-9.-]+$/i.test(domain)) return null;
 
+  // Try Node dns.promises if available
   try {
-    const dnsPromises = await import('dns').then((d) => (d.promises ? d.promises : d));
-    if (dnsPromises?.lookup) {
-      const res = await dnsPromises.lookup(domain, { family: 4 }).catch(async () => {
-        return dnsPromises.lookup(domain, { family: 6 }).catch(() => null);
+    // dynamic import so this does not throw in Edge runtimes that don't support dns.promises
+    const dnsModule: any = await import('dns').then((d) => d.promises ?? d);
+    if (dnsModule && typeof dnsModule.lookup === 'function') {
+      // cast to any to avoid TypeScript complaints about overloads/options types
+      const dnsAny: any = dnsModule;
+      // try IPv4 first, fall back to IPv6
+      const res4 = await dnsAny.lookup(domain, { family: 4 }).catch(async () => {
+        return dnsAny.lookup(domain, { family: 6 }).catch(() => null);
       });
-      if (res?.address) return res.address;
-      if (Array.isArray(res) && res[0]?.address) return res[0].address;
+      if (res4) {
+        // dns.lookup can return { address, family } or an array in some environments
+        if (typeof res4.address === 'string') return res4.address;
+        if (Array.isArray(res4) && res4[0] && res4[0].address) return res4[0].address;
+      }
     }
-  } catch {
-    // Fallback to DoH
+  } catch (e) {
+    // likely running in Edge / browser-like environment, fall through to DoH
+    // console.debug('dns.promises not available; falling back to DoH', e);
   }
 
+  // DNS-over-HTTPS fallback (Google DNS)
   try {
     const dohUrl = `https://dns.google/resolve?name=${encodeURIComponent(domain)}&type=A`;
     const dohResp = await fetch(dohUrl);
     if (!dohResp.ok) return null;
-    const json = await dohResp.json();
-    const aRecord = json.Answer?.find((a: any) => a.type === 1 && a.data);
-    if (aRecord) return aRecord.data;
-
+    const dohJson = await dohResp.json();
+    if (dohJson?.Answer && Array.isArray(dohJson.Answer)) {
+      // find first A record
+      const aRecord = dohJson.Answer.find((a: any) => a.type === 1 && !!a.data);
+      if (aRecord) return aRecord.data;
+    }
+    // try AAAA
     const doh6 = await fetch(`https://dns.google/resolve?name=${encodeURIComponent(domain)}&type=AAAA`);
     if (doh6.ok) {
-      const json6 = await doh6.json();
-      const aaaa = json6.Answer?.find((a: any) => a.type === 28 && a.data);
+      const j6 = await doh6.json();
+      const aaaa = j6?.Answer && j6.Answer.find((a: any) => a.type === 28 && !!a.data);
       if (aaaa) return aaaa.data;
     }
   } catch (e) {
-    console.warn('DoH lookup failed:', e);
+    console.warn('DoH lookup failed', e);
   }
 
   return null;
