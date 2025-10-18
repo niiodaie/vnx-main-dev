@@ -137,6 +137,50 @@ export default function PrettyPingPage() {
                 <p className="text-base">{aiSummary}</p>
               </div>
 
+              {/* RESULTS OVERVIEW */}
+<div className="mt-8 bg-gradient-to-br from-slate-50 to-blue-50 border border-slate-200 rounded-xl p-6 text-left">
+  <h3 className="text-lg font-semibold text-slate-800 mb-3">Understanding Your Results</h3>
+  <ul className="space-y-3 text-slate-700 text-sm leading-relaxed">
+    <li>
+      <span className="font-semibold text-blue-700">RTT (Round Trip Time):</span>{' '}
+      Measures the time it takes for data to travel to a server and back. Lower RTT means faster
+      responsiveness and smoother experiences for online activities.
+    </li>
+    <li>
+      <span className="font-semibold text-green-700">Connection Grade:</span>{' '}
+      A simplified performance score derived from your average RTT and stability.
+      <b> A+ </b> indicates excellent performance, while <b>D</b> reflects high latency or inconsistency.
+    </li>
+    <li>
+      <span className="font-semibold text-purple-700">Region:</span>{' '}
+      Shows the testing node or Cloudflare edge region used for measurement — e.g., <b>US-EAST</b>,
+      <b> EU-WEST</b>, or <b> AFRICA-SOUTH</b>. This affects ping distance and routing.
+    </li>
+  </ul>
+
+  <div className="mt-5">
+    <a
+      href="/blog/vnx/tools"
+      className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 font-semibold transition"
+    >
+      📘 Read More about VNX Tools
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth={2}
+        stroke="currentColor"
+        className="w-4 h-4"
+      >
+        <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+      </svg>
+    </a>
+  </div>
+</div>
+
+
+              
+
               {/* SHARE / EXPORT */}
               <div className="flex flex-wrap justify-center gap-4 mt-8">
                 <ActionButton icon={<Copy className="w-4 h-4" />} label="Copy JSON" onClick={() => {
