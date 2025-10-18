@@ -1,12 +1,9 @@
-'use client';
-export const dynamic = 'force-dynamic';
-export const fetchCache = 'force-no-store';
-export const revalidate = false;
+ 'use client';
 
 import { useState } from 'react';
 import Navigation from '@/components/navigation';
 import Footer from '@/components/footer';
-import { Search, Globe2, Copy, ChevronDown, Loader2 } from 'lucide-react';
+import { Search, Copy, ChevronDown, Loader2 } from 'lucide-react';
 
 export default function DNSLookupPage() {
   const [domain, setDomain] = useState('google.com');
@@ -19,10 +16,9 @@ export default function DNSLookupPage() {
     setResult(null);
 
     try {
-      const response = await fetch(
-        `https://dns.google/resolve?name=${domain}&type=ANY`,
-        { cache: 'no-store' }
-      );
+      const response = await fetch(`https://dns.google/resolve?name=${domain}&type=ANY`, {
+        cache: 'no-store',
+      });
       const data = await response.json();
       setResult(data);
     } catch (err) {
@@ -41,11 +37,11 @@ export default function DNSLookupPage() {
       <section className="pt-32 pb-16 bg-gradient-to-br from-blue-600 to-cyan-600 text-center text-white">
         <h1 className="text-5xl font-extrabold mb-4">DNS Lookup</h1>
         <p className="text-lg text-white/90 max-w-2xl mx-auto">
-          Query DNS records (A, AAAA, MX, TXT, NS, CNAME) for any domain name.
+          Query DNS records (A, AAAA, MX, TXT, NS, and CNAME) for any domain.
         </p>
       </section>
 
-      {/* MAIN */}
+      {/* MAIN CONTENT */}
       <section className="py-10 px-6 flex-1">
         <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-lg p-8">
           <div className="flex flex-col sm:flex-row gap-4 mb-6">
@@ -74,10 +70,7 @@ export default function DNSLookupPage() {
                   <h3 className="text-xl font-bold text-slate-800 mb-4">Results for {domain}</h3>
                   <div className="grid gap-4">
                     {result.Answer.map((rec: any, i: number) => (
-                      <div
-                        key={i}
-                        className="p-4 rounded-lg border border-slate-200 bg-slate-50 text-sm"
-                      >
+                      <div key={i} className="p-4 rounded-lg border border-slate-200 bg-slate-50 text-sm">
                         <p className="text-slate-800">
                           <span className="font-semibold">Type:</span> {rec.type}
                         </p>
@@ -98,19 +91,15 @@ export default function DNSLookupPage() {
                 </div>
               )}
 
-              {/* Copy JSON */}
               <div className="flex justify-center mt-6">
                 <button
-                  onClick={() =>
-                    navigator.clipboard.writeText(JSON.stringify(result, null, 2))
-                  }
+                  onClick={() => navigator.clipboard.writeText(JSON.stringify(result, null, 2))}
                   className="flex items-center gap-2 px-4 py-2 border rounded-lg text-slate-600 hover:bg-slate-100 transition"
                 >
                   <Copy className="w-4 h-4" /> Copy JSON
                 </button>
               </div>
 
-              {/* ADVANCED VIEW */}
               <button
                 className="mt-6 flex items-center gap-2 text-blue-600 font-semibold hover:text-blue-800"
                 onClick={() => setShowAdvanced(!showAdvanced)}
@@ -128,40 +117,21 @@ export default function DNSLookupPage() {
           )}
         </div>
 
-        {/* EXPLANATION SECTION */}
+        {/* EXPLANATION */}
         <div className="max-w-3xl mx-auto mt-10 bg-gradient-to-br from-slate-50 to-blue-50 border border-slate-200 rounded-xl p-6 text-left">
           <h3 className="text-lg font-semibold text-slate-800 mb-3">Understanding DNS Results</h3>
           <ul className="space-y-3 text-slate-700 text-sm leading-relaxed">
-            <li>
-              <span className="font-semibold text-blue-700">A / AAAA:</span> IP address records (IPv4 and IPv6) that map your domain to servers.
-            </li>
-            <li>
-              <span className="font-semibold text-green-700">MX:</span> Mail exchange records for routing email.
-            </li>
-            <li>
-              <span className="font-semibold text-yellow-700">TXT:</span> Custom data for domain verification and security (like SPF, DKIM).
-            </li>
-            <li>
-              <span className="font-semibold text-purple-700">NS:</span> Nameservers that host your domain’s zone files.
-            </li>
+            <li><b>A / AAAA:</b> IP address records mapping your domain to servers.</li>
+            <li><b>MX:</b> Mail exchange records for routing email.</li>
+            <li><b>TXT:</b> Custom data for verification & security (SPF, DKIM).</li>
+            <li><b>NS:</b> Nameservers hosting your domain’s zone files.</li>
           </ul>
-
           <div className="mt-5">
             <a
               href="/blog/vnx/tools"
               className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 font-semibold transition"
             >
-              📘 Read More about VNX Tools
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={2}
-                stroke="currentColor"
-                className="w-4 h-4"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
-              </svg>
+              📘 Read More about VNX Tools →
             </a>
           </div>
         </div>
