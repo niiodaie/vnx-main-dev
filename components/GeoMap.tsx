@@ -2,9 +2,13 @@
 
 import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
+
+// ✅ Leaflet CSS
 import 'leaflet/dist/leaflet.css';
 
-let L: any = null; // prevent SSR errors
+// ✅ Leaflet will be loaded dynamically later to avoid SSR issues
+let L: any = null;
+
 
 interface GeoMapProps {
   latitude: number;
