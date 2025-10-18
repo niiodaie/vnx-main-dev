@@ -1,130 +1,77 @@
-export type ToolTier = 'free' | 'pro';
+// /config/tools.ts
+import {
+  Activity,
+  Globe2,
+  MapPin,
+  ShieldCheck,
+  Network,
+  Server,
+} from 'lucide-react';
+import { LucideIcon } from 'lucide-react';
 
 export interface ToolConfig {
   id: string;
   name: string;
   description: string;
-  tier: ToolTier;
-  icon: string;
+  icon: LucideIcon;
   color: string;
+  tier: 'free' | 'pro';
   enabled: boolean;
 }
 
 export const NETSCAN_TOOLS: ToolConfig[] = [
-  // Free Tier Tools
   {
     id: 'ping',
-    name: 'Ping',
-    description: 'Test network latency and connectivity',
+    name: 'Pretty Ping',
+    description: 'Test latency and visualize connection stability in real time.',
+    icon: Activity,
+    color: 'from-blue-600 to-cyan-600',
     tier: 'free',
-    icon: '🏓',
-    color: 'from-blue-500 to-cyan-500',
     enabled: true,
   },
   {
     id: 'dns',
     name: 'DNS Lookup',
-    description: 'Query DNS records (A, MX, TXT, NS)',
+    description: 'Query DNS records (A, AAAA, MX, TXT, NS) for a domain.',
+    icon: Globe2,
+    color: 'from-indigo-600 to-blue-600',
     tier: 'free',
-    icon: '🔍',
-    color: 'from-purple-500 to-pink-500',
+    enabled: true,
+  },
+  {
+    id: 'traceroute',
+    name: 'Smart Traceroute',
+    description: 'Trace and visualize network hops across global nodes.',
+    icon: MapPin,
+    color: 'from-cyan-600 to-teal-600',
+    tier: 'pro',
     enabled: true,
   },
   {
     id: 'whois',
-    name: 'WHOIS',
-    description: 'Domain registration information',
-    tier: 'free',
-    icon: '📋',
-    color: 'from-green-500 to-emerald-500',
-    enabled: true,
-  },
-  {
-    id: 'ip-lookup',
-    name: 'IP Lookup',
-    description: 'Detect IP, ISP, and ASN information',
-    tier: 'free',
-    icon: '🌐',
-    color: 'from-orange-500 to-red-500',
+    name: 'WHOIS Lookup',
+    description: 'Retrieve domain registration and ownership information.',
+    icon: ShieldCheck,
+    color: 'from-green-600 to-emerald-600',
+    tier: 'pro',
     enabled: true,
   },
   {
     id: 'geoip',
-    name: 'GeoIP',
-    description: 'IP geolocation with map visualization',
-    tier: 'free',
-    icon: '📍',
-    color: 'from-teal-500 to-cyan-500',
-    enabled: true,
-  },
-
-  // Pro Tier Tools
-  {
-    id: 'traceroute',
-    name: 'Traceroute',
-    description: 'Multi-hop network path analysis',
+    name: 'GeoIP Locator',
+    description: 'Pinpoint IP address location with ISP and region data.',
+    icon: Network,
+    color: 'from-purple-600 to-pink-600',
     tier: 'pro',
-    icon: '🛣️',
-    color: 'from-indigo-500 to-purple-500',
     enabled: true,
   },
   {
-    id: 'speed',
-    name: 'Speed Test',
-    description: 'Bandwidth and latency testing',
-    tier: 'pro',
-    icon: '⚡',
-    color: 'from-yellow-500 to-orange-500',
-    enabled: true,
-  },
-  {
-    id: 'port-scanner',
+    id: 'portscan',
     name: 'Port Scanner',
-    description: 'TCP port scanning and service detection',
+    description: 'Scan open ports and detect active services securely.',
+    icon: Server,
+    color: 'from-orange-600 to-red-600',
     tier: 'pro',
-    icon: '🔐',
-    color: 'from-red-500 to-pink-500',
-    enabled: true,
-  },
-  {
-    id: 'ssl-check',
-    name: 'SSL/TLS Check',
-    description: 'Certificate validation and expiry check',
-    tier: 'pro',
-    icon: '🔒',
-    color: 'from-green-500 to-teal-500',
-    enabled: true,
-  },
-  {
-    id: 'wireshark-light',
-    name: 'Wireshark Light',
-    description: 'Basic packet capture and analysis',
-    tier: 'pro',
-    icon: '📡',
-    color: 'from-blue-500 to-indigo-500',
     enabled: true,
   },
 ];
-
-// Get tools by tier
-export function getToolsByTier(tier: ToolTier): ToolConfig[] {
-  if (tier === 'pro') {
-    return NETSCAN_TOOLS.filter((tool) => tool.enabled);
-  }
-  return NETSCAN_TOOLS.filter((tool) => tool.tier === 'free' && tool.enabled);
-}
-
-// Check if user has access to tool
-export function hasToolAccess(toolId: string, userTier: ToolTier): boolean {
-  const tool = NETSCAN_TOOLS.find((t) => t.id === toolId);
-  if (!tool || !tool.enabled) return false;
-  
-  if (userTier === 'pro') return true;
-  return tool.tier === 'free';
-}
-
-// Get tool config
-export function getToolConfig(toolId: string): ToolConfig | undefined {
-  return NETSCAN_TOOLS.find((t) => t.id === toolId);
-}
-
