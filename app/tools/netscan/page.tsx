@@ -1,13 +1,13 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { createClient } from '@supabase/supabase-js'
+import { useState } from 'react'
 import { Input } from '../../components/ui/input'
 import { Button } from '../../components/ui/button'
 import { Card, CardContent } from '../../components/ui/card'
 import DiagnosticsPanel from './components/DiagnosticsPanel'
 import NetscanHero from './components/NetscanHero'
 import { NETSCAN_TOOLS } from './config/tools'
+
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
