@@ -1,5 +1,5 @@
 'use client';
-
+import GeoMap from '@/components/GeoMap';
 import { useState } from 'react';
 import Navigation from '@/components/navigation';
 import Footer from '@/components/footer';
