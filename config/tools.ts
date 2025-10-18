@@ -1,12 +1,5 @@
 // /config/tools.ts
-import {
-  Activity,
-  Globe2,
-  MapPin,
-  ShieldCheck,
-  Network,
-  Server,
-} from 'lucide-react';
+import { Activity, Globe2, MapPin, ShieldCheck, Network, Server } from 'lucide-react';
 import { LucideIcon } from 'lucide-react';
 
 export interface ToolConfig {
@@ -17,17 +10,19 @@ export interface ToolConfig {
   color: string;
   tier: 'free' | 'pro';
   enabled: boolean;
+  api?: string; // 👈 added field
 }
 
 export const NETSCAN_TOOLS: ToolConfig[] = [
   {
     id: 'ping',
     name: 'Pretty Ping',
-    description: 'Test latency and visualize connection stability in real time.',
+    description: 'Measure latency and visualize connection stability in real time.',
     icon: Activity,
     color: 'from-blue-600 to-cyan-600',
     tier: 'free',
     enabled: true,
+    api: '/api/ping',
   },
   {
     id: 'dns',
@@ -37,6 +32,7 @@ export const NETSCAN_TOOLS: ToolConfig[] = [
     color: 'from-indigo-600 to-blue-600',
     tier: 'free',
     enabled: true,
+    api: '/api/dns',
   },
   {
     id: 'traceroute',
@@ -46,6 +42,7 @@ export const NETSCAN_TOOLS: ToolConfig[] = [
     color: 'from-cyan-600 to-teal-600',
     tier: 'pro',
     enabled: true,
+    api: '/api/traceroute',
   },
   {
     id: 'whois',
@@ -55,15 +52,17 @@ export const NETSCAN_TOOLS: ToolConfig[] = [
     color: 'from-green-600 to-emerald-600',
     tier: 'pro',
     enabled: true,
+    api: '/api/whois',
   },
   {
     id: 'geoip',
     name: 'GeoIP Locator',
-    description: 'Pinpoint IP address location with ISP and region data.',
+    description: 'Pinpoint IP location with ISP and region data.',
     icon: Network,
     color: 'from-purple-600 to-pink-600',
     tier: 'pro',
     enabled: true,
+    api: '/api/geoip',
   },
   {
     id: 'portscan',
@@ -73,5 +72,6 @@ export const NETSCAN_TOOLS: ToolConfig[] = [
     color: 'from-orange-600 to-red-600',
     tier: 'pro',
     enabled: true,
+    api: '/api/portscan',
   },
 ];
