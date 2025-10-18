@@ -19,7 +19,7 @@ export default function SearchAnalyzerPage() {
         trend: Math.random() > 0.5 ? "up" : "down",
         difficulty: Math.floor(Math.random() * 100),
         cpc: (Math.random() * 5 + 0.5).toFixed(2),
-        competition: ["Low", "Medium", "High"][Math.floor(Math.random() * 3)]
+        competition: ["Low", "Medium", "High"][Math.floor(Math.random() * 3)],
       });
       setAnalyzing(false);
     }, 2000);
@@ -33,7 +33,9 @@ export default function SearchAnalyzerPage() {
           <div className="max-w-4xl mx-auto text-center">
             <TrendingUp className="w-16 h-16 mx-auto mb-6 text-white" />
             <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">Search Trend Analyzer</h1>
-            <p className="text-xl text-white/90 mb-10">Analyze search trends, keyword volume, and SEO metrics in real-time</p>
+            <p className="text-xl text-white/90 mb-10">
+              Analyze search trends, keyword volume, and SEO metrics in real-time
+            </p>
           </div>
         </div>
       </section>
@@ -56,27 +58,48 @@ export default function SearchAnalyzerPage() {
                   disabled={!keyword || analyzing}
                   className="px-8 py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-700 transition-colors disabled:bg-slate-300 flex items-center gap-2"
                 >
-                  {analyzing ? "Analyzing..." : <><Search className="w-5 h-5" />Analyze</>}
+                  {analyzing ? (
+                    "Analyzing..."
+                  ) : (
+                    <>
+                      <Search className="w-5 h-5" />
+                      Analyze
+                    </>
+                  )}
                 </button>
               </div>
 
               {results && (
                 <div className="space-y-4">
-                  <h3 className="text-xl font-bold text-slate-800">Results for "{results.keyword}"</h3>
+                  <h3 className="text-xl font-bold text-slate-800">
+                    Results for "{results.keyword}"
+                  </h3>
                   <div className="grid md:grid-cols-2 gap-4">
                     <div className="p-4 bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg">
                       <div className="flex items-center justify-between mb-2">
                         <span className="text-sm text-slate-600">Search Volume</span>
                         <BarChart3 className="w-5 h-5 text-blue-600" />
                       </div>
-                      <div className="text-2xl font-bold text-blue-900">{results.volume.toLocaleString()}/mo</div>
+                      <div className="text-2xl font-bold text-blue-900">
+                        {results.volume.toLocaleString()}/mo
+                      </div>
                     </div>
                     <div className="p-4 bg-gradient-to-br from-green-50 to-green-100 rounded-lg">
                       <div className="flex items-center justify-between mb-2">
                         <span className="text-sm text-slate-600">Trend</span>
-                        {results.trend === "up" ? <ArrowUp className="w-5 h-5 text-green-600" /> : <ArrowDown className="w-5 h-5 text-red-600" />}
+                        {results.trend === "up" ? (
+                          <ArrowUp className="w-5 h-5 text-green-600" />
+                        ) : (
+                          <ArrowDown className="w-5 h-5 text-red-600" />
+                        )}
                       </div>
-                      <div className={`text-2xl font-bold ${results.trend === "up" ? "text-green-900" : "text-red-900"}`}>
+                      <div
+                        className={`text-2xl font-bold ${
+                          results.trend === "up"
+                            ? "text-green-900"
+                            : "text-red-900"
+                        }`}
+                      >
                         {results.trend === "up" ? "Rising" : "Declining"}
                       </div>
                     </div>
@@ -85,19 +108,25 @@ export default function SearchAnalyzerPage() {
                         <span className="text-sm text-slate-600">SEO Difficulty</span>
                         <Globe className="w-5 h-5 text-orange-600" />
                       </div>
-                      <div className="text-2xl font-bold text-orange-900">{results.difficulty}/100</div>
+                      <div className="text-2xl font-bold text-orange-900">
+                        {results.difficulty}/100
+                      </div>
                     </div>
                     <div className="p-4 bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg">
                       <div className="flex items-center justify-between mb-2">
                         <span className="text-sm text-slate-600">CPC</span>
                         <Calendar className="w-5 h-5 text-purple-600" />
                       </div>
-                      <div className="text-2xl font-bold text-purple-900">${results.cpc}</div>
+                      <div className="text-2xl font-bold text-purple-900">
+                        ${results.cpc}
+                      </div>
                     </div>
                   </div>
                   <div className="p-4 bg-slate-100 rounded-lg">
                     <span className="text-sm text-slate-600">Competition Level: </span>
-                    <span className="font-bold text-slate-800">{results.competition}</span>
+                    <span className="font-bold text-slate-800">
+                      {results.competition}
+                    </span>
                   </div>
                 </div>
               )}
@@ -111,7 +140,9 @@ export default function SearchAnalyzerPage() {
           <div className="max-w-4xl mx-auto">
             <div className="bg-blue-50 rounded-2xl border-2 border-blue-200 p-6">
               <h3 className="font-semibold text-blue-900 mb-3">Demo Version</h3>
-              <p className="text-sm text-blue-800">This demo uses simulated data. Production version would integrate with Google Trends API, SEMrush, or Ahrefs.</p>
+              <p className="text-sm text-blue-800">
+                This demo uses simulated data. Production version will integrate with Google Trends, SEMrush, or Ahrefs APIs.
+              </p>
             </div>
           </div>
         </div>
