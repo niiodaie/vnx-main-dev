@@ -1,19 +1,21 @@
- import * as React from 'react'
+import * as React from "react";
 
-export function Card({
+export const Card = ({
   children,
   className,
 }: {
-  children: React.ReactNode
-  className?: string
-}) {
-  return (
-    <div className={`rounded-xl border border-slate-200 bg-white shadow-sm p-0 ${className ?? ''}`}>
-      {children}
-    </div>
-  )
-}
+  children: React.ReactNode;
+  className?: string;
+}) => (
+  <div className={`rounded-lg border border-slate-200 bg-white shadow-sm ${className ?? ""}`}>
+    {children}
+  </div>
+);
 
-export function CardContent({ children, className }: { children: React.ReactNode; className?: string }) {
-  return <div className={className ?? 'p-4'}>{children}</div>
-}
+export const CardContent = ({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => <div className={className ?? "p-4"}>{children}</div>;
