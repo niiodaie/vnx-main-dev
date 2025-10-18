@@ -86,6 +86,25 @@ export default function GeoIPPage() {
                   label="Timezone"
                   value={`${result.data.timezone.name || ''} (UTC${result.data.timezone.utc_offset || ''})`}
                 />
+
+                {/* Interactive Map */}
+{result.data?.location?.coordinates && (
+  <div className="mt-8">
+    <h3 className="text-lg font-semibold text-slate-800 mb-3 flex items-center gap-2">
+      🌍 Location Map
+    </h3>
+    <GeoMap
+      latitude={result.data.location.coordinates.latitude}
+      longitude={result.data.location.coordinates.longitude}
+      city={result.data.location.city}
+      country={result.data.location.country}
+      isp={result.data.network.isp}
+    />
+  </div>
+)}
+
+
+                
               </div>
 
               <div className="mt-6 p-4 bg-gradient-to-br from-slate-50 to-purple-50 border border-purple-100 rounded-lg">
