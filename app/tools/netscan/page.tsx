@@ -1,17 +1,15 @@
 'use client';
 
-export const dynamic = 'force-dynamic';
-export const fetchCache = 'force-no-store';
-export const revalidate = 0;
-
 import Link from 'next/link';
 import { Crown, Lock, Zap } from 'lucide-react';
-import { useAuth } from '@/lib/auth/AuthContext';
+// import { useAuth } from '@/lib/auth/AuthContext';
 import { NETSCAN_TOOLS } from '@/config/tools';
 
 
 export default function NetscanPage() {
-  const { isPro, loading } = useAuth();
+  // const { isPro, loading } = useAuth();
+  const isPro = false; // TODO: Enable auth once Supabase is configured
+  const loading = false;
 
   const freeTools = NETSCAN_TOOLS.filter((tool) => tool.tier === 'free' && tool.enabled);
   const proTools = NETSCAN_TOOLS.filter((tool) => tool.tier === 'pro' && tool.enabled);

@@ -3,18 +3,15 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { Check, Zap, Crown, Loader2 } from 'lucide-react';
-import { useAuth } from '@/lib/auth/AuthContext';
+// import { useAuth } from '@/lib/auth/AuthContext';
 import { getStripe } from '@/lib/payments/stripeClient';
 import { SUBSCRIPTION_PLANS } from '@/lib/payments/stripe';
 
-// Disable all server prerendering
-export const dynamic = 'force-dynamic';
-export const fetchCache = 'force-no-store';
-export const revalidate = false;
-
 
 export default function PricingPage() {
-  const { user, isPro } = useAuth();
+  // const { user, isPro } = useAuth();
+  const user: { id: string } | null = null; // TODO: Enable auth once Supabase is configured
+  const isPro = false;
   const [loading, setLoading] = useState<string | null>(null);
   const [interval, setInterval] = useState<'month' | 'year'>('month');
 
@@ -31,7 +28,7 @@ export default function PricingPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          userId: user.id,
+          userId: (user as any)?.id || 'anonymous',
           priceId,
         }),
       });
