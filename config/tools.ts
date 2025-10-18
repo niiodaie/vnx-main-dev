@@ -10,7 +10,7 @@ export interface ToolConfig {
   color: string;
   tier: 'free' | 'pro';
   enabled: boolean;
-  api?: string; // 👈 added field
+  api?: string;
 }
 
 export const NETSCAN_TOOLS: ToolConfig[] = [
@@ -22,7 +22,7 @@ export const NETSCAN_TOOLS: ToolConfig[] = [
     color: 'from-blue-600 to-cyan-600',
     tier: 'free',
     enabled: true,
-    api: '/api/ping',
+    api: '/api/tools/netscan/ping',
   },
   {
     id: 'dns',
@@ -32,7 +32,7 @@ export const NETSCAN_TOOLS: ToolConfig[] = [
     color: 'from-indigo-600 to-blue-600',
     tier: 'free',
     enabled: true,
-    api: '/api/dns',
+    api: '/api/tools/netscan/dns',
   },
   {
     id: 'traceroute',
@@ -42,7 +42,7 @@ export const NETSCAN_TOOLS: ToolConfig[] = [
     color: 'from-cyan-600 to-teal-600',
     tier: 'pro',
     enabled: true,
-    api: '/api/traceroute',
+    api: '/api/tools/netscan/traceroute',
   },
   {
     id: 'whois',
@@ -52,7 +52,7 @@ export const NETSCAN_TOOLS: ToolConfig[] = [
     color: 'from-green-600 to-emerald-600',
     tier: 'pro',
     enabled: true,
-    api: '/api/whois',
+    api: '/api/tools/netscan/whois',
   },
   {
     id: 'geoip',
@@ -62,7 +62,7 @@ export const NETSCAN_TOOLS: ToolConfig[] = [
     color: 'from-purple-600 to-pink-600',
     tier: 'pro',
     enabled: true,
-    api: '/api/geoip',
+    api: '/api/tools/netscan/geoip',
   },
   {
     id: 'portscan',
@@ -72,6 +72,14 @@ export const NETSCAN_TOOLS: ToolConfig[] = [
     color: 'from-orange-600 to-red-600',
     tier: 'pro',
     enabled: true,
-    api: '/api/portscan',
+    api: '/api/tools/netscan/portscan',
   },
 ];
+
+// ✅ ADD THIS HELPER — ensures API routes can validate access tier
+export function hasToolAccess(toolId: string, userTier: 'free' | 'pro') {
+  const tool = NETSCAN_TOOLS.find((t) => t.id === toolId);
+  if (!tool) return false;
+  if (tool.tier === 'free') return true;
+  return userTier === 'pro';
+}
