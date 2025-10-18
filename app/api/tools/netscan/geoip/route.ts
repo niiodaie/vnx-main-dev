@@ -1,16 +1,17 @@
- import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { LRUCache } from 'lru-cache'
+import dns from 'dns/promises'
 import { checkRateLimit, getClientIp, rateLimitResponse } from '@/lib/rate-limit'
 import { getCurrentUser, getUserTier } from '@/lib/auth/supabase'
 import { hasToolAccess } from '@/config/tools'
 
-// ✅ DEV/PREVIEW detection helper
+// ✅ Detect development or preview mode
 const isDev =
   process.env.NODE_ENV === 'development' ||
   process.env.VERCEL_ENV === 'preview' ||
   process.env.NEXT_PUBLIC_ENV === 'dev'
 
-// LRU Cache with 10-minute TTL
+// Cache with 10-min TTL
 const cache = new LRUCache<string, any>({
   max: 100,
   ttl: 1000 * 60 * 10,
@@ -19,21 +20,20 @@ const cache = new LRUCache<string, any>({
 export async function GET(request: NextRequest) {
   try {
     // ─────────────────────────────────────────────
-    // 1️⃣  Get current user and plan
+    // 1️⃣  Get user and tier
     // ─────────────────────────────────────────────
     const user = await getCurrentUser()
     const userTier = user ? await getUserTier(user.id) : 'free'
     const isPro = userTier === 'pro'
 
     // ─────────────────────────────────────────────
-    // 2️⃣  Bypass subscription check in dev/preview
+    // 2️⃣  Bypass subscription in dev
     // ─────────────────────────────────────────────
     if (!isDev && !hasToolAccess('geoip', userTier)) {
       return NextResponse.json(
         {
           error: 'Pro subscription required',
-          message:
-            'This tool requires a Pro subscription. Upgrade to access all tools.',
+          message: 'Upgrade to access all tools.',
           upgradeUrl: '/tools/netscan/pricing',
         },
         { status: 403 }
@@ -41,7 +41,7 @@ export async function GET(request: NextRequest) {
     }
 
     // ─────────────────────────────────────────────
-    // 3️⃣  Rate Limiting
+    // 3️⃣  Rate limiting
     // ─────────────────────────────────────────────
     const clientIp = getClientIp(request)
     const identifier = user?.id || clientIp
@@ -52,27 +52,39 @@ export async function GET(request: NextRequest) {
     }
 
     // ─────────────────────────────────────────────
-    // 4️⃣  Validate query
+    // 4️⃣  Parse query params
     // ─────────────────────────────────────────────
     const { searchParams } = new URL(request.url)
-    const ip = searchParams.get('ip')
+    let input = searchParams.get('ip')
 
-    if (!ip) {
-      return NextResponse.json({ error: 'IP address is required' }, { status: 400 })
+    if (!input) {
+      return NextResponse.json({ error: 'IP or domain is required' }, { status: 400 })
     }
 
-    // Optional IP regex validation
+    input = input.trim().toLowerCase()
+
+    // ─────────────────────────────────────────────
+    // 5️⃣  If domain, resolve to IP
+    // ─────────────────────────────────────────────
     const ipRegex =
       /^(\d{1,3}\.){3}\d{1,3}$|^(([a-fA-F0-9]{1,4}:){7,7}[a-fA-F0-9]{1,4}|([a-fA-F0-9]{1,4}:){1,7}:|([a-fA-F0-9]{1,4}:){1,6}:[a-fA-F0-9]{1,4})$/
-    if (!ipRegex.test(ip)) {
-      return NextResponse.json(
-        { error: 'Invalid IP address format' },
-        { status: 400 }
-      )
+
+    let ip = input
+
+    if (!ipRegex.test(input)) {
+      try {
+        const resolved = await dns.lookup(input)
+        ip = resolved.address
+      } catch {
+        return NextResponse.json(
+          { error: 'Invalid IP or domain. Could not resolve host.' },
+          { status: 400 }
+        )
+      }
     }
 
     // ─────────────────────────────────────────────
-    // 5️⃣  Check Cache
+    // 6️⃣  Check cache
     // ─────────────────────────────────────────────
     const cacheKey = `geoip:${ip}`
     const cached = cache.get(cacheKey)
@@ -88,7 +100,7 @@ export async function GET(request: NextRequest) {
     }
 
     // ─────────────────────────────────────────────
-    // 6️⃣  Fetch data from ipapi.co
+    // 7️⃣  Fetch data from ipapi
     // ─────────────────────────────────────────────
     const response = await fetch(`https://ipapi.co/${ip}/json/`, {
       headers: { 'User-Agent': 'VNX-Netscan/1.0' },
@@ -100,12 +112,11 @@ export async function GET(request: NextRequest) {
 
     const data = await response.json()
 
-    // ─────────────────────────────────────────────
-    // 7️⃣  Normalize Response
-    // ─────────────────────────────────────────────
     const result = {
       success: true,
       tool: 'geoip',
+      input,
+      resolved_ip: ip,
       data: {
         ip: data.ip,
         location: {
@@ -137,9 +148,6 @@ export async function GET(request: NextRequest) {
 
     cache.set(cacheKey, result)
 
-    // ─────────────────────────────────────────────
-    // 8️⃣  Send JSON response
-    // ─────────────────────────────────────────────
     return NextResponse.json({
       ...result,
       cached: false,
