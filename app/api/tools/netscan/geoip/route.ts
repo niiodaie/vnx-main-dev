@@ -90,6 +90,7 @@ if (isProduction && !hasToolAccess('geoip', safeTier)) {
     { status: 403 }
   );
 }
+
 // DEV: allow using tool when not production to avoid showing "Pro" gate while building
 const safeTier: 'free' | 'pro' = userTier === 'pro' ? 'pro' : 'free';
 
