@@ -1,4 +1,4 @@
-'use client'
+ 'use client'
 
 import { useState, useEffect } from 'react'
 import Loader from './Loader'
@@ -9,6 +9,7 @@ export default function DiagnosticsPanel() {
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
+    // keep a small mock feed for UX; real SSE can be connected later
     const mockSteps = [
       { step: 'ping', latency: '22 ms' },
       { step: 'whois', status: 'success' },
@@ -24,18 +25,18 @@ export default function DiagnosticsPanel() {
         clearInterval(timer)
         setLoading(false)
       }
-    }, 800)
+    }, 900)
     return () => clearInterval(timer)
   }, [])
 
   return (
-    <div className="mt-8">
-      <h2 className="font-semibold text-xl mb-2">Diagnostics Feed</h2>
+    <div>
       {loading && <Loader />}
-      {streamData.map((item, idx) => (
-        <ResultsCard key={idx} data={item} />
-      ))}
+      <div className="space-y-3 mt-3">
+        {streamData.map((item, idx) => (
+          <ResultsCard key={idx} data={item} />
+        ))}
+      </div>
     </div>
   )
 }
-
