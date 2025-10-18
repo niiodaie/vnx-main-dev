@@ -1,47 +1,44 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from "next/server";
 
-export const runtime = 'edge';
-export const revalidate = 0;
+export const runtime = "edge"; // ✅ Edge-compatible, no Node APIs
 
 export async function GET(req: NextRequest) {
-  try {
-    const { searchParams } = new URL(req.url);
-    const host = searchParams.get('host') || 'google.com';
+  const { searchParams } = new URL(req.url);
+  const host = searchParams.get("host");
 
+  if (!host) {
+    return NextResponse.json({ error: "Missing host parameter" }, { status: 400 });
+  }
+
+  try {
+    const target = host.startsWith("http") ? host : `https://${host}`;
     const start = performance.now();
 
-    // Simulate latency via fetch
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 5000);
 
-    const response = await fetch(`https://${host}`, {
-      method: 'HEAD',
-      signal: controller.signal,
-    }).catch(() => null);
-
+    const res = await fetch(target, { method: "HEAD", signal: controller.signal }).catch(() => null);
     clearTimeout(timeout);
 
-    const end = performance.now();
-    const latency = Math.round(end - start);
+    const latency = Math.round(performance.now() - start);
 
-    if (!response) {
-      return NextResponse.json({ success: false, message: 'Ping failed or timed out.' }, { status: 400 });
+    if (!res) {
+      return NextResponse.json({ success: false, message: "Ping failed or timed out." }, { status: 400 });
     }
 
     return NextResponse.json({
       success: true,
       host,
       latency,
-      status: response.status,
+      grade:
+        latency < 50 ? "A+" :
+        latency < 100 ? "A" :
+        latency < 200 ? "B" :
+        latency < 400 ? "C" : "D",
+      region: "VNX Edge",
       timestamp: new Date().toISOString(),
-      connectionGrade:
-        latency < 50 ? 'A+' : latency < 100 ? 'A' : latency < 200 ? 'B' : 'C',
-      region: 'US-EAST', // optional - you can detect region later via geo lookup
     });
   } catch (err: any) {
-    return NextResponse.json(
-      { success: false, message: err.message || 'Ping error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, message: err.message || "Ping failed" }, { status: 500 });
   }
 }
