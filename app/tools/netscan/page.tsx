@@ -116,7 +116,7 @@ export default function NetscanPage() {
           <Crown className="w-5 h-5" />
           Upgrade to VNX-Netscan Pro
         </Link>
-      </section>
+            </section>
     </main>
   );
 }
@@ -147,7 +147,6 @@ function ToolCard({ tool, isPro, hasAccess }: ToolCardProps) {
           !hasAccess ? 'opacity-75' : ''
         }`}
       >
-        {/* Pro Badge */}
         {isPro && !hasAccess && (
           <div className="absolute top-4 right-4 flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-xs font-bold rounded-full">
             <Lock className="w-3 h-3" />
@@ -155,18 +154,15 @@ function ToolCard({ tool, isPro, hasAccess }: ToolCardProps) {
           </div>
         )}
 
-        {/* Icon */}
         <div
           className={`w-16 h-16 rounded-xl bg-gradient-to-br ${tool.color} flex items-center justify-center text-white mb-4`}
         >
           <Icon className="w-8 h-8" />
         </div>
 
-        {/* Content */}
         <h3 className="text-xl font-bold text-gray-900 mb-2">{tool.name}</h3>
         <p className="text-gray-600 text-sm">{tool.description}</p>
 
-        {/* Locked Notice */}
         {!hasAccess && (
           <div className="mt-4 flex items-center gap-2 text-blue-600 font-semibold text-sm">
             <Crown className="w-4 h-4" />
@@ -175,15 +171,5 @@ function ToolCard({ tool, isPro, hasAccess }: ToolCardProps) {
         )}
       </div>
     </Link>
-  );
-}
-
-return (
-    <main className="min-h-screen bg-gradient-to-b from-slate-50 to-white pb-20">
-      {/* existing Netscan UI sections */}
-
-      {/* Diagnostics Panel */}
-      <NetscanDiagnostics />
-    </main>
   );
 }
