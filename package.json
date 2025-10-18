@@ -27,6 +27,8 @@
     "stripe": "^19.1.0",
     "tailwind-merge": "^3.3.1",
     "whois-json": "^2.0.4"
+    "leaflet": "^1.9.4",
+     "react-leaflet": "^4.3.0"
   },
   "devDependencies": {
     "@types/mapbox-gl": "^2.7.14",
