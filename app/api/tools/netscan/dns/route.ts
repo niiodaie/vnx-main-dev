@@ -1,25 +1,30 @@
  import { NextRequest, NextResponse } from "next/server";
 
-export const runtime = "edge";
+export const runtime = "nodejs"; // ✅ Node runtime for network access
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const domain = searchParams.get("domain");
 
   if (!domain) {
-    return NextResponse.json({ error: "Missing domain parameter" }, { status: 400 });
+    return NextResponse.json({ success: false, message: "Missing domain parameter" }, { status: 400 });
   }
 
   try {
-    // use Google's DNS-over-HTTPS API
-    const res = await fetch(`https://dns.google/resolve?name=${domain}&type=ANY`, {
-      cache: "no-store",
-    });
-    if (!res.ok) throw new Error("DNS API request failed");
+    const url = `https://dns.google/resolve?name=${encodeURIComponent(domain)}&type=ANY`;
+    const res = await fetch(url, { cache: "no-store" });
+
+    if (!res.ok) {
+      throw new Error(`Google DNS API request failed: ${res.status}`);
+    }
 
     const data = await res.json();
+
     if (!data.Answer) {
-      return NextResponse.json({ success: false, message: "No DNS records found." });
+      return NextResponse.json({
+        success: false,
+        message: `No DNS records found for ${domain}`,
+      });
     }
 
     return NextResponse.json({
@@ -33,9 +38,10 @@ export async function GET(req: NextRequest) {
       })),
       timestamp: new Date().toISOString(),
     });
-  } catch (err: any) {
+  } catch (error: any) {
+    console.error("DNS Lookup Error:", error);
     return NextResponse.json(
-      { success: false, message: err.message || "DNS lookup failed" },
+      { success: false, message: error.message || "DNS lookup failed" },
       { status: 500 }
     );
   }
