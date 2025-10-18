@@ -1,4 +1,4 @@
-import * as React from 'react'
+ import * as React from 'react'
 
 export function Card({
   children,
@@ -8,20 +8,12 @@ export function Card({
   className?: string
 }) {
   return (
-    <div
-      className={`rounded-xl border border-slate-200 bg-white shadow-sm p-4 ${className ?? ''}`}
-    >
+    <div className={`rounded-xl border border-slate-200 bg-white shadow-sm p-0 ${className ?? ''}`}>
       {children}
     </div>
   )
 }
 
-export function CardContent({
-  children,
-  className,
-}: {
-  children: React.ReactNode
-  className?: string
-}) {
-  return <div className={className ?? 'p-2'}>{children}</div>
+export function CardContent({ children, className }: { children: React.ReactNode; className?: string }) {
+  return <div className={className ?? 'p-4'}>{children}</div>
 }
