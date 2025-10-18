@@ -1,9 +1,10 @@
 'use client';
 
-import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
 import 'leaflet/dist/leaflet.css';
-import L from 'leaflet';
+
+let L: any = null; // prevent SSR errors
 
 interface GeoMapProps {
   latitude: number;
@@ -13,41 +14,47 @@ interface GeoMapProps {
   isp?: string;
 }
 
-// Custom VNX marker
-const markerIcon = new L.Icon({
-  iconUrl: 'https://cdn-icons-png.flaticon.com/512/684/684908.png',
-  iconSize: [30, 30],
-  iconAnchor: [15, 30],
-});
-
 export default function GeoMap({ latitude, longitude, city, country, isp }: GeoMapProps) {
-  const [map, setMap] = useState<L.Map | null>(null);
+  const [map, setMap] = useState<any>(null);
 
   useEffect(() => {
-    if (typeof window === 'undefined' || map) return;
+    async function loadLeaflet() {
+      const leaflet = await import('leaflet');
+      L = leaflet;
 
-    const leafletMap = L.map('geoip-map', {
-      center: [latitude, longitude],
-      zoom: 6,
-      scrollWheelZoom: false,
-    });
+      const markerIcon = new L.Icon({
+        iconUrl: 'https://cdn-icons-png.flaticon.com/512/684/684908.png',
+        iconSize: [30, 30],
+        iconAnchor: [15, 30],
+      });
 
-    // OpenStreetMap layer
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution:
-        '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
-    }).addTo(leafletMap);
+      if (!map) {
+        const leafletMap = L.map('geoip-map', {
+          center: [latitude, longitude],
+          zoom: 6,
+          scrollWheelZoom: false,
+        });
 
-    // Marker with popup
-    const marker = L.marker([latitude, longitude], { icon: markerIcon }).addTo(leafletMap);
-    marker.bindPopup(`
-      <b>${city || 'Unknown City'}, ${country || 'Unknown Country'}</b><br/>
-      ISP: ${isp || 'N/A'}
-    `);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution:
+            '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
+        }).addTo(leafletMap);
 
-    setMap(leafletMap);
+        const marker = L.marker([latitude, longitude], { icon: markerIcon }).addTo(leafletMap);
+        marker.bindPopup(`
+          <b>${city || 'Unknown City'}, ${country || 'Unknown Country'}</b><br/>
+          ISP: ${isp || 'N/A'}
+        `);
 
-    return () => leafletMap.remove();
+        setMap(leafletMap);
+      }
+    }
+
+    loadLeaflet();
+
+    return () => {
+      if (map) map.remove();
+    };
   }, [latitude, longitude]);
 
   return (
