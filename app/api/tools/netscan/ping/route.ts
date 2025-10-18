@@ -1,57 +1,46 @@
-import { NextResponse } from "next/server";
-import { exec } from "child_process";
-import util from "util";
+import { NextRequest, NextResponse } from 'next/server';
 
-const execPromise = util.promisify(exec);
+export const runtime = 'edge';
+export const revalidate = 0;
 
-/**
- * Handles GET requests for /api/tools/netscan/ping
- * Example: /api/tools/netscan/ping?host=google.com
- */
-export async function GET(req: Request) {
-  const { searchParams } = new URL(req.url);
-  const host = searchParams.get("host");
-
-  if (!host) {
-    return NextResponse.json({ error: "Missing host parameter" }, { status: 400 });
-  }
-
+export async function GET(req: NextRequest) {
   try {
-    // Execute ping command — lightweight and safe for serverless
-    const { stdout } = await execPromise(`ping -c 4 -w 5 ${host}`);
+    const { searchParams } = new URL(req.url);
+    const host = searchParams.get('host') || 'google.com';
 
-    // Extract latency stats using regex
-    const match = stdout.match(/= ([\d\.]+)\/([\d\.]+)\/([\d\.]+)\/([\d\.]+)/);
-    const packetLossMatch = stdout.match(/(\d+)% packet loss/);
+    const start = performance.now();
 
-    const stats = match
-      ? {
-          min: parseFloat(match[1]),
-          avg: parseFloat(match[2]),
-          max: parseFloat(match[3]),
-          stddev: parseFloat(match[4]),
-        }
-      : null;
+    // Simulate latency via fetch
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 5000);
 
-    const packetLoss = packetLossMatch ? parseFloat(packetLossMatch[1]) : 0;
+    const response = await fetch(`https://${host}`, {
+      method: 'HEAD',
+      signal: controller.signal,
+    }).catch(() => null);
 
-    // Create JSON output
-    const result = {
+    clearTimeout(timeout);
+
+    const end = performance.now();
+    const latency = Math.round(end - start);
+
+    if (!response) {
+      return NextResponse.json({ success: false, message: 'Ping failed or timed out.' }, { status: 400 });
+    }
+
+    return NextResponse.json({
+      success: true,
       host,
-      avg: stats?.avg || null,
-      min: stats?.min || null,
-      max: stats?.max || null,
-      jitter: stats?.stddev || null,
-      packetLoss,
-      alive: packetLoss < 100,
+      latency,
+      status: response.status,
       timestamp: new Date().toISOString(),
-    };
-
-    return NextResponse.json(result);
+      connectionGrade:
+        latency < 50 ? 'A+' : latency < 100 ? 'A' : latency < 200 ? 'B' : 'C',
+      region: 'US-EAST', // optional - you can detect region later via geo lookup
+    });
   } catch (err: any) {
-    console.error("Ping error:", err);
     return NextResponse.json(
-      { error: err.message || "Ping failed" },
+      { success: false, message: err.message || 'Ping error' },
       { status: 500 }
     );
   }
