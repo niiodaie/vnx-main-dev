@@ -1,19 +1,41 @@
 import { createClient } from '@supabase/supabase-js';
+import type { SupabaseClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+// Lazy initialization to avoid build-time errors
+let supabaseInstance: SupabaseClient | null = null;
 
-// Create client only if credentials are available
-export const supabase = supabaseUrl && supabaseAnonKey 
-  ? createClient(supabaseUrl, supabaseAnonKey)
-  : null;
+function getSupabase() {
+  if (supabaseInstance) return supabaseInstance;
+  
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+  
+  if (!supabaseUrl || !supabaseAnonKey) {
+    return null;
+  }
+  
+  supabaseInstance = createClient(supabaseUrl, supabaseAnonKey);
+  return supabaseInstance;
+}
+
+// Export getter instead of direct client
+export const supabase = new Proxy({} as SupabaseClient, {
+  get(target, prop) {
+    const client = getSupabase();
+    if (!client) {
+      throw new Error('Supabase not configured');
+    }
+    return (client as any)[prop];
+  }
+});
 
 // Helper to get current user
 export async function getCurrentUser() {
-  if (!supabase) return null;
+  const client = getSupabase();
+  if (!client) return null;
   
   try {
-    const { data: { user } } = await supabase.auth.getUser();
+    const { data: { user } } = await client.auth.getUser();
     return user;
   } catch (error) {
     console.error('Error getting current user:', error);
@@ -23,10 +45,11 @@ export async function getCurrentUser() {
 
 // Helper to get user tier
 export async function getUserTier(userId: string): Promise<'free' | 'pro'> {
-  if (!supabase) return 'free';
+  const client = getSupabase();
+  if (!client) return 'free';
   
   try {
-    const { data, error } = await supabase
+    const { data, error } = await client
       .from('user_subscriptions')
       .select('tier, status, expires_at')
       .eq('user_id', userId)
@@ -59,10 +82,11 @@ export async function isProUser(userId: string): Promise<boolean> {
 
 // Helper to get subscription details
 export async function getSubscriptionDetails(userId: string) {
-  if (!supabase) return null;
+  const client = getSupabase();
+  if (!client) return null;
   
   try {
-    const { data, error } = await supabase
+    const { data, error } = await client
       .from('user_subscriptions')
       .select('*')
       .eq('user_id', userId)
@@ -91,10 +115,11 @@ export async function logApiUsage(params: {
   errorMessage?: string;
   tier: 'free' | 'pro';
 }) {
-  if (!supabase) return;
+  const client = getSupabase();
+  if (!client) return;
   
   try {
-    await supabase.from('netscan_logs').insert({
+    await client.from('netscan_logs').insert({
       user_id: params.userId || null,
       ip_address: params.ipAddress,
       tool: params.tool,
@@ -118,10 +143,11 @@ export async function logError(params: {
   stackTrace?: string;
   requestData?: any;
 }) {
-  if (!supabase) return;
+  const client = getSupabase();
+  if (!client) return;
   
   try {
-    await supabase.from('error_logs').insert({
+    await client.from('error_logs').insert({
       user_id: params.userId || null,
       tool: params.tool,
       error_type: params.errorType,
@@ -137,9 +163,10 @@ export async function logError(params: {
 
 // Auth helper functions
 export async function signInWithEmail(email: string, password: string) {
-  if (!supabase) throw new Error('Supabase not configured');
+  const client = getSupabase();
+  if (!client) throw new Error('Supabase not configured');
   
-  const { data, error } = await supabase.auth.signInWithPassword({
+  const { data, error } = await client.auth.signInWithPassword({
     email,
     password,
   });
@@ -149,9 +176,10 @@ export async function signInWithEmail(email: string, password: string) {
 }
 
 export async function signUpWithEmail(email: string, password: string) {
-  if (!supabase) throw new Error('Supabase not configured');
+  const client = getSupabase();
+  if (!client) throw new Error('Supabase not configured');
   
-  const { data, error } = await supabase.auth.signUp({
+  const { data, error } = await client.auth.signUp({
     email,
     password,
   });
@@ -161,9 +189,10 @@ export async function signUpWithEmail(email: string, password: string) {
 }
 
 export async function signInWithOAuth(provider: 'google' | 'github') {
-  if (!supabase) throw new Error('Supabase not configured');
+  const client = getSupabase();
+  if (!client) throw new Error('Supabase not configured');
   
-  const { data, error } = await supabase.auth.signInWithOAuth({
+  const { data, error } = await client.auth.signInWithOAuth({
     provider,
     options: {
       redirectTo: `${window.location.origin}/auth/callback`,
@@ -175,9 +204,10 @@ export async function signInWithOAuth(provider: 'google' | 'github') {
 }
 
 export async function signInWithMagicLink(email: string) {
-  if (!supabase) throw new Error('Supabase not configured');
+  const client = getSupabase();
+  if (!client) throw new Error('Supabase not configured');
   
-  const { data, error } = await supabase.auth.signInWithOtp({
+  const { data, error } = await client.auth.signInWithOtp({
     email,
     options: {
       emailRedirectTo: `${window.location.origin}/auth/callback`,
@@ -189,6 +219,8 @@ export async function signInWithMagicLink(email: string) {
 }
 
 export async function signOut() {
-  if (!supabase) return;
-  await supabase.auth.signOut();
+  const client = getSupabase();
+  if (!client) return;
+  await client.auth.signOut();
 }
+

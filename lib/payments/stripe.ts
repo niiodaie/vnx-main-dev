@@ -3,9 +3,27 @@ import Stripe from "stripe";
 
 /**
  * Initialize Stripe securely on the server
+ * Only initialize if the secret key is available (runtime, not build time)
  */
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "", {
-  apiVersion: "2025-09-30.clover" as any,
+function getStripeInstance() {
+  const secretKey = process.env.STRIPE_SECRET_KEY;
+  if (!secretKey) {
+    throw new Error("STRIPE_SECRET_KEY is not configured");
+  }
+  return new Stripe(secretKey, {
+    apiVersion: "2025-09-30.clover" as any,
+  });
+}
+
+// Lazy initialization - only creates Stripe instance when actually used
+let stripeInstance: Stripe | null = null;
+export const stripe = new Proxy({} as Stripe, {
+  get(target, prop) {
+    if (!stripeInstance) {
+      stripeInstance = getStripeInstance();
+    }
+    return (stripeInstance as any)[prop];
+  }
 });
 
 /**
@@ -18,7 +36,8 @@ export async function createStripeCheckout(email: string, priceId: string) {
   }
 
   try {
-    const session = await stripe.checkout.sessions.create({
+    const stripeClient = getStripeInstance();
+    const session = await stripeClient.checkout.sessions.create({
       mode: "subscription",
       payment_method_types: ["card"],
       customer_email: email,
@@ -75,3 +94,4 @@ export const SUBSCRIPTION_PLANS = {
     ],
   },
 };
+
