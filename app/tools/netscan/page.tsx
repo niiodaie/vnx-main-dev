@@ -1,148 +1,133 @@
 'use client'
 
 import { useState } from 'react'
-import { Input } from '../../../components/ui/input'
-import { Button } from '../../../components/ui/button'
-import { Card, CardContent } from '../../../components/ui/card'
-import DiagnosticsPanel from './components/DiagnosticsPanel'
-import NetscanHero from './components/NetscanHero'
-import ToolCard from './components/ToolCard'
-import ResultsPanel from './components/ResultsPanel'
-import { NETSCAN_TOOLS } from './config/tools'
+import { Card, CardContent } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import {
+  ShieldCheck,
+  Network,
+  Globe2,
+  Activity,
+  Search,
+  Scan,
+  Radio,
+} from 'lucide-react'
 
-type ToolKey = 'ping' | 'whois' | 'geoip' | 'dns' | 'traceroute' | 'scan'
+const TOOL_CARDS = [
+  {
+    key: 'iplookup',
+    title: 'IP Address Lookup',
+    description:
+      'Get detailed geolocation, ISP information, and network details for any IP address.',
+    icon: Search,
+    color: 'bg-blue-100 text-blue-600',
+  },
+  {
+    key: 'portscan',
+    title: 'Port Scanner',
+    description:
+      'Scan for open ports, identify running services, and assess network security.',
+    icon: Scan,
+    color: 'bg-green-100 text-green-600',
+  },
+  {
+    key: 'domaintools',
+    title: 'Domain Tools',
+    description:
+      'WHOIS lookups, DNS analysis, and domain registration & hosting insights.',
+    icon: Globe2,
+    color: 'bg-purple-100 text-purple-600',
+  },
+  {
+    key: 'monitoring',
+    title: 'Network Monitoring',
+    description:
+      'Real-time performance tracking and network connection analytics.',
+    icon: Activity,
+    color: 'bg-yellow-100 text-yellow-600',
+  },
+  {
+    key: 'security',
+    title: 'Security Scans',
+    description:
+      'Vulnerability assessment and security analysis of network infrastructure.',
+    icon: ShieldCheck,
+    color: 'bg-rose-100 text-rose-600',
+  },
+  {
+    key: 'topology',
+    title: 'Network Topology',
+    description:
+      'Visualize network connections and trace routes between destinations.',
+    icon: Network,
+    color: 'bg-cyan-100 text-cyan-600',
+  },
+  {
+    key: 'analyzer',
+    title: 'Packet Analyzer',
+    description:
+      'Lightweight packet inspector for debugging traffic — “Wireshark Light.”',
+    icon: Radio,
+    color: 'bg-teal-100 text-teal-600',
+  },
+]
 
-export default function NetscanPage() {
-  const [target, setTarget] = useState('')
-  const [activeTool, setActiveTool] = useState<ToolKey | null>(null)
-  const [results, setResults] = useState<Record<string, any> | null>(null)
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [useMocks, setUseMocks] = useState(true) // dev toggle: mocks vs live apis
+export default function NetscanDashboard() {
+  const [selectedTool, setSelectedTool] = useState<string | null>(null)
 
-  // single helper to call tool APIs
-  async function callTool(tool: ToolKey) {
-    if (!target.trim()) {
-      setError('Please enter an IP address or domain.')
-      return
-    }
-
-    setError(null)
-    setResults(null)
-    setActiveTool(tool)
-    setLoading(true)
-
-    try {
-      // map tool -> route + param name
-      const routeBase = '/app/tools/netscan/api'
-      const url =
-        tool === 'ping'
-          ? `${routeBase}/ping?host=${encodeURIComponent(target)}`
-          : tool === 'whois'
-          ? `${routeBase}/whois?domain=${encodeURIComponent(target)}`
-          : tool === 'geoip'
-          ? `${routeBase}/geoip?ip=${encodeURIComponent(target)}`
-          : tool === 'dns'
-          ? `${routeBase}/dns?domain=${encodeURIComponent(target)}`
-          : tool === 'traceroute'
-          ? `${routeBase}/traceroute?host=${encodeURIComponent(target)}`
-          : `${routeBase}/scan?ip=${encodeURIComponent(target)}`
-
-      // if useMocks is true, API handlers already return mocks; the toggle remains for future switching
-      const resp = await fetch(url)
-      const json = await resp.json()
-      setResults(json)
-    } catch (err: any) {
-      setError(String(err))
-    } finally {
-      setLoading(false)
-    }
+  function handleLaunch(key: string) {
+    setSelectedTool(key)
+    // You can navigate to a dedicated subpage later, e.g. router.push(`/tools/netscan/${key}`)
+    alert(`Launching ${key}... (feature coming soon)`)
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-slate-50 to-white pb-12">
-      <NetscanHero />
-      <section className="container mx-auto p-6">
-        {/* Search / target input */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-start mb-6">
-          <div className="md:col-span-3">
-            <Input
-              placeholder="Enter IP or domain (example: 8.8.8.8 or example.com)"
-              value={target}
-              onChange={(e) => setTarget(e.target.value)}
-              aria-label="IP or domain"
-            />
-          </div>
+    <main className="min-h-screen bg-gradient-to-b from-slate-50 to-white pb-20">
+      {/* HERO */}
+      <section className="text-center py-12 bg-gradient-to-r from-blue-500 to-cyan-500 text-white">
+        <h1 className="text-4xl font-bold mb-2">VNX-Netscan</h1>
+        <p className="text-blue-50 max-w-xl mx-auto">
+          Unified network diagnostics and security suite — from IP lookups to
+          live topology mapping.
+        </p>
+      </section>
 
-          <div className="flex gap-2">
-            <Button onClick={() => callTool('ping')} disabled={loading}>
-              {loading && activeTool === 'ping' ? 'Running…' : 'Ping'}
-            </Button>
-            <Button onClick={() => callTool('whois')} disabled={loading}>
-              WHOIS
-            </Button>
-            <Button onClick={() => callTool('geoip')} disabled={loading}>
-              GeoIP
-            </Button>
-          </div>
-        </div>
-
-        {/* Tools grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-          {NETSCAN_TOOLS.map((t) => (
-            <ToolCard
-              key={t.name}
-              toolKey={t.path.replace('/api/', '') as ToolKey}
-              name={t.name}
-              tier={t.tier}
-              description={t.description}
-              onRun={() => callTool(t.path.replace('/api/', '') as ToolKey)}
-            />
-          ))}
-        </div>
-
-        {/* Results + Diagnostics */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-          <div className="lg:col-span-2">
-            <Card>
-              <CardContent>
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-lg font-medium">Tool Output</h3>
-                  <div className="flex items-center gap-2">
-                    <label className="text-sm">Use mocks</label>
-                    <input
-                      type="checkbox"
-                      checked={useMocks}
-                      onChange={() => setUseMocks((v) => !v)}
-                      aria-label="Toggle mocks"
-                    />
+      {/* GRID OF TOOLS */}
+      <section className="container mx-auto px-6 py-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {TOOL_CARDS.map((tool) => {
+            const Icon = tool.icon
+            return (
+              <Card
+                key={tool.key}
+                className="transition-all hover:shadow-lg hover:border-blue-300 cursor-pointer"
+              >
+                <CardContent className="p-6 flex flex-col h-full justify-between">
+                  <div>
+                    <div
+                      className={`w-10 h-10 flex items-center justify-center rounded-xl ${tool.color} mb-4`}
+                    >
+                      <Icon size={20} />
+                    </div>
+                    <h3 className="font-semibold text-lg mb-1">
+                      {tool.title}
+                    </h3>
+                    <p className="text-sm text-slate-600">
+                      {tool.description}
+                    </p>
                   </div>
-                </div>
-
-                {error && (
-                  <div className="text-red-600 mb-2">
-                    <strong>Error: </strong>
-                    {error}
+                  <div className="mt-4">
+                    <Button
+                      className="w-full"
+                      onClick={() => handleLaunch(tool.key)}
+                    >
+                      Launch {tool.title}
+                    </Button>
                   </div>
-                )}
-
-                {!results && !error && (
-                  <div className="text-sm text-slate-500">Run a tool to see results here.</div>
-                )}
-
-                {results && <ResultsPanel data={results} />}
-              </CardContent>
-            </Card>
-          </div>
-
-          <div>
-            <Card>
-              <CardContent>
-                <h4 className="font-medium mb-2">Diagnostics Feed</h4>
-                <DiagnosticsPanel />
-              </CardContent>
-            </Card>
-          </div>
+                </CardContent>
+              </Card>
+            )
+          })}
         </div>
       </section>
     </main>
