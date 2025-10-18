@@ -1,135 +1,127 @@
 'use client'
 
-import { useState } from 'react'
+import Link from 'next/link'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import {
-  ShieldCheck,
-  Network,
-  Globe2,
-  Activity,
-  Search,
-  Scan,
-  Radio,
-} from 'lucide-react'
+import { LucideIcon, Search, RadioTower, Globe2, ShieldCheck, Activity, Network, Scan } from 'lucide-react'
 
-const TOOL_CARDS = [
+const tools = [
   {
     key: 'iplookup',
-    title: 'IP Address Lookup',
-    description:
-      'Get detailed geolocation, ISP information, and network details for any IP address.',
+    name: 'IP Address Lookup',
+    description: 'Get detailed geolocation, ISP, and network details for any IP address.',
+    href: '/tools/netscan/iplookup',
     icon: Search,
-    color: 'bg-blue-100 text-blue-600',
+    tier: 'free',
   },
   {
     key: 'portscan',
-    title: 'Port Scanner',
-    description:
-      'Scan for open ports, identify running services, and assess network security.',
+    name: 'Port Scanner',
+    description: 'Scan open ports, identify running services, and assess network security.',
+    href: '/tools/netscan/portscan',
     icon: Scan,
-    color: 'bg-green-100 text-green-600',
+    tier: 'pro',
   },
   {
     key: 'domaintools',
-    title: 'Domain Tools',
-    description:
-      'WHOIS lookups, DNS analysis, and domain registration & hosting insights.',
+    name: 'Domain Tools',
+    description: 'Perform WHOIS lookups, DNS analysis, and domain registration checks.',
+    href: '/tools/netscan/domaintools',
     icon: Globe2,
-    color: 'bg-purple-100 text-purple-600',
+    tier: 'free',
   },
   {
     key: 'monitoring',
-    title: 'Network Monitoring',
-    description:
-      'Real-time performance tracking and network connection analytics.',
+    name: 'Network Monitoring',
+    description: 'Monitor uptime, latency, and packet loss in real time.',
+    href: '/tools/netscan/monitoring',
     icon: Activity,
-    color: 'bg-yellow-100 text-yellow-600',
+    tier: 'pro',
   },
   {
     key: 'security',
-    title: 'Security Scans',
-    description:
-      'Vulnerability assessment and security analysis of network infrastructure.',
+    name: 'Security Scans',
+    description: 'Run vulnerability checks and surface potential network risks.',
+    href: '/tools/netscan/security',
     icon: ShieldCheck,
-    color: 'bg-rose-100 text-rose-600',
+    tier: 'pro',
   },
   {
     key: 'topology',
-    title: 'Network Topology',
-    description:
-      'Visualize network connections and trace routes between destinations.',
+    name: 'Network Topology',
+    description: 'Trace and visualize network paths and route hops globally.',
+    href: '/tools/netscan/topology',
     icon: Network,
-    color: 'bg-cyan-100 text-cyan-600',
+    tier: 'free',
   },
   {
-    key: 'analyzer',
-    title: 'Packet Analyzer',
-    description:
-      'Lightweight packet inspector for debugging traffic — “Wireshark Light.”',
-    icon: Radio,
-    color: 'bg-teal-100 text-teal-600',
+    key: 'network-analyzer',
+    name: 'Network Analyzer',
+    description: 'Inspect live packet data and analyze traffic flow (Wireshark Light).',
+    href: '/tools/netscan/network-analyzer',
+    icon: RadioTower,
+    tier: 'pro',
   },
 ]
 
-export default function NetscanDashboard() {
-  const [selectedTool, setSelectedTool] = useState<string | null>(null)
-
-  function handleLaunch(key: string) {
-    setSelectedTool(key)
-    // You can navigate to a dedicated subpage later, e.g. router.push(`/tools/netscan/${key}`)
-    alert(`Launching ${key}... (feature coming soon)`)
-  }
-
+export default function NetscanDashboardPage() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-slate-50 to-white pb-20">
-      {/* HERO */}
-      <section className="text-center py-12 bg-gradient-to-r from-blue-500 to-cyan-500 text-white">
-        <h1 className="text-4xl font-bold mb-2">VNX-Netscan</h1>
-        <p className="text-blue-50 max-w-xl mx-auto">
-          Unified network diagnostics and security suite — from IP lookups to
-          live topology mapping.
+      {/* Hero Section */}
+      <section className="text-center py-12 bg-gradient-to-r from-blue-600 to-cyan-500 text-white shadow-sm">
+        <h1 className="text-4xl font-bold mb-3">VNX-Netscan</h1>
+        <p className="max-w-2xl mx-auto text-blue-100 text-sm md:text-base">
+          Unified network diagnostics hub — perform IP lookups, port scans, topology traces, and security checks.
         </p>
       </section>
 
-      {/* GRID OF TOOLS */}
-      <section className="container mx-auto px-6 py-12">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {TOOL_CARDS.map((tool) => {
-            const Icon = tool.icon
-            return (
-              <Card
-                key={tool.key}
-                className="transition-all hover:shadow-lg hover:border-blue-300 cursor-pointer"
-              >
-                <CardContent className="p-6 flex flex-col h-full justify-between">
-                  <div>
-                    <div
-                      className={`w-10 h-10 flex items-center justify-center rounded-xl ${tool.color} mb-4`}
-                    >
-                      <Icon size={20} />
-                    </div>
-                    <h3 className="font-semibold text-lg mb-1">
-                      {tool.title}
-                    </h3>
-                    <p className="text-sm text-slate-600">
-                      {tool.description}
-                    </p>
-                  </div>
-                  <div className="mt-4">
-                    <Button
-                      className="w-full"
-                      onClick={() => handleLaunch(tool.key)}
-                    >
-                      Launch {tool.title}
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
+      {/* Tool Cards */}
+      <section className="container mx-auto px-6 py-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        {tools.map((tool) => {
+          const Icon = tool.icon as LucideIcon
+          const tierLabel =
+            tool.tier === 'pro' ? (
+              <span className="ml-2 rounded-full bg-yellow-100 text-yellow-700 text-xs px-2 py-0.5">Pro</span>
+            ) : (
+              <span className="ml-2 rounded-full bg-green-100 text-green-700 text-xs px-2 py-0.5">Free</span>
             )
-          })}
-        </div>
+
+          return (
+            <Card
+              key={tool.key}
+              className="hover:shadow-lg transition-all border border-slate-200 rounded-xl"
+            >
+              <CardContent className="p-6 flex flex-col h-full justify-between">
+                <div>
+                  <div className="flex items-center mb-3">
+                    <div className="p-2 bg-slate-100 rounded-lg text-blue-600">
+                      <Icon size={22} />
+                    </div>
+                    <h3 className="ml-3 text-lg font-semibold text-slate-800 flex items-center">
+                      {tool.name}
+                      {tierLabel}
+                    </h3>
+                  </div>
+                  <p className="text-sm text-slate-500 mb-6">{tool.description}</p>
+                </div>
+
+                <Link href={tool.href} className="mt-auto">
+                  <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+                    Launch {tool.name}
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
+          )
+        })}
       </section>
+
+      {/* Footer */}
+      <footer className="text-center text-slate-500 text-sm py-6">
+        <p>
+          Powered by <span className="font-semibold text-blue-600">Visnec Nexus</span> · Network Intelligence Suite
+        </p>
+      </footer>
     </main>
   )
 }
