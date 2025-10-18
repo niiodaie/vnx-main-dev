@@ -82,12 +82,12 @@ export default function GeoIPPage() {
                   value={`${result.data.location.coordinates.latitude}, ${result.data.location.coordinates.longitude}`}
                 />
                 <InfoCard
-                  icon={<Clock className="text-orange-600" />}
-                  label="Timezone"
-                  value={`${result.data.timezone.name || ''} (UTC${result.data.timezone.utc_offset || ''})`}
-                />
+  icon={<Clock className="text-orange-600" />}
+  label="Timezone"
+  value={`${result.data.timezone.name || ''} (UTC${result.data.timezone.utc_offset || ''})`}
+/>
 
-                {/* Interactive Map */}
+{/* Interactive Map */}
 {result.data?.location?.coordinates && (
   <div className="mt-8">
     <h3 className="text-lg font-semibold text-slate-800 mb-3 flex items-center gap-2">
@@ -103,9 +103,6 @@ export default function GeoIPPage() {
   </div>
 )}
 
-
-                
-              </div>
 
               <div className="mt-6 p-4 bg-gradient-to-br from-slate-50 to-purple-50 border border-purple-100 rounded-lg">
                 <p className="text-sm text-slate-700">
