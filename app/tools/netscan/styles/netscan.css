@@ -1,0 +1,4 @@
+/* Basic visual polish */
+.netscan-card {
+  @apply rounded-2xl shadow-md p-4 border border-slate-200;
+}
