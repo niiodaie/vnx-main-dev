@@ -3,9 +3,8 @@
 import { useState } from 'react'
 // Supabase disabled for now
 // import { createClient } from '@supabase/supabase-js'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/netscan/NetscanDiagnostics' 
+import { Button } from '@/components/netscan/SpeedTestPanel'
 import DiagnosticsPanel from './components/DiagnosticsPanel'
 import NetscanHero from './components/NetscanHero'
 import { NETSCAN_TOOLS } from './config/tools'
