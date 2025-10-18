@@ -77,19 +77,22 @@ export async function GET(request: NextRequest) {
     const userTier = user ? await getUserTier(user.id).catch(() => 'free') : 'free';
     const isProduction = process.env.NODE_ENV === 'production';
 
-    // DEV: allow using tool when not production to avoid showing "Pro" gate while building
-    const safeTier: 'free' | 'pro' = userTier === 'pro' ? 'pro' : 'free';
+    // ✅ In dev or preview mode, always allow full access
+const isProduction = process.env.NODE_ENV === 'production';
+const safeTier: 'free' | 'pro' = userTier === 'pro' ? 'pro' : 'free';
 
-    if (isProduction && !hasToolAccess('geoip', safeTier)) {
-      return NextResponse.json(
-        {
-          error: 'Pro subscription required',
-          message: 'This tool requires a Pro subscription. Upgrade to access all tools.',
-          upgradeUrl: '/tools/netscan/pricing',
-        },
-        { status: 403 }
-      );
-    }
+if (!isProduction) {
+  console.log('[DEV MODE] GeoIP tool running with unrestricted access');
+} else if (!hasToolAccess('geoip', safeTier)) {
+  return NextResponse.json(
+    {
+      error: 'Pro subscription required',
+      message: 'This tool requires a Pro subscription. Upgrade to access all tools.',
+      upgradeUrl: '/tools/netscan/pricing',
+    },
+    { status: 403 }
+  );
+}
 
     // rate limiting (allow higher limits for pro)
     const clientIp = getClientIp(request);
