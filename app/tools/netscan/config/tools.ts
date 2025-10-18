@@ -1,4 +1,12 @@
-export const NETSCAN_TOOLS = [
+export type Tier = 'free' | 'pro'
+
+export const NETSCAN_TOOLS: {
+  name: string
+  path: string
+  tier: Tier
+  enabled: boolean
+  description: string
+}[] = [
   { name: 'Ping', path: '/api/ping', tier: 'free', enabled: true, description: 'Check reachability & latency' },
   { name: 'WHOIS', path: '/api/whois', tier: 'free', enabled: true, description: 'Domain registration info' },
   { name: 'GeoIP', path: '/api/geoip', tier: 'free', enabled: true, description: 'IP geolocation (city, country)' },
