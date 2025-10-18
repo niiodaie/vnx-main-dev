@@ -5,6 +5,7 @@ import { Crown, Lock, Zap } from 'lucide-react';
 import { LucideIcon } from 'lucide-react';
 // import { useAuth } from '@/lib/auth/AuthContext';
 import { NETSCAN_TOOLS } from '@/config/tools';
+import NetscanDiagnostics from '@/components/NetscanDiagnostics';
 
 export default function NetscanPage() {
   // Temporary placeholders until Supabase Auth is activated
@@ -174,5 +175,15 @@ function ToolCard({ tool, isPro, hasAccess }: ToolCardProps) {
         )}
       </div>
     </Link>
+  );
+}
+
+return (
+    <main className="min-h-screen bg-gradient-to-b from-slate-50 to-white pb-20">
+      {/* existing Netscan UI sections */}
+
+      {/* Diagnostics Panel */}
+      <NetscanDiagnostics />
+    </main>
   );
 }
