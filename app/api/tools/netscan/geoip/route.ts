@@ -1,166 +1,253 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { LRUCache } from 'lru-cache'
-import dns from 'dns/promises'
-import { checkRateLimit, getClientIp, rateLimitResponse } from '@/lib/rate-limit'
-import { getCurrentUser, getUserTier } from '@/lib/auth/supabase'
-import { hasToolAccess } from '@/config/tools'
+// app/api/tools/netscan/geoip/route.ts
+import { NextRequest, NextResponse } from 'next/server';
+import { LRUCache } from 'lru-cache';
+import { checkRateLimit, getClientIp, rateLimitResponse } from '@/lib/rate-limit';
+import { getCurrentUser, getUserTier } from '@/lib/auth/supabase';
+import { hasToolAccess } from '@/config/tools';
 
-// ✅ Detect development or preview mode
-const isDev =
-  process.env.NODE_ENV === 'development' ||
-  process.env.VERCEL_ENV === 'preview' ||
-  process.env.NEXT_PUBLIC_ENV === 'dev'
+/**
+ * GeoIP route
+ *
+ * - Accepts `ip` (ip or domain) and optional `mock=true`
+ * - Returns standardized JSON:
+ *   { success: boolean, tool: 'geoip', data: {...}, timestamp, cached, rateLimit: {...} }
+ *
+ * Notes:
+ * - In development (`NODE_ENV !== 'production'`) this route bypasses the pro-only gate
+ *   so you can iterate without being blocked by subscription flags.
+ * - Domain resolution tries node dns.promises first; if unavailable (Edge runtime)
+ *   falls back to DNS-over-HTTPS (Google).
+ */
 
-// Cache with 10-min TTL
+// LRU cache for lookups (10 minutes)
 const cache = new LRUCache<string, any>({
-  max: 100,
+  max: 200,
   ttl: 1000 * 60 * 10,
-})
+});
+
+// simple IPv4/IPv6 regexes
+const IPV4_REGEX = /^(25[0-5]|2[0-4]\d|1?\d{1,2})(\.(25[0-5]|2[0-4]\d|1?\d{1,2})){3}$/;
+const IPV6_REGEX = /^[0-9a-fA-F:]{2,}$/;
 
 export async function GET(request: NextRequest) {
   try {
-    // ─────────────────────────────────────────────
-    // 1️⃣  Get user and tier
-    // ─────────────────────────────────────────────
-    const user = await getCurrentUser()
-    const userTier = user ? await getUserTier(user.id) : 'free'
-    const isPro = userTier === 'pro'
+    const url = new URL(request.url);
+    const searchParams = url.searchParams;
+    const raw = (searchParams.get('ip') || '').trim();
+    const useMocks = (searchParams.get('mock') || '').toLowerCase() === 'true';
 
-    // ─────────────────────────────────────────────
-    // 2️⃣  Bypass subscription in dev
-    // ─────────────────────────────────────────────
-    if (!isDev && !hasToolAccess('geoip', userTier)) {
+    // quick mock support for dev/demo
+    if (useMocks) {
+      const mock = {
+        success: true,
+        tool: 'geoip',
+        data: {
+          ip: raw || '8.8.8.8',
+          location: {
+            city: 'Mountain View',
+            region: 'California',
+            country: 'United States',
+            country_code: 'US',
+            continent: 'NA',
+            postal: '94043',
+            coordinates: { latitude: 37.42301, longitude: -122.083352 },
+          },
+          timezone: { name: 'America/Los_Angeles', utc_offset: '-0700' },
+          network: { isp: 'Google LLC', asn: 'AS15169', network: null },
+          currency: 'USD',
+          languages: 'en',
+        },
+        timestamp: new Date().toISOString(),
+      };
+
+      return NextResponse.json({
+        ...mock,
+        cached: false,
+        rateLimit: { remaining: Infinity, resetIn: 0 },
+      });
+    }
+
+    // require ip parameter
+    if (!raw) {
+      return NextResponse.json({ error: 'IP address or domain is required' }, { status: 400 });
+    }
+
+    // auth / tier / access
+    const user = await getCurrentUser().catch(() => null);
+    const userTier = user ? await getUserTier(user.id).catch(() => 'free') : 'free';
+    const isProduction = process.env.NODE_ENV === 'production';
+
+    // DEV: allow using tool when not production to avoid showing "Pro" gate while building
+    if (isProduction && !hasToolAccess('geoip', userTier)) {
       return NextResponse.json(
         {
           error: 'Pro subscription required',
-          message: 'Upgrade to access all tools.',
+          message: 'This tool requires a Pro subscription. Upgrade to access all tools.',
           upgradeUrl: '/tools/netscan/pricing',
         },
         { status: 403 }
-      )
+      );
     }
 
-    // ─────────────────────────────────────────────
-    // 3️⃣  Rate limiting
-    // ─────────────────────────────────────────────
-    const clientIp = getClientIp(request)
-    const identifier = user?.id || clientIp
-    const rateLimit = await checkRateLimit(identifier, isPro)
+    // rate limiting (allow higher limits for pro)
+    const clientIp = getClientIp(request);
+    const identifier = user?.id || clientIp || 'anon';
+    const isPro = userTier === 'pro';
+    const rateLimit = await checkRateLimit(identifier, isPro);
 
     if (!rateLimit.allowed) {
-      return rateLimitResponse(rateLimit.resetIn)
+      return rateLimitResponse(rateLimit.resetIn);
     }
 
-    // ─────────────────────────────────────────────
-    // 4️⃣  Parse query params
-    // ─────────────────────────────────────────────
-    const { searchParams } = new URL(request.url)
-    let input = searchParams.get('ip')
+    // resolve domain -> IP if necessary
+    let ipToQuery = raw;
+    if (!IPV4_REGEX.test(raw) && !IPV6_REGEX.test(raw)) {
+      // assume domain name: attempt resolution
+      const resolved = await resolveDomainToIp(raw).catch((err) => {
+        console.error('DNS resolution failed:', err);
+        return null;
+      });
 
-    if (!input) {
-      return NextResponse.json({ error: 'IP or domain is required' }, { status: 400 })
-    }
-
-    input = input.trim().toLowerCase()
-
-    // ─────────────────────────────────────────────
-    // 5️⃣  If domain, resolve to IP
-    // ─────────────────────────────────────────────
-    const ipRegex =
-      /^(\d{1,3}\.){3}\d{1,3}$|^(([a-fA-F0-9]{1,4}:){7,7}[a-fA-F0-9]{1,4}|([a-fA-F0-9]{1,4}:){1,7}:|([a-fA-F0-9]{1,4}:){1,6}:[a-fA-F0-9]{1,4})$/
-
-    let ip = input
-
-    if (!ipRegex.test(input)) {
-      try {
-        const resolved = await dns.lookup(input)
-        ip = resolved.address
-      } catch {
-        return NextResponse.json(
-          { error: 'Invalid IP or domain. Could not resolve host.' },
-          { status: 400 }
-        )
+      if (!resolved) {
+        return NextResponse.json({ error: 'Failed to resolve domain to IP' }, { status: 400 });
       }
+      ipToQuery = resolved;
     }
 
-    // ─────────────────────────────────────────────
-    // 6️⃣  Check cache
-    // ─────────────────────────────────────────────
-    const cacheKey = `geoip:${ip}`
-    const cached = cache.get(cacheKey)
+    // final validation
+    if (!IPV4_REGEX.test(ipToQuery) && !IPV6_REGEX.test(ipToQuery)) {
+      return NextResponse.json({ error: 'Invalid IP address format' }, { status: 400 });
+    }
+
+    const cacheKey = `geoip:${ipToQuery}`;
+    const cached = cache.get(cacheKey);
     if (cached) {
       return NextResponse.json({
         ...cached,
         cached: true,
-        rateLimit: {
-          remaining: rateLimit.remaining,
-          resetIn: rateLimit.resetIn,
-        },
-      })
+        rateLimit: { remaining: rateLimit.remaining, resetIn: rateLimit.resetIn },
+      });
     }
 
-    // ─────────────────────────────────────────────
-    // 7️⃣  Fetch data from ipapi
-    // ─────────────────────────────────────────────
-    const response = await fetch(`https://ipapi.co/${ip}/json/`, {
+    // call provider (ipapi.co) - swap if you prefer another provider
+    const providerUrl = `https://ipapi.co/${encodeURIComponent(ipToQuery)}/json/`;
+    const resp = await fetch(providerUrl, {
       headers: { 'User-Agent': 'VNX-Netscan/1.0' },
-    })
+    });
 
-    if (!response.ok) {
-      throw new Error('Failed to fetch GeoIP information')
+    if (!resp.ok) {
+      const txt = await resp.text().catch(() => '');
+      throw new Error(`GeoIP provider error: ${resp.status} ${txt}`);
     }
 
-    const data = await response.json()
+    const data = await resp.json();
 
+    // normalize data shape (safe access)
     const result = {
       success: true,
       tool: 'geoip',
-      input,
-      resolved_ip: ip,
       data: {
-        ip: data.ip,
+        ip: data.ip ?? ipToQuery,
         location: {
-          city: data.city,
-          region: data.region,
-          country: data.country_name,
-          country_code: data.country_code,
-          continent: data.continent_code,
-          postal: data.postal,
+          city: data.city ?? null,
+          region: data.region ?? data.region_name ?? null,
+          country: data.country_name ?? data.country ?? null,
+          country_code: data.country_code ?? data.country_code_iso2 ?? null,
+          continent: data.continent_code ?? null,
+          postal: data.postal ?? null,
           coordinates: {
-            latitude: data.latitude,
-            longitude: data.longitude,
+            latitude: parseNumberSafe(data.latitude) ?? parseNumberSafe(data.lat) ?? null,
+            longitude: parseNumberSafe(data.longitude) ?? parseNumberSafe(data.lon) ?? null,
           },
         },
-        timezone: {
-          name: data.timezone,
-          utc_offset: data.utc_offset,
-        },
+        timezone: { name: data.timezone ?? null, utc_offset: data.utc_offset ?? null },
         network: {
-          isp: data.org,
-          asn: data.asn,
-          network: data.network,
+          isp: data.org ?? data.isp ?? null,
+          asn: data.asn ?? null,
+          network: data.network ?? null,
         },
-        currency: data.currency,
-        languages: data.languages,
+        currency: data.currency ?? null,
+        languages: data.languages ?? null,
       },
       timestamp: new Date().toISOString(),
-    }
+    };
 
-    cache.set(cacheKey, result)
+    cache.set(cacheKey, result);
 
     return NextResponse.json({
       ...result,
       cached: false,
-      rateLimit: {
-        remaining: rateLimit.remaining,
-        resetIn: rateLimit.resetIn,
-      },
-    })
-  } catch (error: any) {
-    console.error('GeoIP error:', error)
-    return NextResponse.json(
-      { error: error.message || 'Internal server error' },
-      { status: 500 }
-    )
+      rateLimit: { remaining: rateLimit.remaining, resetIn: rateLimit.resetIn },
+    });
+  } catch (err: any) {
+    console.error('GeoIP route error:', err);
+    return NextResponse.json({ error: err?.message || 'Internal server error' }, { status: 500 });
   }
+}
+
+/** Helpers ****************************************************/
+
+/** safe number parse or null */
+function parseNumberSafe(v: any): number | null {
+  if (v == null) return null;
+  const n = Number(v);
+  return Number.isFinite(n) ? n : null;
+}
+
+/**
+ * Resolve domain to IP address.
+ * Tries dns.promises.lookup first (Node), otherwise uses DNS-over-HTTPS fallback (Google).
+ */
+async function resolveDomainToIp(domain: string): Promise<string | null> {
+  // remove protocol if present
+  domain = domain.replace(/^https?:\/\//, '').replace(/\/.*$/, '');
+
+  // Basic validation for domain form:
+  if (!/^[a-z0-9.-]+$/i.test(domain)) return null;
+
+  // Try Node dns.promises if available
+  try {
+    // dynamic import so this does not throw in Edge runtimes that don't support dns
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const dnsPromises = await import('dns').then((d) => (d.promises ? d.promises : d));
+    if (dnsPromises && typeof dnsPromises.lookup === 'function') {
+      const res = await dnsPromises.lookup(domain, { family: 4 }).catch(async () => {
+        // try ipv6 if ipv4 fails
+        const res6 = await dnsPromises.lookup(domain, { family: 6 }).catch(() => null);
+        return res6;
+      });
+      if (res && (res.address || (res[0] && res[0].address))) {
+        // dns.lookup returns { address, family } or an array in rare cases
+        if (typeof res.address === 'string') return res.address;
+        if (Array.isArray(res) && res[0] && res[0].address) return res[0].address;
+      }
+    }
+  } catch (e) {
+    // likely running in Edge / browser-like environment, fall through to DoH
+    // console.debug('dns.promises not available; falling back to DoH', e);
+  }
+
+  // DNS-over-HTTPS fallback (Google DNS)
+  try {
+    const dohUrl = `https://dns.google/resolve?name=${encodeURIComponent(domain)}&type=A`;
+    const dohResp = await fetch(dohUrl);
+    if (!dohResp.ok) return null;
+    const dohJson = await dohResp.json();
+    if (dohJson?.Answer && Array.isArray(dohJson.Answer)) {
+      // find first A record
+      const aRecord = dohJson.Answer.find((a: any) => a.type === 1 && !!a.data);
+      if (aRecord) return aRecord.data;
+    }
+    // try AAAA
+    const doh6 = await fetch(`https://dns.google/resolve?name=${encodeURIComponent(domain)}&type=AAAA`);
+    if (doh6.ok) {
+      const j6 = await doh6.json();
+      const aaaa = j6?.Answer && j6.Answer.find((a: any) => a.type === 28 && !!a.data);
+      if (aaaa) return aaaa.data;
+    }
+  } catch (e) {
+    console.warn('DoH lookup failed', e);
+  }
+
+  return null;
 }
