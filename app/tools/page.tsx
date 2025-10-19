@@ -11,6 +11,12 @@ export const metadata: Metadata = {
 
 const tools = [
   {
+    name: "Unipay",
+    href: "/tools/unipay",
+    description: "Global payroll and workforce payment platform for managing diverse teams across multiple countries and currencies",
+    gradient: "from-emerald-600 to-teal-600",
+  },
+  {
     name: "VNX Speed Test",
     href: "/tools/speedtest",
     description: "Test your internet connection speed - download, upload, and latency",
