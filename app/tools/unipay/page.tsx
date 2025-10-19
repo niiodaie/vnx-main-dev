@@ -48,7 +48,9 @@ export default function UnipayPage() {
                 </p>
                 <div className="flex gap-3">
                   <Button>Get Started</Button>
-                  <Button variant="outline">Learn More</Button>
+                  <button className="px-4 py-2 rounded-md bg-white text-blue-600 font-medium border border-blue-600 hover:bg-blue-50">
+                    Learn More
+                  </button>
                 </div>
               </div>
               <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg p-8 text-white">
@@ -141,10 +143,10 @@ export default function UnipayPage() {
                 <CardContent className="p-6">
                   <h3 className="text-lg font-semibold text-slate-900 mb-4">Quick Actions</h3>
                   <div className="space-y-3">
-                    <Button className="w-full justify-start" variant="outline">➕ Add Worker</Button>
-                    <Button className="w-full justify-start" variant="outline">📝 Process Payroll</Button>
-                    <Button className="w-full justify-start" variant="outline">💳 Make Payment</Button>
-                    <Button className="w-full justify-start" variant="outline">📄 Generate Reports</Button>
+                    <Button className="w-full">➕ Add Worker</Button>
+                    <Button className="w-full">📝 Process Payroll</Button>
+                    <Button className="w-full">💳 Make Payment</Button>
+                    <Button className="w-full">📄 Generate Reports</Button>
                   </div>
                 </CardContent>
               </Card>
@@ -257,7 +259,7 @@ export default function UnipayPage() {
                       </li>
                     ))}
                   </ul>
-                  <Button className="w-full" variant={p.highlight ? 'default' : 'outline'}>
+                  <Button className={p.highlight ? '' : 'bg-white text-blue-600 border border-blue-600 hover:bg-blue-50'}>
                     Get Started
                   </Button>
                 </CardContent>
@@ -270,7 +272,7 @@ export default function UnipayPage() {
         <div className="mt-16 bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg p-8 text-white text-center">
           <h2 className="text-3xl font-bold mb-4">Ready to Simplify Payroll?</h2>
           <p className="text-lg text-blue-100 mb-6">Join hundreds of companies using Unipay for global payroll.</p>
-          <Button size="lg" variant="secondary">Start Free Trial</Button>
+          <Button>Start Free Trial</Button>
         </div>
       </div>
     </div>
