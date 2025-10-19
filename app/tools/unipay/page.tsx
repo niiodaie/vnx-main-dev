@@ -1,10 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 export default function UnipayPage() {
   const [activeTab, setActiveTab] = useState('overview');
@@ -14,247 +12,269 @@ export default function UnipayPage() {
       {/* Header */}
       <div className="border-b border-slate-200 bg-white sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-4xl font-bold text-slate-900">Unipay</h1>
-              <p className="text-lg text-slate-600 mt-2">Global Payroll & Workforce Payment Platform</p>
-            </div>
-            <div className="flex gap-3">
-              <Link href="/tools/unipay/dashboard">
-                <Button variant="outline">Dashboard</Button>
-              </Link>
-              <Link href="/tools/unipay/docs">
-                <Button>Documentation</Button>
-              </Link>
-            </div>
-          </div>
+          <h1 className="text-4xl font-bold text-slate-900">💰 Unipay</h1>
+          <p className="text-lg text-slate-600 mt-2">Global Payroll & Workforce Payment Platform</p>
         </div>
       </div>
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Hero Section */}
-        <div className="mb-12">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="text-3xl font-bold text-slate-900 mb-4">
-                Simplify Global Payroll Management
-              </h2>
-              <p className="text-lg text-slate-600 mb-6">
-                Unipay is a comprehensive payroll platform designed for businesses managing diverse workforces across multiple countries and currencies.
-              </p>
-              <div className="flex gap-3">
-                <Link href="/tools/unipay/dashboard">
-                  <Button size="lg">Get Started</Button>
-                </Link>
-                <Link href="/tools/unipay/docs">
-                  <Button size="lg" variant="outline">Learn More</Button>
-                </Link>
+        {/* Navigation */}
+        <div className="flex gap-2 mb-8 flex-wrap">
+          {['overview', 'dashboard', 'docs', 'pricing'].map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                activeTab === tab
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-white border border-slate-300 text-slate-900 hover:bg-slate-50'
+              }`}
+            >
+              {tab.charAt(0).toUpperCase() + tab.slice(1)}
+            </button>
+          ))}
+        </div>
+
+        {/* Overview Tab */}
+        {activeTab === 'overview' && (
+          <div className="space-y-12">
+            {/* Hero */}
+            <div className="grid md:grid-cols-2 gap-12 items-center">
+              <div>
+                <h2 className="text-3xl font-bold text-slate-900 mb-4">Simplify Global Payroll</h2>
+                <p className="text-lg text-slate-600 mb-6">
+                  Manage diverse workforces across multiple countries and currencies. Process payments, manage taxes, and ensure compliance—all in one place.
+                </p>
+                <div className="flex gap-3">
+                  <Button>Get Started</Button>
+                  <Button variant="outline">Learn More</Button>
+                </div>
+              </div>
+              <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg p-8 text-white">
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">🌍</div>
+                    <div>
+                      <h3 className="font-semibold">Global Support</h3>
+                      <p className="text-sm text-blue-100">50+ currencies</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">⚡</div>
+                    <div>
+                      <h3 className="font-semibold">Instant Payments</h3>
+                      <p className="text-sm text-blue-100">Stripe, Wise, banks</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">📊</div>
+                    <div>
+                      <h3 className="font-semibold">Tax Compliance</h3>
+                      <p className="text-sm text-blue-100">W-2, 1099, global</p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-            <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg p-8 text-white">
-              <div className="space-y-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">💰</div>
-                  <div>
-                    <h3 className="font-semibold">Multi-Currency</h3>
-                    <p className="text-sm text-blue-100">Support for 50+ currencies</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">🌍</div>
-                  <div>
-                    <h3 className="font-semibold">Global Compliance</h3>
-                    <p className="text-sm text-blue-100">Tax forms for multiple regions</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">⚡</div>
-                  <div>
-                    <h3 className="font-semibold">Instant Payments</h3>
-                    <p className="text-sm text-blue-100">Stripe, Wise, and bank transfers</p>
-                  </div>
-                </div>
+
+            {/* Features */}
+            <div>
+              <h2 className="text-2xl font-bold text-slate-900 mb-8">Key Features</h2>
+              <div className="grid md:grid-cols-3 gap-6">
+                {[
+                  { icon: '🏢', title: 'Company Management', desc: 'Multiple companies with different tax IDs' },
+                  { icon: '👥', title: 'Workforce Management', desc: 'W-2 employees, 1099 contractors, global workers' },
+                  { icon: '⏱️', title: 'Time Tracking', desc: 'Log hours with approval workflows' },
+                  { icon: '📄', title: 'Invoice Management', desc: 'Contractor invoices with auto-tracking' },
+                  { icon: '💳', title: 'Payment Processing', desc: 'Stripe, Wise, bank transfers' },
+                  { icon: '📊', title: 'Tax Compliance', desc: 'W-2, 1099, international forms' },
+                ].map((f, i) => (
+                  <Card key={i}>
+                    <CardHeader>
+                      <div className="text-4xl mb-2">{f.icon}</div>
+                      <CardTitle className="text-lg">{f.title}</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-sm text-slate-600">{f.desc}</p>
+                    </CardContent>
+                  </Card>
+                ))}
               </div>
             </div>
           </div>
-        </div>
+        )}
 
-        {/* Features Section */}
-        <div className="mb-12">
-          <h2 className="text-2xl font-bold text-slate-900 mb-8">Key Features</h2>
+        {/* Dashboard Tab */}
+        {activeTab === 'dashboard' && (
+          <div className="space-y-8">
+            <div>
+              <label className="block text-sm font-medium text-slate-900 mb-2">Select Company</label>
+              <select className="w-64 px-4 py-2 border border-slate-300 rounded-lg">
+                <option>Acme Corporation</option>
+                <option>Tech Startup Inc</option>
+                <option>Global Services Ltd</option>
+              </select>
+            </div>
+
+            <div className="grid md:grid-cols-4 gap-4">
+              {[
+                { label: 'Total Employees', value: '0', icon: '👥' },
+                { label: 'Pending Approvals', value: '0', icon: '⏳' },
+                { label: 'Total Payouts', value: '$0.00', icon: '💰' },
+                { label: 'This Month', value: '$0.00', icon: '📊' },
+              ].map((s, i) => (
+                <Card key={i}>
+                  <CardContent className="pt-6">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm text-slate-600">{s.label}</p>
+                        <p className="text-2xl font-bold text-slate-900">{s.value}</p>
+                      </div>
+                      <span className="text-4xl">{s.icon}</span>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Quick Actions</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <Button className="w-full justify-start" variant="outline">➕ Add Worker</Button>
+                  <Button className="w-full justify-start" variant="outline">📝 Process Payroll</Button>
+                  <Button className="w-full justify-start" variant="outline">💳 Make Payment</Button>
+                  <Button className="w-full justify-start" variant="outline">📄 Generate Reports</Button>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader>
+                  <CardTitle>Getting Started</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3 text-sm">
+                  <div className="flex gap-2"><span className="font-bold text-blue-600">1.</span><span>Configure company settings</span></div>
+                  <div className="flex gap-2"><span className="font-bold text-blue-600">2.</span><span>Add workers and contractors</span></div>
+                  <div className="flex gap-2"><span className="font-bold text-blue-600">3.</span><span>Set up payment methods</span></div>
+                  <div className="flex gap-2"><span className="font-bold text-blue-600">4.</span><span>Process your first payroll</span></div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        )}
+
+        {/* Docs Tab */}
+        {activeTab === 'docs' && (
+          <div className="space-y-8">
+            <Card>
+              <CardHeader>
+                <CardTitle>Getting Started</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <h4 className="font-semibold text-slate-900 mb-2">1. Create Account</h4>
+                  <p className="text-sm text-slate-600">Sign up with company info, tax ID, and currency.</p>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-slate-900 mb-2">2. Payment Methods</h4>
+                  <p className="text-sm text-slate-600">Connect Stripe, Wise, or bank account.</p>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-slate-900 mb-2">3. Add Workers</h4>
+                  <p className="text-sm text-slate-600">Onboard employees and contractors.</p>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-slate-900 mb-2">4. Process Payroll</h4>
+                  <p className="text-sm text-slate-600">Log hours and process payments.</p>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>API Reference</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <h4 className="font-semibold text-slate-900 mb-2">Companies</h4>
+                  <div className="bg-slate-100 p-3 rounded font-mono text-xs space-y-1">
+                    <p>POST /api/trpc/company.create</p>
+                    <p>GET /api/trpc/company.list</p>
+                  </div>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-slate-900 mb-2">Workers</h4>
+                  <div className="bg-slate-100 p-3 rounded font-mono text-xs space-y-1">
+                    <p>POST /api/trpc/worker.create</p>
+                    <p>GET /api/trpc/worker.listByCompany</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>FAQ</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <h4 className="font-semibold text-slate-900 mb-1">Payment methods?</h4>
+                  <p className="text-sm text-slate-600">Stripe Connect, Wise, bank transfers.</p>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-slate-900 mb-1">Countries supported?</h4>
+                  <p className="text-sm text-slate-600">US, Canada, UK, EU, and many others.</p>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-slate-900 mb-1">Multiple companies?</h4>
+                  <p className="text-sm text-slate-600">Yes, manage multiple with separate cycles.</p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        )}
+
+        {/* Pricing Tab */}
+        {activeTab === 'pricing' && (
           <div className="grid md:grid-cols-3 gap-6">
             {[
-              {
-                icon: '🏢',
-                title: 'Company Management',
-                description: 'Register and manage multiple companies with different tax IDs and currencies'
-              },
-              {
-                icon: '👥',
-                title: 'Workforce Management',
-                description: 'Onboard W-2 employees, 1099 contractors, and global workers'
-              },
-              {
-                icon: '⏱️',
-                title: 'Time Tracking',
-                description: 'Log hours with approval workflows and automatic calculation'
-              },
-              {
-                icon: '📄',
-                title: 'Invoice Management',
-                description: 'Contractors submit invoices with automatic tracking and approval'
-              },
-              {
-                icon: '💳',
-                title: 'Payment Processing',
-                description: 'Process payments via Stripe, Wise, or traditional bank transfers'
-              },
-              {
-                icon: '📊',
-                title: 'Tax Compliance',
-                description: 'Automatic W-2, 1099, and international tax form generation'
-              },
-            ].map((feature, idx) => (
-              <Card key={idx}>
+              { name: 'Starter', price: '$99', workers: '10 workers', features: ['Basic payroll', 'Single currency', 'Email support'] },
+              { name: 'Professional', price: '$299', workers: '100 workers', features: ['Advanced payroll', 'Multi-currency', 'Priority support', 'API access'], highlight: true },
+              { name: 'Enterprise', price: 'Custom', workers: 'Unlimited', features: ['Custom integrations', 'Dedicated support', 'SLA guarantee'] },
+            ].map((p, i) => (
+              <Card key={i} className={p.highlight ? 'border-blue-500 border-2' : ''}>
                 <CardHeader>
-                  <div className="text-4xl mb-2">{feature.icon}</div>
-                  <CardTitle>{feature.title}</CardTitle>
+                  <CardTitle>{p.name}</CardTitle>
+                  <div className="mt-2">
+                    <span className="text-3xl font-bold">{p.price}</span>
+                    <span className="text-slate-600 ml-2">/month</span>
+                  </div>
+                  <p className="text-sm text-slate-600 mt-2">{p.workers}</p>
                 </CardHeader>
-                <CardContent>
-                  <p className="text-slate-600">{feature.description}</p>
+                <CardContent className="space-y-4">
+                  <ul className="space-y-2">
+                    {p.features.map((f, j) => (
+                      <li key={j} className="text-sm text-slate-600 flex items-center gap-2">
+                        <span className="text-green-600">✓</span> {f}
+                      </li>
+                    ))}
+                  </ul>
+                  <Button className="w-full" variant={p.highlight ? 'default' : 'outline'}>
+                    Get Started
+                  </Button>
                 </CardContent>
               </Card>
             ))}
           </div>
-        </div>
+        )}
 
-        {/* Tabs Section */}
-        <div className="mb-12">
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="features">Features</TabsTrigger>
-              <TabsTrigger value="pricing">Pricing</TabsTrigger>
-              <TabsTrigger value="support">Support</TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="overview" className="space-y-4">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Platform Overview</CardTitle>
-                  <CardDescription>Complete payroll solution for global teams</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <p>Unipay is built on a modern stack with:</p>
-                  <ul className="list-disc list-inside space-y-2 text-slate-600">
-                    <li>React 19 frontend with TypeScript</li>
-                    <li>Node.js/Express backend with tRPC</li>
-                    <li>MySQL database with Drizzle ORM</li>
-                    <li>Multi-region tax calculation engine</li>
-                    <li>Stripe and Wise payment integrations</li>
-                    <li>PDF generation for documents</li>
-                  </ul>
-                </CardContent>
-              </Card>
-            </TabsContent>
-
-            <TabsContent value="features" className="space-y-4">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Advanced Features</CardTitle>
-                  <CardDescription>Everything you need for global payroll</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div>
-                      <h4 className="font-semibold text-slate-900 mb-2">Payroll Engine</h4>
-                      <ul className="text-sm text-slate-600 space-y-1">
-                        <li>✓ Progressive tax calculations</li>
-                        <li>✓ Multi-region support (US, CA, UK, EU)</li>
-                        <li>✓ Dependent deductions</li>
-                        <li>✓ Real-time exchange rates</li>
-                      </ul>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-slate-900 mb-2">Compliance</h4>
-                      <ul className="text-sm text-slate-600 space-y-1">
-                        <li>✓ W-2 form generation</li>
-                        <li>✓ 1099-NEC forms</li>
-                        <li>✓ Global receipts</li>
-                        <li>✓ Audit logs</li>
-                      </ul>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-
-            <TabsContent value="pricing" className="space-y-4">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Pricing Plans</CardTitle>
-                  <CardDescription>Flexible pricing for businesses of all sizes</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-slate-600 mb-4">
-                    Unipay offers flexible pricing based on your company size and workforce:
-                  </p>
-                  <div className="grid md:grid-cols-3 gap-4">
-                    {[
-                      { name: 'Starter', price: '$99/mo', workers: 'Up to 10 workers' },
-                      { name: 'Professional', price: '$299/mo', workers: 'Up to 100 workers' },
-                      { name: 'Enterprise', price: 'Custom', workers: 'Unlimited workers' },
-                    ].map((plan, idx) => (
-                      <div key={idx} className="border border-slate-200 rounded-lg p-4">
-                        <h4 className="font-semibold text-slate-900">{plan.name}</h4>
-                        <p className="text-2xl font-bold text-slate-900 my-2">{plan.price}</p>
-                        <p className="text-sm text-slate-600">{plan.workers}</p>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-
-            <TabsContent value="support" className="space-y-4">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Support & Resources</CardTitle>
-                  <CardDescription>Get help with Unipay</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-3">
-                    <div>
-                      <h4 className="font-semibold text-slate-900 mb-1">Documentation</h4>
-                      <p className="text-sm text-slate-600">Comprehensive guides and API documentation</p>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-slate-900 mb-1">Community</h4>
-                      <p className="text-sm text-slate-600">Join our community forum for discussions</p>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-slate-900 mb-1">Email Support</h4>
-                      <p className="text-sm text-slate-600">support@unipay.com - Available 24/7</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-          </Tabs>
-        </div>
-
-        {/* CTA Section */}
-        <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg p-8 text-white text-center">
+        {/* CTA */}
+        <div className="mt-16 bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg p-8 text-white text-center">
           <h2 className="text-3xl font-bold mb-4">Ready to Simplify Payroll?</h2>
-          <p className="text-lg text-blue-100 mb-6 max-w-2xl mx-auto">
-            Join hundreds of companies using Unipay to manage their global payroll efficiently and compliantly.
-          </p>
-          <Link href="/tools/unipay/dashboard">
-            <Button size="lg" variant="secondary" className="text-blue-600 hover:text-blue-700">
-              Start Free Trial
-            </Button>
-          </Link>
+          <p className="text-lg text-blue-100 mb-6">Join hundreds of companies using Unipay for global payroll.</p>
+          <Button size="lg" variant="secondary">Start Free Trial</Button>
         </div>
       </div>
     </div>
